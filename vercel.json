@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/wwapi/:path*",
+      "destination": "https://api.willyweather.com.au/:path*"
+    }
+  ]
+}
