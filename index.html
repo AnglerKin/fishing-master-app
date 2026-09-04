@@ -571,6 +571,7 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 <div style="margin:10px 0">
 <label style="font-size:13px;color:#666">WillyWeather API Key</label>
 <input id="wwKey" placeholder="填入你的WillyWeather API Key">
+<div style="font-size:11px;color:#27ae60;margin-top:4px">密钥会自动清理首尾空格，请直接粘贴完整Private Key</div>
 </div>
 <div style="margin:10px 0">
 <label style="font-size:13px;color:#666">WillyWeather代理地址（可选）</label>
@@ -867,7 +868,7 @@ function getRegionName(lng,lat){
 }
 
 var state={
-    wwKey:localStorage.getItem('ww-key')||'',
+    wwKey:(localStorage.getItem('ww-key')||'').replace(/[\s\u00A0\u2000-\u200A\u202F\u205F\u3000]/g,''),
     proxyUrl:localStorage.getItem('ww-proxy')||'',
     selectedLng:151.2847,
     selectedLat:-33.8031,
@@ -1104,7 +1105,8 @@ document.addEventListener('DOMContentLoaded',function(){
     bind('btnManual','click',function(){$('modalManual').style.display='block';});
     bind('btnSetting','click',function(){$('wwKey').value=state.wwKey;$('proxyUrl').value=state.proxyUrl;$('modalSetting').style.display='block';});
     bind('saveSetting','click',function(){
-        state.wwKey=$('wwKey').value.trim();
+        var cleanKey=$('wwKey').value.replace(/[\s\u00A0\u2000-\u200A\u202F\u205F\u3000]/g,'');
+        state.wwKey=cleanKey;
         state.proxyUrl=$('proxyUrl').value.trim();
         localStorage.setItem('ww-key',state.wwKey);
         localStorage.setItem('ww-proxy',state.proxyUrl);
