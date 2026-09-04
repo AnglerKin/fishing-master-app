@@ -71,12 +71,12 @@
 <div class="modal" id="modalManual">
     <div class="modal-box">
         <div class="modal-tabs">
-            <button class="active" data‑mtab="rig">钓组示意图</button>
-            <button data‑mtab="hook">钩子&引线</button>
-            <button data‑mtab="time">出钓时机</button>
-            <button data‑mtab="rule">NSW渔规</button>
+            <button class="active" data-mtab="rig">钓组示意图</button>
+            <button data-mtab="hook">钩子&引线</button>
+            <button data-mtab="time">出钓时机</button>
+            <button data-mtab="rule">NSW渔规</button>
         </div>
-        <div class="modal‑tab‑content" id="mtab‑rig">
+        <div class="modal-tab-content" id="mtab-rig">
             <h4>滑铅沉底钓组结构</h4>
 <pre class="diagram">
 主线 ──>○【通心铅坠】──>■挡豆───┬───转环
@@ -94,11 +94,11 @@
 主线 ──>转环 ──>氟碳前导 ──>亮片/软饵
 </pre>
         </div>
-        <div class="modal‑tab‑content hidden" id="mtab‑hook">
+        <div class="modal-tab-content hidden" id="mtab-hook">
 <pre>
 【钩子选择】
 偏移圆钩(Offset Circle Hook)：活饵虾仁，不易吐钩
-直柄圆钩(Non‑offset)：NSW礁石码头，减少挂底
+直柄圆钩(Non-offset)：NSW礁石码头，减少挂底
 长柄钩：沙虫、蠕虫类活饵
 
 【引线参考】
@@ -112,7 +112,7 @@
 浮漂咬铅：G8‑6B
 </pre>
         </div>
-        <div class="modal‑tab‑content hidden" id="mtab‑time">
+        <div class="modal-tab-content hidden" id="mtab-time">
 <pre>
 【出钓时间】
 涨潮初~涨潮中期、落潮中期鱼口最好
@@ -125,7 +125,7 @@
 小潮：水流弱，需要轻钓组精细操作
 </pre>
         </div>
-        <div class="modal‑tab‑content hidden" id="mtab‑rule">
+        <div class="modal-tab-content hidden" id="mtab-rule">
 <pre>
 【澳洲NSW注意事项】
 1. 悉尼大桥以西水域鱼不建议食用
@@ -144,44 +144,44 @@
         <h3>⚙设置</h3>
         <div style="margin:8px 0">
             <label>WillyWeather代理地址</label>
-            <input id="proxyUrl" placeholder="https://xxx.vercel.app/api/ww‑proxy">
+            <input id="proxyUrl" placeholder="https://xxx.vercel.app/api/ww-proxy">
         </div>
-        <div style="font‑size:12px;color:#666;margin:6px 0">
+        <div style="font-size:12px;color:#666;margin:6px 0">
             部署Vercel后填入代理地址；为空则使用Open‑Meteo免费模型。<br>
-            代理格式：https://你的项目名.vercel.app/api/ww‑proxy
+            代理格式：https://你的项目名.vercel.app/api/ww-proxy
         </div>
-        <div style="margin‑top:10px">
+        <div style="margin-top:10px">
             <button class="btn" id="saveSetting">保存设置</button>
-            <button class="btn btn‑sec" onclick="closeModal('modalSetting')">关闭</button>
+            <button class="btn btn-sec" onclick="closeModal('modalSetting')">关闭</button>
         </div>
     </div>
 </div>
 
 <!-- 主页面 -->
-<div id="page‑live">
+<div id="page-live">
     <div class="card">
         <h3>📍钓点状态</h3>
-        <div id="locStatus" style="margin‑bottom:8px">手动输入经纬度，或使用下方GPS定位，也可点击地图拾取坐标</div>
+        <div id="locStatus" style="margin-bottom:8px">手动输入经纬度，或使用下方GPS定位，也可点击地图拾取坐标</div>
         <div class="grid2">
             <div>经度:<input id="inpLng" placeholder="如 151.2847"></div>
-            <div>纬度:<input id="inpLat" placeholder="如 ‑33.8031"></div>
+            <div>纬度:<input id="inpLat" placeholder="如 -33.8031"></div>
         </div>
-        <div style="margin‑top:8px">
+        <div style="margin-top:8px">
             <button class="btn" id="btnRefresh">刷新钓点分析</button>
-            <button class="btn btn‑sec" id="btnGps">📍GPS定位</button>
+            <button class="btn btn-sec" id="btnGps">📍GPS定位</button>
         </div>
     </div>
 
     <div class="card">
         <h3>🌤实况信息</h3>
         <div id="weatherBox">点击"刷新钓点分析"获取天气</div>
-        <div id="windDirBox" class="wind‑dir‑block hidden"></div>
+        <div id="windDirBox" class="wind-dir-block hidden"></div>
     </div>
 
     <div class="card">
         <h3>📊鱼情分析</h3>
         <div id="fishScore">--</div>
-        <div id="fishAdvice" style="margin‑top:8px;line‑height:1.6"></div>
+        <div id="fishAdvice" style="margin-top:8px;line-height:1.6"></div>
     </div>
 
     <div class="card">
@@ -205,7 +205,7 @@
 </div>
 
 <!-- 7天预报页【完整修复】 -->
-<div id="page‑forecast" class="hidden">
+<div id="page-forecast" class="hidden">
     <div class="card">
         <h3>📅7天预报 & 鱼情</h3>
         <div id="forecastBox">选择钓点后显示7天预报</div>
@@ -213,21 +213,21 @@
 </div>
 
 <!-- 钓点管理页 -->
-<div id="page‑spots" class="hidden">
+<div id="page-spots" class="hidden">
     <div class="card">
         <h3>🗺我的钓点</h3>
         <div id="spotsList">暂无钓点</div>
-        <div style="margin‑top:10px">
+        <div style="margin-top:10px">
             <button class="btn" id="btnExportSpots">导出JSON备份</button>
         </div>
     </div>
 </div>
 
 <!-- 装备库页 -->
-<div id="page‑gear" class="hidden">
+<div id="page-gear" class="hidden">
     <div class="card">
         <h3>🎒我的装备库</h3>
-        <div style="line‑height:1.8">
+        <div style="line-height:1.8">
             <div><b>路亚竿</b>：Shimano Maikuro II 2.1m</div>
             <div><b>纺车轮</b>：Savage SG 3000H</div>
             <div><b>主线</b>：PE 0.8‑1.0</div>
@@ -240,10 +240,10 @@
 </div>
 
 <div class="tabbar">
-    <button class="active" data‑page="live">实时鱼情</button>
-    <button data‑page="forecast">7天预报</button>
-    <button data‑page="spots">钓点管理</button>
-    <button data‑page="gear">装备库</button>
+    <button class="active" data-page="live">实时鱼情</button>
+    <button data-page="forecast">7天预报</button>
+    <button data-page="spots">钓点管理</button>
+    <button data-page="gear">装备库</button>
 </div>
 
 <script>
@@ -273,26 +273,26 @@ function getSuggestFishDir(windDeg){
 // MapLibre 动态加载封装，失败不阻塞主业务
 let map = null;
 async function loadMapLibre() {
-    const mapDiv = $('map‑container');
+    const mapDiv = $('map-container');
     try {
         //动态注入CSS
         const css = document.createElement('link');
         css.rel = 'stylesheet';
-        css.href = 'https://unpkg.com/maplibre‑gl@4/dist/maplibre‑gl.css';
+        css.href = 'https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.css';
         document.head.appendChild(css);
         //动态注入JS
         await new Promise((resolve, reject) => {
             const script = document.createElement('script');
-            script.src = 'https://unpkg.com/maplibre‑gl@4/dist/maplibre‑gl.js';
+            script.src = 'https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.js';
             script.onload = resolve;
             script.onerror = reject;
             document.head.appendChild(script);
         });
         //初始化悉尼默认中心点
         map = new maplibregl.Map({
-            container: 'map‑container',
+            container: 'map-container',
             style: 'https://demotiles.maplibre.org/style.json',
-            center: [151.2847, ‑33.8031],
+            center: [151.2847, -33.8031],
             zoom:10
         });
         //增加导航控件【自带指南针】
@@ -317,20 +317,20 @@ document.addEventListener('DOMContentLoaded', function() {
     loadMapLibre(); //非阻塞加载地图
 
     var state = {
-        proxyUrl: localStorage.getItem('ww‑proxy') || '',
+        proxyUrl: localStorage.getItem('ww-proxy') || '',
         selectedLng: 151.2847,
-        selectedLat: ‑33.8031,
+        selectedLat: -33.8031,
         spots: JSON.parse(localStorage.getItem('fishingSpots') || '[]')
     };
 
     //手册弹窗内Tab切换
-    document.querySelectorAll('.modal‑tabs button').forEach(btn=>{
+    document.querySelectorAll('.modal-tabs button').forEach(btn=>{
         btn.addEventListener('click',()=>{
             const tabKey = btn.dataset.mtab;
-            document.querySelectorAll('.modal‑tabs button').forEach(b=>b.classList.remove('active'));
+            document.querySelectorAll('.modal-tabs button').forEach(b=>b.classList.remove('active'));
             btn.classList.add('active');
-            document.querySelectorAll('.modal‑tab‑content').forEach(c=>c.classList.add('hidden'));
-            $('mtab‑'+tabKey).classList.remove('hidden');
+            document.querySelectorAll('.modal-tab-content').forEach(c=>c.classList.add('hidden'));
+            $('mtab-'+tabKey).classList.remove('hidden');
         })
     })
 
@@ -342,7 +342,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     bind('saveSetting', 'click', function() {
         state.proxyUrl = $('proxyUrl').value.trim();
-        localStorage.setItem('ww‑proxy', state.proxyUrl);
+        localStorage.setItem('ww-proxy', state.proxyUrl);
         alert('设置已保存');
         closeModal('modalSetting');
     });
@@ -399,9 +399,9 @@ document.addEventListener('DOMContentLoaded', function() {
             btn.classList.add('active');
             var page = btn.dataset.page;
             ['live','forecast','spots','gear'].forEach(function(p) {
-                $('page‑'+p).classList.add('hidden');
+                $('page-'+p).classList.add('hidden');
             });
-            $('page‑'+page).classList.remove('hidden');
+            $('page-'+page).classList.remove('hidden');
         });
     });
 
@@ -421,13 +421,13 @@ document.addEventListener('DOMContentLoaded', function() {
         windBox.classList.add('hidden');
         forecastBox.innerHTML = "加载7天预报...";
 
-        var url = 'https://api.open‑meteo.com/v1/forecast?latitude='+lat+'&longitude='+lng
+        var url = 'https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lng
             + '&current=temperature_2m,pressure_msl,wind_speed_10m,wind_direction_10m,wave_height'
             + '&daily=temperature_2m_max,temperature_2m_min,wind_speed_10m_max,weathercode&timezone=Australia/Sydney';
         fetch(url).then(function(r){return r.json()}).then(function(d) {
             var c = d.current;
             // 标注数据源
-            box.innerHTML = '<span class="source‑tag">📡数据源：Open‑Meteo '+(state.proxyUrl?"| WillyWeather代理已配置":"")+'</span><br>'
+            box.innerHTML = '<span class="source-tag">📡数据源：Open‑Meteo '+(state.proxyUrl?"| WillyWeather代理已配置":"")+'</span><br>'
                 + '温度：'+c.temperature_2m+'℃ | 气压：'+c.pressure_msl+'hPa<br>'
                 + '风速：'+c.wind_speed_10m+'km/h | 浪高：'+(c.wave_height||0)+'m';
 
@@ -476,16 +476,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (temp >= 15 && temp <= 24) score += 5; else if (temp < 12 || temp > 28) score -= 8;
         score = Math.max(0, Math.min(100, score));
 
-        $('fishScore').innerHTML = '<b style="font‑size:20px;color:#0f4c81">鱼情综合评分：'+score+'/100</b>';
+        $('fishScore').innerHTML = '<b style="font-size:20px;color:#0f4c81">鱼情综合评分：'+score+'/100</b>';
         var advice = '<div><b>🌊潮汐影响：</b>涨潮初~中期、落潮中期鱼口最佳；平潮鱼口差。满潮转流前后1小时为黄金咬口期。</div>';
-        advice += '<div style="margin‑top:6px"><b>🌙月相影响：</b>满月/新月大潮水流强鱼活性高；弦月中潮适中；小潮水流弱需精细钓法。</div>';
-        advice += '<div style="margin‑top:6px"><b>🌤天气影响：</b>';
+        advice += '<div style="margin-top:6px"><b>🌙月相影响：</b>满月/新月大潮水流强鱼活性高；弦月中潮适中；小潮水流弱需精细钓法。</div>';
+        advice += '<div style="margin-top:6px"><b>🌤天气影响：</b>';
         if (press > 1013) advice += '气压偏高，鱼索饵积极；';
         else if (press < 1005) advice += '气压偏低，鱼活性下降；';
         if (wind > 25) advice += '大风影响抛投，建议避风湾；';
         else advice += '风力适中，溶氧充足；';
         advice += '</div>';
-        if (w.tideNote) advice += '<div style="margin‑top:6px"><b>📝手动潮汐：</b>'+w.tideNote+'</div>';
+        if (w.tideNote) advice += '<div style="margin-top:6px"><b>📝手动潮汐：</b>'+w.tideNote+'</div>';
         $('fishAdvice').innerHTML = advice;
         renderTactics(wind, wave);
     }
