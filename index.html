@@ -4,96 +4,571 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>钓鱼大师助手</title>
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@^6.6.0/dist/maplibre-gl.css">
     <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui}
-header{background:#194b8c;color:#fff;padding:12px;display:flex;gap:8px;align-items:center}
-header button{background:#2b68bc;color:white;border:none;padding:7px 12px;border-radius:4px;font-size:14px;cursor:pointer}
-.container{padding:12px}
-.card{background:#f7f9fc;padding:10px;border-radius:6px;margin-bottom:10px;border:1px solid #e2e8f0}
-.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:#194b8c;color:#fff;display:flex}
-.bottom-bar>div{flex:1;text-align:center;padding:10px;font-size:14px}
-input{padding:6px;width:100%;margin:4px 0;border:1px solid #ccc;border-radius:3px}
-button{padding:7px 11px;cursor:pointer}
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:9999}
-.modal-content{background:white;margin:15vh auto;width:90%;max-width:520px;padding:18px;border-radius:8px}
-</style>
+        *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto}
+        body{background:#f0f4f8;color:#222;padding-bottom:70px}
+        header{background:#0f4c81;color:#fff;padding:10px 14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;position:sticky;top:0;z-index:100}
+        header h1{font-size:17px;margin-right:auto}
+        .btn{background:#217ad9;color:#fff;border:none;border-radius:6px;padding:7px 11px;cursor:pointer;font-size:13px}
+        .btn-sec{background:#555}
+        .btn-warn{background:#c0392b}
+        .card{background:#fff;border-radius:10px;padding:14px;margin:10px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+        .card h3{font-size:15px;margin-bottom:8px;color:#0f4c81}
+        #map{width:100%;height:480px;margin:10px 0;border-radius:8px}
+        .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0}
+        input,select,textarea{width:100%;padding:7px;border:1px solid #ccc;border-radius:5px;font-size:14px}
+        .tabbar{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;border-top:2px solid #0f4c81;z-index:100}
+        .tabbar button{flex:1;padding:11px 4px;border:none;background:#fff;font-size:12px;cursor:pointer;color:#555}
+        .tabbar button.active{background:#0f4c81;color:#fff;font-weight:bold}
+        .hidden{display:none!important}
+        .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;overflow-y:auto}
+        .modal-box{background:#fff;margin:8vh auto;width:92%;max-width:600px;padding:18px;border-radius:10px;max-height:80vh;overflow-y:auto}
+        .warn{color:#c0392b;font-weight:500}
+        .ok{color:#27ae60;font-weight:500}
+        .tag{display:inline-block;background:#e8f1f9;color:#0f4c81;padding:2px 8px;border-radius:4px;font-size:12px;margin:2px}
+        .tactic{border:1px solid #e2e8f0;border-radius:8px;padding:10px;margin:8px 0}
+        .tactic h4{color:#0f4c81;margin-bottom:5px}
+        .tactic .pros{color:#27ae60;font-size:13px}
+        .tactic .cons{color:#c0392b;font-size:13px}
+        pre{white-space:pre-wrap;font-size:13px;background:#f4f7fa;padding:10px;border-radius:6px;line-height:1.6}
+        .teach-step{padding:6px 0;border-bottom:1px dashed #ddd;line-height:1.5}
+        .teach-step:last-child{border-bottom:none}
+        .teach-step b{color:#0f4c81}
+        #photoPreview img{max-width:100%;max-height:200px;border-radius:6px;margin-top:6px}
+        .spot-item{padding:8px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center}
+        .spot-item button{margin-left:6px;padding:4px 8px;font-size:12px}
+    </style>
 </head>
 <body>
+
 <header>
-    <span>🎣钓鱼大师助手</span>
-    <button id="btn-teach">教学栏</button>
-    <button id="btn-manual">大师速查手册</button>
-    <button id="btn-setting">⚙设置</button>
+    <h1>🎣钓鱼大师助手</h1>
+    <button class="btn" id="btnTeach">📖教学</button>
+    <button class="btn btn-sec" id="btnManual">📚手册</button>
+    <button class="btn" id="btnSetting">⚙设置</button>
 </header>
 
-<div class="container">
-    <div class="card">
-        <div>🎣选饵七步法</div>
-        <div>1 确认钓点类型：码头/礁石/沙滩/河口</div>
-        <div>2 读取当前潮汐阶段：涨潮‑满潮‑落潮‑平潮</div>
-        <div>3 参考月相：满月/新月/弦月，评估鱼活性</div>
-        <div>4 读取天气：气压、风力、水温、浪况</div>
-        <div>5 确定目标鱼种，选择饵类型：活饵虾仁/软饵/亮片</div>
-        <div>6 水流强度匹配配重：铅坠、咬铅重量</div>
-        <div>7 匹配作钓手法，确认最佳出钓窗口</div>
+<!-- 教学栏弹窗 -->
+<div class="modal" id="modalTeach">
+    <div class="modal-box">
+        <h3>🎯选饵七步法</h3>
+        <div class="teach-step"><b>1️⃣确认钓点类型</b>：码头 / 礁石 / 沙滩 / 河口</div>
+        <div class="teach-step"><b>2️⃣读取潮汐阶段</b>：涨潮 → 满潮 → 落潮 → 平潮</div>
+        <div class="teach-step"><b>3️⃣参考月相</b>：满月/新月/弦月，评估鱼活性</div>
+        <div class="teach-step"><b>4️⃣读取天气</b>：气压、风力、水温、浪况</div>
+        <div class="teach-step"><b>5️⃣确定目标鱼种</b>：选择饵类型（活饵虾仁/软饵/亮片）</div>
+        <div class="teach-step"><b>6️⃣匹配配重</b>：根据水流强度选铅坠、咬铅重量</div>
+        <div class="teach-step"><b>7️⃣匹配作钓手法</b>：确认最佳出钓时间窗口</div>
+        <div style="margin-top:12px"><button class="btn" onclick="document.getElementById('modalTeach').style.display='none'">关闭</button></div>
     </div>
+</div>
 
-    <div class="card">
-        <div>📍钓点状态</div>
-        <div>--</div>
-        <div>经度:<input id="lng" placeholder="经度"></div>
-        <div>纬度:<input id="lat" placeholder="纬度"></div>
-        <div><button id="refresh‑point">刷新钓点分析</button></div>
+<!-- 大师速查手册弹窗 -->
+<div class="modal" id="modalManual">
+    <div class="modal-box">
+        <h3>📚大师速查手册</h3>
+        <pre>
+【钓组速查】
+滑铅沉底：主线→滑动铅坠→挡豆→转环→引线→鱼钩
+适合码头、礁石、沙滩，抗水流强
+
+路亚直出：主线→引线→亮片/软饵
+适合搜索中上层掠食鱼
+
+阿波浮漂：主线→阿波→挡豆→咬铅→子线→钩
+适合礁石区、码头，信号灵敏
+
+【钩子选择】
+偏移圆钩(Offset Circle Hook)：活饵虾仁，不易吐钩，适合沉底
+直柄圆钩(Non-offset)：NSW推荐，适合礁石，不易挂底
+长柄钩：适合沙虫、面包虫饵
+
+【引线参考】
+礁石区：氟碳引线 12-18lb
+沙滩码头：7-12lb
+大物(Mulloway)：25-40lb
+
+【铅坠选择】
+码头滑铅：通心橄榄铅 10-20g
+沙滩远投：水滴铅 80-120g
+浮漂咬铅：G8-6B 按水流调整
+
+【出钓时间】
+涨潮初~涨潮中期、落潮中期鱼口最好
+平潮(slack)鱼口差，建议休息
+清晨日出、黄昏日落前后为黄金窗口
+
+【澳洲NSW注意】
+大桥以西水域鱼不建议食用
+North Harbour Aquatic Reserve 禁抽鱿鱼木虾
+大小限制、袋限请查阅NSW DPI官网
+        </pre>
+        <div style="margin-top:12px"><button class="btn" onclick="document.getElementById('modalManual').style.display='none'">关闭</button></div>
     </div>
 </div>
 
 <!-- 设置弹窗 -->
-<div class="modal" id="modal‑setting">
-    <div class="modal-content">
-        <h3>设置</h3>
-        <div>WillyWeather代理地址</div>
-        <input id="proxy‑url" placeholder="https://xxx.vercel.app/api/ww‑proxy">
+<div class="modal" id="modalSetting">
+    <div class="modal-box">
+        <h3>⚙设置</h3>
         <div style="margin:8px 0">
-            <button id="save‑proxy">保存设置</button>
-            <button id="close‑setting">关闭</button>
+            <label>WillyWeather代理地址</label>
+            <input id="proxyUrl" placeholder="https://xxx.vercel.app/api/ww-proxy">
+        </div>
+        <div style="font-size:12px;color:#666;margin:6px 0">
+            部署Vercel后填入代理地址；为空则使用Open-Meteo免费模型。<br>
+            代理格式：https://你的项目名.vercel.app/api/ww-proxy
+        </div>
+        <div style="margin-top:10px">
+            <button class="btn" id="saveSetting">保存设置</button>
+            <button class="btn btn-sec" onclick="document.getElementById('modalSetting').style.display='none'">关闭</button>
         </div>
     </div>
 </div>
 
-<div class="bottom-bar">
-    <div>实时鱼情</div>
-    <div>7天预报</div>
-    <div>钓点管理</div>
-    <div>装备库</div>
+<!-- 主内容区 -->
+<div id="page-live">
+    <div id="map"></div>
+
+    <div class="card">
+        <h3>📍钓点状态</h3>
+        <div id="locStatus" style="margin-bottom:8px">点击地图选择钓点，或点击地图右上角📍定位按钮</div>
+        <div class="grid2">
+            <div>经度:<input id="inpLng" placeholder="经度"></div>
+            <div>纬度:<input id="inpLat" placeholder="纬度"></div>
+        </div>
+        <div style="margin-top:8px">
+            <button class="btn" id="btnRefresh">刷新钓点分析</button>
+            <button class="btn btn-sec" id="btnSaveSpot">保存为钓点</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>🌤实况信息</h3>
+        <div id="weatherBox">等待选择钓点...</div>
+    </div>
+
+    <div class="card">
+        <h3>📊鱼情分析</h3>
+        <div id="fishScore">--</div>
+        <div id="fishAdvice" style="margin-top:8px;line-height:1.6"></div>
+    </div>
+
+    <div class="card">
+        <h3>🎣推荐作钓方案</h3>
+        <div id="tacticsBox">选择钓点后显示多套方案</div>
+    </div>
+
+    <div class="card">
+        <h3>✏手动覆盖场景参数</h3>
+        <div class="grid2">
+            <div>温度℃<input id="manTemp" placeholder="如 18"></div>
+            <div>气压hPa<input id="manPress" placeholder="如 1015"></div>
+        </div>
+        <div class="grid2">
+            <div>风力km/h<input id="manWind" placeholder="如 15"></div>
+            <div>浪高m<input id="manWave" placeholder="如 0.8"></div>
+        </div>
+        <div style="margin:6px 0">潮汐备注<textarea id="manTide" rows="2" placeholder="如 涨潮中，满潮14:30"></textarea></div>
+        <div style="margin:8px 0">
+            <label>📷上传现场照片（仅本地预览，不上传服务器）</label>
+            <input type="file" accept="image/*" id="photoUpload">
+            <div id="photoPreview"></div>
+        </div>
+        <button class="btn" id="btnApplyManual">应用手动参数生成建议</button>
+    </div>
 </div>
 
-<script>
-// 等待页面全部DOM加载完成，再绑定所有按钮事件
-document.addEventListener('DOMContentLoaded',function(){
-    const modalSetting = document.getElementById('modal‑setting');
-    const btnSetting = document.getElementById('btn‑setting');
-    const btnCloseSetting = document.getElementById('close‑setting');
-    const btnSaveProxy = document.getElementById('save‑proxy');
-    const inputProxyUrl = document.getElementById('proxy‑url');
+<!-- 7天预报页 -->
+<div id="page-forecast" class="hidden">
+    <div class="card">
+        <h3>📅7天预报 & 鱼情</h3>
+        <div id="forecastBox">选择钓点后显示7天预报</div>
+    </div>
+</div>
 
-    //读取本地存储旧代理
-    const savedProxy = localStorage.getItem('ww‑proxy');
-    if(savedProxy){
-        inputProxyUrl.value = savedProxy;
+<!-- 钓点管理页 -->
+<div id="page-spots" class="hidden">
+    <div class="card">
+        <h3>🗺我的钓点</h3>
+        <div id="spotsList">暂无钓点，在地图上点击位置后点"保存为钓点"</div>
+        <div style="margin-top:10px">
+            <button class="btn" id="btnExportSpots">导出JSON备份</button>
+            <button class="btn btn-sec" id="btnImportSpots">导入JSON</button>
+        </div>
+    </div>
+</div>
+
+<!-- 装备库页 -->
+<div id="page-gear" class="hidden">
+    <div class="card">
+        <h3>🎒我的装备库</h3>
+        <div id="gearList">
+            <div style="line-height:1.8">
+                <div><b>路亚竿</b>：Shimano Maikuro II 2.1m</div>
+                <div><b>纺车轮</b>：Savage SG 3000H</div>
+                <div><b>主线</b>：PE 0.8-1.0</div>
+                <div><b>前导</b>：氟碳 18-22lb / 1米</div>
+                <div><b>亮片</b>：勺子亮片 7-12g（银/金）</div>
+                <div><b>沉底装备</b>：通心橄榄铅 10-20g，直柄圆钩 1/0-2/0</div>
+                <div><b>浮漂装备</b>：阿波 B-2B，咬铅 G8-3B</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="tabbar">
+    <button class="active" data-page="live">实时鱼情</button>
+    <button data-page="forecast">7天预报</button>
+    <button data-page="spots">钓点管理</button>
+    <button data-page="gear">装备库</button>
+</div>
+
+<script type="module">
+import * as maplibregl from 'https://unpkg.com/maplibre-gl@^6.6.0/dist/maplibre-gl.mjs';
+
+// ========== 全局状态 ==========
+const state = {
+    proxyUrl: localStorage.getItem('ww-proxy') || '',
+    selectedLng: 151.2093,
+    selectedLat: -33.8688,
+    manual: {},
+    spots: JSON.parse(localStorage.getItem('fishingSpots') || '[]')
+};
+
+// ========== 预置悉尼钓点 ==========
+const presetSpots = [
+    {name:'Little Manly Park', lng:151.2847, lat:-33.8031, type:'礁石岸'},
+    {name:'Milsons Point', lng:151.2093, lat:-33.8472, type:'码头'},
+    {name:'Bradleys Head', lng:151.2458, lat:-33.8528, type:'礁石'},
+    {name:'Dawes Point', lng:151.2072, lat:-33.8569, type:'码头'},
+    {name:'Beulah St Wharf', lng:151.2250, lat:-33.8486, type:'码头'},
+    {name:'Port Hacking Entrance', lng:151.1200, lat:-34.0700, type:'河口'}
+];
+
+// ========== DOM加载完成后初始化 ==========
+document.addEventListener('DOMContentLoaded', function() {
+    initMap();
+    bindEvents();
+    renderSpots();
+});
+
+// ========== 初始化地图 ==========
+function initMap() {
+    const map = new maplibregl.Map({
+        container: 'map',
+        style: {version:8, sources:{}, layers:[]},
+        center: [state.selectedLng, state.selectedLat],
+        zoom: 11
+    });
+
+    // GPS定位控件
+    const geoCtrl = new maplibregl.GeolocateControl({
+        positionOptions: {enableHighAccuracy: true},
+        trackUserLocation: false
+    });
+    map.addControl(geoCtrl, 'top-right');
+
+    // 非安全上下文提示
+    if (!window.isSecureContext) {
+        document.getElementById('locStatus').innerHTML = '<span class="warn">⚠本地文件模式：GPS定位不可用，请部署HTTPS服务；可地图点击选点</span>';
     }
 
-    btnSetting.addEventListener('click',function(){
-        modalSetting.style.display = 'block';
+    map.on('load', function() {
+        // ESRI卫星底图
+        map.addSource('esri-sat', {
+            type: 'raster',
+            tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
+            tileSize: 256,
+            attribution: 'Tiles © Esri'
+        });
+        map.addLayer({id:'esri-sat-layer', type:'raster', source:'esri-sat', minzoom:0, maxzoom:18});
+
+        // 预置钓点标记
+        presetSpots.forEach(function(s) {
+            new maplibregl.Marker({color:'#217ad9'})
+                .setLngLat([s.lng, s.lat])
+                .setPopup(new maplibregl.Popup().setHTML('<b>'+s.name+'</b><br>'+s.type+'<br><button onclick="selectSpot('+s.lng+','+s.lat+',\''+s.name+'\')">选中此钓点</button>'))
+                .addTo(map);
+        });
     });
-    btnCloseSetting.addEventListener('click',function(){
-        modalSetting.style.display = 'none';
+
+    // 地图点击选点
+    map.on('click', function(e) {
+        selectSpot(e.lngLat.lng, e.lngLat.lat, '手动选点');
     });
-    btnSaveProxy.addEventListener('click',function(){
-        localStorage.setItem('ww‑proxy', inputProxyUrl.value.trim());
-        alert("代理地址已保存");
-        modalSetting.style.display = 'none';
+
+    // GPS定位成功
+    geoCtrl.on('geolocate', function(pos) {
+        selectSpot(pos.coords.longitude, pos.coords.latitude, 'GPS当前位置');
+        document.getElementById('locStatus').innerHTML = '<span class="ok">✅GPS定位成功，精度'+pos.coords.accuracy.toFixed(0)+'米</span>';
     });
-});
+
+    window._map = map;
+}
+
+// ========== 选中钓点 ==========
+window.selectSpot = function(lng, lat, name) {
+    state.selectedLng = lng;
+    state.selectedLat = lat;
+    document.getElementById('inpLng').value = lng.toFixed(4);
+    document.getElementById('inpLat').value = lat.toFixed(4);
+    if (name && name !== '手动选点') {
+        document.getElementById('locStatus').innerHTML = '<b>'+name+'</b> ('+lng.toFixed(4)+', '+lat.toFixed(4)+')';
+    } else {
+        document.getElementById('locStatus').innerText = '选中坐标：'+lng.toFixed(4)+', '+lat.toFixed(4);
+    }
+    fetchWeather(lng, lat);
+};
+
+// ========== 绑定事件 ==========
+function bindEvents() {
+    // 顶部按钮
+    document.getElementById('btnTeach').onclick = function() {
+        document.getElementById('modalTeach').style.display = 'block';
+    };
+    document.getElementById('btnManual').onclick = function() {
+        document.getElementById('modalManual').style.display = 'block';
+    };
+    document.getElementById('btnSetting').onclick = function() {
+        document.getElementById('proxyUrl').value = state.proxyUrl;
+        document.getElementById('modalSetting').style.display = 'block';
+    };
+    document.getElementById('saveSetting').onclick = function() {
+        state.proxyUrl = document.getElementById('proxyUrl').value.trim();
+        localStorage.setItem('ww-proxy', state.proxyUrl);
+        alert('设置已保存');
+        document.getElementById('modalSetting').style.display = 'none';
+    };
+
+    // 钓点操作
+    document.getElementById('btnRefresh').onclick = function() {
+        const lng = Number(document.getElementById('inpLng').value);
+        const lat = Number(document.getElementById('inpLat').value);
+        if (lng && lat) selectSpot(lng, lat, '手动输入坐标');
+    };
+    document.getElementById('btnSaveSpot').onclick = function() {
+        const name = prompt('请输入钓点名称：', '新钓点');
+        if (!name) return;
+        const spot = {
+            name: name,
+            lng: state.selectedLng,
+            lat: state.selectedLat,
+            type: '自定义',
+            favorite: false,
+            time: new Date().toISOString()
+        };
+        state.spots.push(spot);
+        localStorage.setItem('fishingSpots', JSON.stringify(state.spots));
+        renderSpots();
+        alert('钓点已保存：'+name);
+    };
+
+    // 手动参数
+    document.getElementById('btnApplyManual').onclick = function() {
+        state.manual = {
+            temp: document.getElementById('manTemp').value,
+            press: document.getElementById('manPress').value,
+            wind: document.getElementById('manWind').value,
+            wave: document.getElementById('manWave').value,
+            tideNote: document.getElementById('manTide').value
+        };
+        renderFishAdvice(state.manual);
+    };
+
+    // 拍照上传
+    document.getElementById('photoUpload').onchange = function(evt) {
+        const f = evt.target.files[0];
+        if (!f) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('photoPreview').innerHTML = '<img src="'+e.target.result+'">';
+        };
+        reader.readAsDataURL(f);
+    };
+
+    // 钓点管理
+    document.getElementById('btnExportSpots').onclick = function() {
+        const data = JSON.stringify(state.spots, null, 2);
+        const blob = new Blob([data], {type:'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'fishing_spots.json'; a.click();
+    };
+    document.getElementById('btnImportSpots').onclick = function() {
+        const input = document.createElement('input');
+        input.type = 'file'; input.accept = '.json';
+        input.onchange = function(e) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                try {
+                    state.spots = JSON.parse(ev.target.result);
+                    localStorage.setItem('fishingSpots', JSON.stringify(state.spots));
+                    renderSpots();
+                    alert('导入成功，共'+state.spots.length+'个钓点');
+                } catch(err) { alert('导入失败：文件格式错误'); }
+            };
+            reader.readAsText(file);
+        };
+        input.click();
+    };
+
+    // 底部Tab切换
+    document.querySelectorAll('.tabbar button').forEach(function(btn) {
+        btn.onclick = function() {
+            document.querySelectorAll('.tabbar button').forEach(function(b){b.classList.remove('active')});
+            btn.classList.add('active');
+            const page = btn.dataset.page;
+            ['live','forecast','spots','gear'].forEach(function(p) {
+                document.getElementById('page-'+p).classList.add('hidden');
+            });
+            document.getElementById('page-'+page).classList.remove('hidden');
+        };
+    });
+}
+
+// ========== 渲染钓点列表 ==========
+function renderSpots() {
+    const list = document.getElementById('spotsList');
+    if (state.spots.length === 0) {
+        list.innerHTML = '暂无钓点，在地图上点击位置后点"保存为钓点"';
+        return;
+    }
+    let html = '';
+    state.spots.forEach(function(s, i) {
+        html += '<div class="spot-item">'
+            + '<div><b>'+s.name+'</b><br><small>'+s.lng.toFixed(4)+', '+s.lat.toFixed(4)+' | '+s.type+'</small></div>'
+            + '<div>'
+            + '<button onclick="selectSpot('+s.lng+','+s.lat+',\''+s.name+'\')">定位</button>'
+            + '<button class="btn-warn" onclick="deleteSpot('+i+')">删除</button>'
+            + '</div></div>';
+    });
+    list.innerHTML = html;
+}
+window.deleteSpot = function(i) {
+    if (confirm('确定删除此钓点？')) {
+        state.spots.splice(i, 1);
+        localStorage.setItem('fishingSpots', JSON.stringify(state.spots));
+        renderSpots();
+    }
+};
+
+// ========== 获取天气 ==========
+async function fetchWeather(lng, lat) {
+    const box = document.getElementById('weatherBox');
+    box.innerHTML = '正在获取天气数据...';
+    try {
+        // 优先使用WillyWeather代理
+        if (state.proxyUrl) {
+            try {
+                const wwUrl = 'https://api.willyweather.com.au/v2/locations/'+lat+','+lng+'/weather.json';
+                const proxyUrl = state.proxyUrl + '?url=' + encodeURIComponent(wwUrl);
+                const res = await fetch(proxyUrl);
+                if (res.ok) {
+                    const d = await res.json();
+                    box.innerHTML = '<span class="ok">数据源：WillyWeather (BOM)</span><br>'
+                        + '温度：'+(d.weather?.current?.temperature||'--')+'℃ | '
+                        + '气压：'+(d.weather?.current?.pressure||'--')+'hPa<br>'
+                        + '风速：'+(d.weather?.current?.windSpeed||'--')+'km/h | '
+                        + '浪高：'+(d.weather?.current?.waveHeight||'--')+'m';
+                    renderFishAdvice({
+                        temp: d.weather?.current?.temperature,
+                        press: d.weather?.current?.pressure,
+                        wind: d.weather?.current?.windSpeed,
+                        wave: d.weather?.current?.waveHeight
+                    });
+                    return;
+                }
+            } catch(e) { /* 降级到Open-Meteo */ }
+        }
+        // Open-Meteo降级
+        const url = 'https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lng
+            + '&current=temperature_2m,pressure_msl,wind_speed_10m,wave_height&timezone=Australia/Sydney';
+        const res = await fetch(url);
+        const d = await res.json();
+        const curr = d.current;
+        box.innerHTML = '<span style="color:#e67e22">数据源：Open-Meteo模型（非实测，可手动覆盖）</span><br>'
+            + '温度：'+curr.temperature_2m+'℃ | 气压：'+curr.pressure_msl+'hPa<br>'
+            + '风速：'+curr.wind_speed_10m+'km/h | 浪高：'+(curr.wave_height||0)+'m';
+        renderFishAdvice({
+            temp: curr.temperature_2m,
+            press: curr.pressure_msl,
+            wind: curr.wind_speed_10m,
+            wave: curr.wave_height || 0
+        });
+    } catch(err) {
+        box.innerHTML = '<span class="warn">获取天气失败，请手动填写参数</span>';
+    }
+}
+
+// ========== 鱼情分析 ==========
+function renderFishAdvice(w) {
+    const temp = Number(w.temp) || 18;
+    const press = Number(w.press) || 1013;
+    const wind = Number(w.wind) || 10;
+    const wave = Number(w.wave) || 0.5;
+
+    // 评分算法
+    let score = 60;
+    if (press > 1013) score += 8; else if (press < 1005) score -= 10;
+    if (wind < 15) score += 5; else if (wind > 25) score -= 15;
+    if (wave < 1.0) score += 5; else if (wave > 1.5) score -= 12;
+    if (temp >= 15 && temp <= 24) score += 5; else if (temp < 12 || temp > 28) score -= 8;
+    score = Math.max(0, Math.min(100, score));
+
+    document.getElementById('fishScore').innerHTML = '<b style="font-size:20px;color:#0f4c81">鱼情综合评分：'+score+'/100</b>';
+
+    let advice = '';
+    advice += '<div><b>🌊潮汐影响：</b>涨潮初~中期、落潮中期鱼口最佳；平潮(slack)鱼口差。满潮转流前后1小时为黄金咬口期。</div>';
+    advice += '<div style="margin-top:6px"><b>🌙月相影响：</b>满月/新月大潮水流强鱼活性高；弦月中潮适中；小潮水流弱需精细钓法。</div>';
+    advice += '<div style="margin-top:6px"><b>🌤天气影响：</b>';
+    if (press > 1013) advice += '气压偏高，鱼索饵积极；';
+    else if (press < 1005) advice += '气压偏低，鱼活性下降；';
+    if (wind > 25) advice += '大风影响抛投和漂讯，建议避风湾；';
+    else advice += '风力适中，溶氧充足；';
+    advice += '</div>';
+    if (w.tideNote) advice += '<div style="margin-top:6px"><b>📝手动潮汐：</b>'+w.tideNote+'</div>';
+    document.getElementById('fishAdvice').innerHTML = advice;
+
+    // 多套作钓方案
+    renderTactics(score, wind, wave);
+}
+
+// ========== 多套作钓方案 ==========
+function renderTactics(score, wind, wave) {
+    const box = document.getElementById('tacticsBox');
+    let html = '';
+
+    // 方案1：滑铅沉底
+    html += '<div class="tactic"><h4>方案① 码头滑铅沉底钓</h4>'
+        + '<div><b>装备：</b>竿2.4-2.7m，轮3000-4000，PE1.0，前导22lb，滑动铅'+(wind>20?'20':'14')+'g，直柄圆钩1/0</div>'
+        + '<div><b>饵料：</b>新鲜虾仁/沙丁鱼块</div>'
+        + '<div><b>手法：</b>抛投至礁石-沙地交界→铅到底收紧虚线→看到持续出线等2-3秒刺鱼，禁暴力扬竿</div>'
+        + '<div class="pros">✅优势：底层鱼命中率高；抗水流强；操作简单；适合Bream/Flathead</div>'
+        + '<div class="cons">❌劣势：只能钓底层；需频繁换饵；易挂礁石；无法搜索中上层</div></div>';
+
+    // 方案2：阿波浮漂
+    html += '<div class="tactic"><h4>方案② 通用浮漂矶钓（阿波）</h4>'
+        + '<div><b>装备：</b>矶竿3.3m，轮2500，PE0.8，前导18lb，阿波B，咬铅2B</div>'
+        + '<div><b>饵料：</b>虾仁；窝料：碎沙丁鱼，每3-5分钟少量打窝</div>'
+        + '<div><b>手法：</b>调漂让饵贴礁石底→顺流自然飘不绷线→看阿波下沉/走线刺鱼</div>'
+        + '<div class="pros">✅优势：随流搜索大片水域；兼顾底中层；信号直观；适合黑鲷/Bream</div>'
+        + '<div class="cons">❌劣势：强潮难控漂；学习门槛高；浪干扰信号</div></div>';
+
+    // 方案3：路亚（风小浪小时推荐）
+    if (wind < 25 && wave < 1.5) {
+        html += '<div class="tactic"><h4>方案③ 路亚（勺子亮片）</h4>'
+            + '<div><b>装备：</b>路亚竿2.1-2.7m，轮3000，PE0.8，前导18lb，7-12g银/金勺子亮片</div>'
+            + '<div><b>假饵：</b>无需活饵</div>'
+            + '<div><b>手法：</b>慢卷+轻抽贴近结构搜索；快慢交替制造闪动</div>'
+            + '<div class="pros">✅优势：高效率大范围搜索；不用活饵；可钓中上层掠食鱼</div>'
+            + '<div class="cons">❌劣势：底层底栖鱼难钓；鱼口差效率低；对手法要求高</div></div>';
+    }
+
+    box.innerHTML = html;
+}
 </script>
 </body>
 </html>
