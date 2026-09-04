@@ -55,6 +55,11 @@ pre{white-space:pre-wrap;font-size:12px;background:#f4f7fa;padding:12px;border-r
 .tide-block{background:linear-gradient(135deg,#f0f7ff,#e8f4fd);padding:12px 14px;border-radius:10px;margin:8px 0;font-family:monospace;font-size:12px;border-left:4px solid #0f4c81}
 .diagram{font-family:monospace;white-space:pre;font-size:11px;line-height:1.3;background:#f7f9fc;padding:10px;border-radius:8px;margin:8px 0;border:1px solid #e8edf4;overflow-x:auto}
 #map-container{width:100%;height:360px;border-radius:12px;margin:8px 0;background:#e9edf2;display:flex;align-items:center;justify-content:center;color:#555;overflow:hidden;position:relative}
+.map-loading-overlay{position:absolute;inset:0;background:rgba(255,255,255,.92);z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:12px}
+.map-loading-overlay .spinner{width:42px;height:42px;border:4px solid #d0d7e2;border-top-color:#217ad9;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.map-loading-overlay .loading-text{font-size:14px;color:#0f4c81;font-weight:600}
+.map-loading-overlay .loading-sub{font-size:12px;color:#888;margin-top:4px}
 .map-fallback{padding:16px;text-align:center;width:100%}
 .map-fallback h4{color:#0f4c81;margin-bottom:10px}
 .spot-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
@@ -133,6 +138,7 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
 <button class="btn" id="btnRefresh">刷新钓点分析</button>
 <button class="btn btn-gps" id="btnGps">📍 GPS定位</button>
+<button class="btn" id="btnReloadMap">🔄 刷新地图</button>
 <button class="btn" id="btnSaveSpot">💾 保存钓点</button>
 </div>
 <div style="margin-top:8px">
@@ -569,7 +575,12 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 <div class="modal-box">
 <h3>设置</h3>
 <div style="margin:10px 0">
-<label style="font-size:13px;color:#666">WillyWeather API Key</label>
+<label style="font-size:13px;color:#666">TidesAtlas API Key（推荐，潮汐首选）</label>
+<input id="tidesKey" placeholder="填入你的TidesAtlas API Key">
+<div style="font-size:11px;color:#27ae60;margin-top:4px">潮汐数据源优先级：TidesAtlas → WillyWeather → 模拟潮汐</div>
+</div>
+<div style="margin:10px 0">
+<label style="font-size:13px;color:#666">WillyWeather API Key（可选）</label>
 <input id="wwKey" placeholder="填入你的WillyWeather API Key">
 <div style="font-size:11px;color:#27ae60;margin-top:4px">密钥会自动清理首尾空格，请直接粘贴完整Private Key</div>
 </div>
@@ -577,10 +588,29 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 <label style="font-size:13px;color:#666">WillyWeather代理地址（可选）</label>
 <input id="proxyUrl" placeholder="默认使用 /wwapi 代理路径">
 </div>
+<div style="margin:10px 0">
+<label style="font-size:13px;color:#666">潮汐站点</label>
+<select id="tideStationSel">
+<option value="auto">自动匹配最近站点</option>
+<option value="2280">Sydney / Fort Denison</option>
+<option value="2281">Manly / Little Manly</option>
+<option value="2282">Rose Bay</option>
+<option value="2283">Parramatta River</option>
+<option value="2284">Botany Bay</option>
+<option value="2285">Newcastle</option>
+<option value="2286">Wollongong</option>
+<option value="2287">Central Coast</option>
+<option value="2288">Port Stephens</option>
+<option value="2289">Jervis Bay</option>
+</select>
+</div>
 <div style="font-size:12px;color:#888;margin:8px 0;line-height:1.6">
-填入WillyWeather API Key后，潮汐数据将从WillyWeather获取真实数据。<br>
-不填Key则使用模拟潮汐数据。需要在仓库根目录配置vercel.json代理。<br>
-代理格式：/wwapi -> https://api.willyweather.com.au
+<strong>潮汐数据源优先级：</strong><br>
+1. <strong>TidesAtlas</strong>（推荐）：填入Key后优先获取澳洲真实站点潮汐，通过 /tidesatlas 代理转发<br>
+2. <strong>WillyWeather</strong>：填入Key后作为备选，通过 /wwapi 代理转发<br>
+3. <strong>模拟潮汐</strong>：以上都失败或未填Key时兜底使用<br>
+需要在仓库根目录配置vercel.json代理。<br>
+代理格式：/tidesatlas -> https://tidesatlas.com/api/v1 ，/wwapi -> https://api.willyweather.com.au
 </div>
 <div style="margin-top:14px;text-align:center">
 <button class="btn" id="saveSetting">保存设置</button>
@@ -756,40 +786,67 @@ function showMapFallback(){
     });
 }
 
+var currentMarker=null;
+
+function setMapMarker(lng,lat){
+    if(!map||!window.maplibregl)return;
+    try{
+        if(currentMarker)currentMarker.remove();
+        var el=document.createElement('div');
+        el.style.width='24px';
+        el.style.height='24px';
+        el.style.background='radial-gradient(circle, #e74c3c 30%, #c0392b 70%)';
+        el.style.borderRadius='50%';
+        el.style.border='3px solid #fff';
+        el.style.boxShadow='0 2px 8px rgba(0,0,0,0.4)';
+        el.style.cursor='pointer';
+        currentMarker=new maplibregl.Marker({element:el,draggable:false})
+            .setLngLat([lng,lat])
+            .addTo(map);
+    }catch(e){console.warn("Marker error:",e);}
+}
+
+function showMapLoading(text){
+    hideMapLoading();
+    var mapDiv=$('map-container');
+    var overlay=document.createElement('div');
+    overlay.className='map-loading-overlay';
+    overlay.id='mapLoadingOverlay';
+    overlay.innerHTML='<div class="spinner"></div><div class="loading-text">'+(text||'地图加载中...')+'</div><div class="loading-sub">正在请求地图瓦片，请耐心等待</div>';
+    mapDiv.appendChild(overlay);
+}
+function hideMapLoading(){
+    var overlay=$('mapLoadingOverlay');
+    if(overlay)overlay.remove();
+}
 async function loadMapLibre(mapStyle){
     var mapDiv=$('map-container');
-    mapDiv.innerText='地图加载中，请稍候...';
+    showMapLoading('地图加载中，请耐心等待...');
     if(!checkWebGL2()){
-        console.warn("WebGL2 not supported, using fallback");
-        showMapFallback();
+        hideMapLoading();
+        mapDiv.innerHTML='<div style="padding:20px;text-align:center;color:#666">当前浏览器不支持WebGL，无法显示地图<br>GPS定位和经纬度输入仍可正常使用</div>';
         return;
     }
-    var timeoutId=setTimeout(function(){
-        if(!mapLibreLoaded){
-            console.warn("Map load timeout, using fallback");
-            showMapFallback();
-        }
-    },10000);
     try{
-        var css=document.createElement('link');
-        css.rel='stylesheet';
-        css.href='https://cdn.jsdelivr.net/npm/maplibre-gl@4/dist/maplibre-gl.css';
-        document.head.appendChild(css);
-        await new Promise(function(resolve,reject){
-            var script=document.createElement('script');
-            script.src='https://cdn.jsdelivr.net/npm/maplibre-gl@4/dist/maplibre-gl.js';
-            script.onload=resolve;
-            script.onerror=function(){
-                script.src='https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.js';
+        if(!window.maplibregl){
+            var css=document.createElement('link');
+            css.rel='stylesheet';
+            css.href='https://cdn.jsdelivr.net/npm/maplibre-gl@4/dist/maplibre-gl.css';
+            document.head.appendChild(css);
+            await new Promise(function(resolve,reject){
+                var script=document.createElement('script');
+                script.src='https://cdn.jsdelivr.net/npm/maplibre-gl@4/dist/maplibre-gl.js';
                 script.onload=resolve;
-                script.onerror=reject;
-            };
-            document.head.appendChild(script);
-        });
-        clearTimeout(timeoutId);
+                script.onerror=function(){
+                    script.src='https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.js';
+                    script.onload=resolve;
+                    script.onerror=reject;
+                };
+                document.head.appendChild(script);
+            });
+        }
         mapLibreLoaded=true;
-        if(map)map.remove();
-        var isOsm=typeof mapStyle==='object';
+        if(map){try{map.remove();}catch(e){}}
         map=new maplibregl.Map({
             container:'map-container',
             style:mapStyle,
@@ -798,34 +855,86 @@ async function loadMapLibre(mapStyle){
         });
         map.addControl(new maplibregl.NavigationControl({showCompass:true}));
         map.on('click',function(e){
-            $('inpLng').value=e.lngLat.lng.toFixed(4);
-            $('inpLat').value=e.lngLat.lat.toFixed(4);
+            var lng=e.lngLat.lng;
+            var lat=e.lngLat.lat;
+            $('inpLng').value=lng.toFixed(4);
+            $('inpLat').value=lat.toFixed(4);
+            state.selectedLng=lng;
+            state.selectedLat=lat;
+            setMapMarker(lng,lat);
+            var geoInfo=getRegionName(lng,lat);
+            $('locRegion').innerText="点位大致区域："+geoInfo.fullText;
+            $('locStatus').innerText='已选坐标：'+lng.toFixed(4)+', '+lat.toFixed(4)+' 正在更新天气...';
+            fetchWeather(lng,lat);
         });
-        var styleFailed=false;
         map.on('error',function(e){
-            console.warn("Map error:",e);
-            if(e.error&&e.error.message&&e.error.message.indexOf('GPU')>-1){
-                map=null;
-                showMapFallback();
-                return;
-            }
-            if(!styleFailed&&!isOsm){
-                styleFailed=true;
-                console.warn("Style load failed, falling back to OSM tiles");
-                try{map.setStyle(OSM_STYLE);}catch(err){map=null;showMapFallback();}
-            }else if(!styleFailed&&isOsm){
-                styleFailed=true;
-                map=null;
-                showMapFallback();
+            console.warn("Map error (ignored, continuing to wait):",e);
+        });
+        map.on('load',function(){
+            hideMapLoading();
+            console.log("Map fully loaded");
+            if(state.selectedLng&&state.selectedLat){
+                setMapMarker(state.selectedLng,state.selectedLat);
             }
         });
-        await new Promise(function(resolve){map.on('load',resolve);});
-        mapDiv.innerText='';
+        map.on('idle',function(){
+            hideMapLoading();
+        });
     }catch(err){
-        clearTimeout(timeoutId);
-        console.warn("MapLibre地图加载失败：",err);
-        map=null;
-        showMapFallback();
+        console.warn("MapLibre加载异常：",err);
+        hideMapLoading();
+        mapDiv.innerHTML='<div style="padding:20px;text-align:center">'
+            +'<div style="color:#e74c3c;margin-bottom:10px;font-weight:600">地图加载失败：'+err.message+'</div>'
+            +'<div style="color:#666;margin-bottom:10px">GPS定位、经纬度输入、钓点库、天气分析全部可用</div>'
+            +'<button class="btn" onclick="location.reload()">刷新页面重试</button>'
+            +'</div>';
+    }
+}
+
+function reloadMap(){
+    showMapLoading('正在刷新地图...');
+    var sel=$('mapSourceSel').value;
+    var styleObj=sel==='osm'?OSM_STYLE:maplibreStyle;
+    loadMapLibre(styleObj);
+}
+
+function renderMarineTide(heights,times){
+    try{
+        var today=new Date();
+        var todayStr=today.toISOString().slice(0,10);
+        var todayData=[];
+        for(var i=0;i<times.length;i++){
+            if(times[i]&&times[i].slice(0,10)===todayStr){
+                todayData.push({time:times[i].slice(11,16),height:heights[i]});
+            }
+        }
+        if(todayData.length<4)return;
+        var extremes=[];
+        for(var j=1;j<todayData.length-1;j++){
+            var h=todayData[j].height;
+            var prev=todayData[j-1].height;
+            var next=todayData[j+1].height;
+            if(h>prev&&h>next){extremes.push({time:todayData[j].time,height:h,type:'满潮'});}
+            else if(h<prev&&h<next){extremes.push({time:todayData[j].time,height:h,type:'低潮'});}
+        }
+        if(extremes.length===0){
+            var maxH=-999,minH=999,maxT='',minT='';
+            todayData.forEach(function(d){
+                if(d.height>maxH){maxH=d.height;maxT=d.time;}
+                if(d.height<minH){minH=d.height;minT=d.time;}
+            });
+            extremes=[{time:maxT,height:maxH,type:'满潮'},{time:minT,height:minH,type:'低潮'}];
+        }
+        var html="<div style='font-weight:700;margin-bottom:6px'>今日潮汐（Open-Meteo Marine）：</div>";
+        html+="<div style='font-size:11px;color:#217ad9;margin-bottom:6px'>数据来源：MeteoFrance SMOC全球潮汐模型</div>";
+        extremes.slice(0,6).forEach(function(e){
+            html+="<div style='margin:2px 0'>  "+e.time+"  "+e.type+"  "+e.height.toFixed(2)+"m</div>";
+        });
+        var currentH=todayData.length>0?todayData[Math.min(todayData.length-1,Math.floor(todayData.length/2))].height:0;
+        html+="<div style='margin-top:6px;font-size:12px;color:#666'>当前潮位约："+currentH.toFixed(2)+"m</div>";
+        $('tideBox').innerHTML=html;
+    }catch(e){
+        console.warn("Marine潮汐渲染失败:",e);
     }
 }
 
@@ -840,6 +949,128 @@ function fetchTideMock(){
     tidePoints.forEach(function(t){
         html+="<div style='margin:2px 0'>  "+t.time+"  "+t.type+"</div>";
     });
+    html+="<pre style='margin-top:8px;font-size:11px'>潮位\n  ^\n  ██        ██\n █  █      █  █\n█    ██████    █\n----------------> 时间</pre>";
+    return html;
+}
+
+var TIDE_STATIONS=[
+    {name:"Sydney / Fort Denison",lat:-33.85,lng:151.22,id:2280},
+    {name:"Manly / Little Manly",lat:-33.80,lng:151.28,id:2281},
+    {name:"Rose Bay",lat:-33.87,lng:151.26,id:2282},
+    {name:"Parramatta River",lat:-33.85,lng:151.10,id:2283},
+    {name:"Botany Bay",lat:-33.96,lng:151.18,id:2284},
+    {name:"Newcastle",lat:-32.92,lng:151.78,id:2285},
+    {name:"Wollongong",lat:-34.42,lng:150.89,id:2286},
+    {name:"Central Coast",lat:-33.40,lng:151.45,id:2287},
+    {name:"Port Stephens",lat:-32.70,lng:152.10,id:2288},
+    {name:"Jervis Bay",lat:-35.05,lng:150.70,id:2289}
+];
+
+function haversineDistance(lat1,lng1,lat2,lng2){
+    var R=6371;
+    var dLat=(lat2-lat1)*Math.PI/180;
+    var dLng=(lng2-lng1)*Math.PI/180;
+    var a=Math.sin(dLat/2)*Math.sin(dLat/2)+
+        Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*
+        Math.sin(dLng/2)*Math.sin(dLng/2);
+    var c=2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+    return R*c;
+}
+
+function findNearestTideStation(lat,lng){
+    var minDist=Infinity;
+    var nearest=null;
+    TIDE_STATIONS.forEach(function(s){
+        var d=haversineDistance(lat,lng,s.lat,s.lng);
+        if(d<minDist){minDist=d;nearest=s;}
+    });
+    return {station:nearest,distance:minDist};
+}
+
+function fetchWillyWeatherTide(locationId,stationName,distance){
+    return new Promise(function(resolve,reject){
+        if(!state.wwKey){reject(new Error('no key'));return;}
+        var url='/wwapi/v2/locations/'+locationId+'/tides.json?key='+encodeURIComponent(state.wwKey);
+        fetch(url).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+        .then(function(data){resolve({data:data,stationName:stationName,distance:distance});})
+        .catch(reject);
+    });
+}
+
+function renderWillyWeatherTide(result){
+    var d=result.data;
+    var html="<div style='font-weight:700;margin-bottom:6px'>今日潮汐（WillyWeather）：</div>";
+    html+="<div style='font-size:11px;color:#217ad9;margin-bottom:6px'>数据来源："+result.stationName;
+    if(result.distance!=null)html+=" 最近站点 距离约"+result.distance.toFixed(1)+"km";
+    html+="</div>";
+    try{
+        var values=d.values||[];
+        if(values.length>0){
+            var today=new Date();
+            var todayStr=today.toISOString().slice(0,10);
+            var todayTides=values.filter(function(v){return v.dateTime&&v.dateTime.slice(0,10)===todayStr;});
+            if(todayTides.length===0)todayTides=values.slice(0,8);
+            todayTides.slice(0,8).forEach(function(v){
+                var time=v.dateTime?v.dateTime.slice(11,16):'';
+                var height=v.height!=null?v.height.toFixed(2)+'m':'';
+                var type=v.height>1.0?'满潮':'低潮';
+                html+="<div style='margin:2px 0'>  "+time+"  "+type+"  "+height+"</div>";
+            });
+        }else{
+            html+="<div style='color:#888'>暂无潮汐数据</div>";
+        }
+    }catch(e){
+        html+="<div style='color:#888'>潮汐数据解析失败</div>";
+    }
+    html+="<pre style='margin-top:8px;font-size:11px'>潮位\n  ^\n  ██        ██\n █  █      █  █\n█    ██████    █\n----------------> 时间</pre>";
+    return html;
+}
+
+function fetchTidesAtlasTide(lat,lng){
+    return new Promise(function(resolve,reject){
+        if(!state.tidesKey){reject(new Error('no tidesatlas key'));return;}
+        var url='/tidesatlas/tides?lat='+lat+'&lon='+lng+'&days=3';
+        fetch(url,{
+            headers:{'X-API-Key':state.tidesKey}
+        }).then(function(r){
+            if(r.status===401)throw new Error('401 invalid key');
+            if(!r.ok)throw new Error('HTTP '+r.status);
+            return r.json();
+        }).then(function(data){resolve(data);}).catch(reject);
+    });
+}
+
+function renderTidesAtlasTide(data){
+    var html="<div style='font-weight:700;margin-bottom:6px'>今日潮汐（TidesAtlas）：</div>";
+    var stationName=data.station_name||'自动匹配站点';
+    var distance=data.distance_km||null;
+    html+="<div style='font-size:11px;color:#217ad9;margin-bottom:6px'>数据来源："+stationName;
+    if(distance!=null)html+=" 距离约"+distance+"km";
+    html+="</div>";
+    try{
+        var events=data.tide_events||data.events||[];
+        if(events.length>0){
+            var today=new Date();
+            var todayStr=today.toISOString().slice(0,10);
+            var todayTides=events.filter(function(v){
+                var t=v.time||v.dateTime||'';
+                return t.slice(0,10)===todayStr;
+            });
+            if(todayTides.length===0)todayTides=events.slice(0,6);
+            todayTides.slice(0,8).forEach(function(v){
+                var t=v.time||v.dateTime||'';
+                var time=t.slice(11,16);
+                var height=v.height!=null?v.height.toFixed(2)+'m':'--';
+                var type=(v.type==='low'||v.type==='低潮')?'低潮':'满潮';
+                if(v.tide_type)type=v.tide_type==='high'?'满潮':'低潮';
+                html+="<div style='margin:2px 0'>  "+time+"  "+type+"  "+height+"</div>";
+            });
+        }else{
+            html+="<div style='color:#888'>暂无潮汐数据</div>";
+        }
+    }catch(e){
+        html+="<div style='color:#888'>潮汐数据解析失败</div>";
+    }
     html+="<pre style='margin-top:8px;font-size:11px'>潮位\n  ^\n  ██        ██\n █  █      █  █\n█    ██████    █\n----------------> 时间</pre>";
     return html;
 }
@@ -869,7 +1100,9 @@ function getRegionName(lng,lat){
 
 var state={
     wwKey:(localStorage.getItem('ww-key')||'').replace(/[\s\u00A0\u2000-\u200A\u202F\u205F\u3000]/g,''),
+    tidesKey:(localStorage.getItem('tides-key')||'ta_7845f1e2bcd920ec9cffdf26ffa1045a6ce8eefd16db1987073699b9aae6').replace(/[\s\u00A0\u2000-\u200A\u202F\u205F\u3000]/g,''),
     proxyUrl:localStorage.getItem('ww-proxy')||'',
+    tideStation:localStorage.getItem('tide-station')||'auto',
     selectedLng:151.2847,
     selectedLat:-33.8031,
     spots:JSON.parse(localStorage.getItem('fishingSpots')||'[]')
@@ -910,7 +1143,7 @@ function renderSpotTable(){
             $('locRegion').innerText="点位大致区域："+s.fullText;
             $('locStatus').innerText='已调取钓点：'+(s.note||s.region);
             if(map){
-                try{map.jumpTo({center:[state.selectedLng,state.selectedLat],zoom:13});}catch(e){}
+                try{map.jumpTo({center:[state.selectedLng,state.selectedLat],zoom:13});setMapMarker(state.selectedLng,state.selectedLat);}catch(e){}
             }
             fetchWeather(state.selectedLng,state.selectedLat);
             document.querySelectorAll('.tabbar button').forEach(function(b){b.classList.remove('active');});
@@ -1084,8 +1317,16 @@ document.addEventListener('DOMContentLoaded',function(){
     bind('mapSourceSel','change',async function(){
         var sel=$('mapSourceSel').value;
         var styleObj=sel==='osm'?OSM_STYLE:maplibreStyle;
+        showMapLoading('正在切换地图源...');
         if(mapLibreLoaded&&map){
-            try{map.setStyle(styleObj);}catch(err){$('map-container').innerHTML='切换地图源失败，网络问题，其余功能正常';}
+            try{
+                map.setStyle(styleObj);
+                map.once('styledata',function(){hideMapLoading();});
+                setTimeout(function(){hideMapLoading();},8000);
+            }catch(err){
+                hideMapLoading();
+                $('map-container').innerHTML='切换地图源失败，网络问题，其余功能正常';
+            }
         }else{
             await loadMapLibre(styleObj);
         }
@@ -1103,13 +1344,18 @@ document.addEventListener('DOMContentLoaded',function(){
 
     bind('btnTeach','click',function(){$('modalTeach').style.display='block';});
     bind('btnManual','click',function(){$('modalManual').style.display='block';});
-    bind('btnSetting','click',function(){$('wwKey').value=state.wwKey;$('proxyUrl').value=state.proxyUrl;$('modalSetting').style.display='block';});
+    bind('btnSetting','click',function(){$('wwKey').value=state.wwKey;$('tidesKey').value=state.tidesKey;$('proxyUrl').value=state.proxyUrl;$('tideStationSel').value=state.tideStation;$('modalSetting').style.display='block';});
     bind('saveSetting','click',function(){
         var cleanKey=$('wwKey').value.replace(/[\s\u00A0\u2000-\u200A\u202F\u205F\u3000]/g,'');
         state.wwKey=cleanKey;
+        var cleanTides=$('tidesKey').value.replace(/[\s\u00A0\u2000-\u200A\u202F\u205F\u3000]/g,'');
+        state.tidesKey=cleanTides;
         state.proxyUrl=$('proxyUrl').value.trim();
+        state.tideStation=$('tideStationSel').value;
         localStorage.setItem('ww-key',state.wwKey);
+        localStorage.setItem('tides-key',state.tidesKey);
         localStorage.setItem('ww-proxy',state.proxyUrl);
+        localStorage.setItem('tide-station',state.tideStation);
         alert('设置已保存');
         closeModal('modalSetting');
     });
@@ -1131,7 +1377,7 @@ document.addEventListener('DOMContentLoaded',function(){
             $('locRegion').innerText="点位大致区域："+geoInfo.fullText;
             $('locStatus').innerHTML='<span class="ok">GPS定位成功，精度'+pos.coords.accuracy.toFixed(0)+'米</span>';
             if(map){
-                try{map.jumpTo({center:[state.selectedLng,state.selectedLat],zoom:13});}catch(e){}
+                try{map.jumpTo({center:[state.selectedLng,state.selectedLat],zoom:13});setMapMarker(state.selectedLng,state.selectedLat);}catch(e){}
             }
             fetchWeather(state.selectedLng,state.selectedLat);
         },function(err){
@@ -1149,9 +1395,13 @@ document.addEventListener('DOMContentLoaded',function(){
         $('locRegion').innerText="点位大致区域："+geoInfo.fullText;
         $('locStatus').innerText='选中坐标：'+lng.toFixed(4)+', '+lat.toFixed(4);
         if(map){
-            try{map.jumpTo({center:[lng,lat],zoom:13});}catch(e){}
+            try{map.jumpTo({center:[lng,lat],zoom:13});setMapMarker(lng,lat);}catch(e){}
         }
         fetchWeather(lng,lat);
+    });
+
+    bind('btnReloadMap','click',function(){
+        reloadMap();
     });
 
     bind('btnSaveSpot','click',function(){
@@ -1234,6 +1484,58 @@ document.addEventListener('DOMContentLoaded',function(){
         tideBox.innerHTML=fetchTideMock();
         forecastBox.innerHTML="加载7天预报...";
 
+        // 潮汐数据源优先级：TidesAtlas → WillyWeather → 模拟潮汐
+        function tryFetchTide(){
+            // 1. TidesAtlas（最高优先）
+            if(state.tidesKey){
+                fetchTidesAtlasTide(lat,lng)
+                .then(function(data){
+                    tideBox.innerHTML=renderTidesAtlasTide(data);
+                })
+                .catch(function(err){
+                    console.warn("TidesAtlas潮汐获取失败，尝试WillyWeather:",err);
+                    // 2. WillyWeather（备选）
+                    if(state.wwKey){
+                        tryFetchWW();
+                    }
+                });
+                return;
+            }
+            // 2. 无TidesAtlas Key，直接用WillyWeather
+            if(state.wwKey){
+                tryFetchWW();
+            }
+        }
+        function tryFetchWW(){
+            var tideStationId=state.tideStation;
+            var tideStationName='';
+            var tideDistance=null;
+            if(tideStationId==='auto'){
+                var nearest=findNearestTideStation(lat,lng);
+                if(nearest.station&&nearest.distance<100){
+                    tideStationId=nearest.station.id;
+                    tideStationName=nearest.station.name;
+                    tideDistance=nearest.distance;
+                }else{
+                    tideBox.innerHTML+="<div style='color:#f39c12;font-size:11px;margin-top:4px'>当前位置超出预设站点范围，使用模拟潮汐</div>";
+                    tideStationId=null;
+                }
+            }else{
+                var manualStation=TIDE_STATIONS.find(function(s){return String(s.id)===tideStationId;});
+                if(manualStation){tideStationName=manualStation.name+' (手动选择)';}
+            }
+            if(tideStationId){
+                fetchWillyWeatherTide(tideStationId,tideStationName,tideDistance)
+                .then(function(result){
+                    tideBox.innerHTML=renderWillyWeatherTide(result);
+                })
+                .catch(function(err){
+                    console.warn("WillyWeather潮汐获取失败，使用模拟:",err);
+                });
+            }
+        }
+        tryFetchTide();
+
         var moon=getMoonPhase(new Date());
         moonBox.classList.remove('hidden');
         moonBox.innerHTML=moon.phaseEmoji+' 月相：<b>'+moon.phaseName+'</b>（'+moon.phasePct+'%亮度）| 月出：'+moon.moonrise+' 月落：'+moon.moonset
@@ -1248,27 +1550,50 @@ document.addEventListener('DOMContentLoaded',function(){
         },8000);
 
         var url='https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lng
-            +'&current=temperature_2m,pressure_msl,wind_speed_10m,wind_direction_10m,wave_height'
+            +'&current=temperature_2m,pressure_msl,wind_speed_10m,wind_direction_10m'
             +'&daily=temperature_2m_max,temperature_2m_min,wind_speed_10m_max,weathercode&timezone=Australia/Sydney';
-        fetch(url).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}).then(function(d){
+        var marineUrl='https://marine-api.open-meteo.com/v1/marine?latitude='+lat+'&longitude='+lng
+            +'&hourly=wave_height,wave_direction,wave_period&timezone=Australia/Sydney&forecast_days=2';
+        Promise.allSettled([fetch(url).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}),
+                           fetch(marineUrl).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})])
+        .then(function(results){
             clearTimeout(timeoutId);
+            var weatherResult=results[0];
+            var marineResult=results[1];
+            if(weatherResult.status!=='fulfilled')throw new Error('weather failed');
+            var d=weatherResult.value;
             var c=d.current;
             if(!c||typeof c.temperature_2m==='undefined')throw new Error('invalid data');
-            box.innerHTML='<span class="source-tag">数据源：Open-Meteo</span><br>'
+            var waveHeight=0;
+            var waveDir=0;
+            var wavePeriod=0;
+            if(marineResult.status==='fulfilled'&&marineResult.value.hourly){
+                var mh=marineResult.value.hourly;
+                var nowIdx=0;
+                if(mh.time&&mh.time.length){
+                    var nowH=new Date().getHours();
+                    for(var i=0;i<mh.time.length;i++){
+                        if(new Date(mh.time[i]).getHours()===nowH){nowIdx=i;break;}
+                    }
+                }
+                waveHeight=mh.wave_height&&mh.wave_height[nowIdx]?mh.wave_height[nowIdx]:0;
+                waveDir=mh.wave_direction&&mh.wave_direction[nowIdx]?mh.wave_direction[nowIdx]:0;
+                wavePeriod=mh.wave_period&&mh.wave_period[nowIdx]?mh.wave_period[nowIdx]:0;
+            }
+            box.innerHTML='<span class="source-tag">数据源：Open-Meteo（免费）</span><br>'
                 +'温度：'+c.temperature_2m+'℃ | 气压：'+c.pressure_msl+'hPa<br>'
-                +'风速：'+c.wind_speed_10m+'km/h | 浪高：'+(c.wave_height||0)+'m';
-
+                +'风速：'+c.wind_speed_10m+'km/h | 浪高：'+waveHeight.toFixed(1)+'m';
+            if(wavePeriod>0)box.innerHTML+=' | 浪周期：'+wavePeriod.toFixed(0)+'s';
             var windDeg=c.wind_direction_10m;
             var windText=windAngleToText(windDeg);
             var suggestDir=getSuggestFishDir(windDeg);
             windBox.classList.remove('hidden');
             windBox.innerHTML='风向：'+windText+'（'+windDeg+'°）| 推荐优先背风方向作钓：<b>'+suggestDir+'</b>';
-
             renderFishAdvice({
                 temp:c.temperature_2m,
                 press:c.pressure_msl,
                 wind:c.wind_speed_10m,
-                wave:c.wave_height||0,
+                wave:waveHeight,
                 windDeg:windDeg,
                 moonScore:moon.moonScore
             });
