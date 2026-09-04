@@ -13,12 +13,10 @@ header .hbtn{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(2
 header .hbtn:hover{background:rgba(255,255,255,.3)}
 .card{background:#fff;border-radius:14px;padding:16px;margin:12px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid #e8edf4}
 .card h3{font-size:15px;margin-bottom:10px;color:#0f4c81;font-weight:700;display:flex;align-items:center;gap:6px}
-.card h3 .icon{font-size:18px}
 input,select,textarea{width:100%;padding:9px 10px;border:1px solid #d0d7e2;border-radius:8px;font-size:14px;margin:5px 0;background:#fafbfc;transition:border .2s}
 input:focus,select:focus,textarea:focus{outline:none;border-color:#217ad9;background:#fff}
 .btn{background:linear-gradient(135deg,#217ad9,#1a6fb5);color:#fff;border:none;border-radius:8px;padding:9px 16px;cursor:pointer;font-size:13px;font-weight:600;transition:all .2s;box-shadow:0 2px 6px rgba(33,122,217,.25)}
 .btn:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(33,122,217,.35)}
-.btn:active{transform:translateY(0)}
 .btn-sec{background:linear-gradient(135deg,#6c757d,#545b62);box-shadow:0 2px 6px rgba(108,117,125,.25)}
 .btn-danger{background:linear-gradient(135deg,#e74c3c,#c0392b);box-shadow:0 2px 6px rgba(231,76,60,.25)}
 .btn-gps{background:linear-gradient(135deg,#00b4ff,#0095ff);font-weight:700;box-shadow:0 0 12px rgba(0,180,255,.5);animation:pulse 2s infinite}
@@ -29,29 +27,29 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#217ad9;backgr
 .tabbar button .tab-icon{display:block;font-size:18px;margin-bottom:2px}
 .hidden{display:none!important}
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;overflow-y:auto;padding:20px;backdrop-filter:blur(4px)}
-.modal-box{background:#fff;margin:4vh auto;width:94%;max-width:680px;padding:22px;border-radius:16px;max-height:88vh;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.modal-box{background:#fff;margin:4vh auto;width:94%;max-width:720px;padding:22px;border-radius:16px;max-height:88vh;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.2)}
 .modal-box h3{color:#0f4c81;margin-bottom:14px;font-size:18px}
-.modal-tabs{display:flex;gap:4px;margin-bottom:16px;border-bottom:2px solid #e8edf4}
-.modal-tabs button{border:none;background:transparent;padding:8px 14px;border-radius:8px 8px 0 0;cursor:pointer;font-size:13px;color:#6c757d;font-weight:500;transition:all .2s}
+.modal-tabs{display:flex;gap:2px;margin-bottom:16px;border-bottom:2px solid #e8edf4;flex-wrap:wrap}
+.modal-tabs button{border:none;background:transparent;padding:7px 10px;border-radius:8px 8px 0 0;cursor:pointer;font-size:12px;color:#6c757d;font-weight:500;transition:all .2s;white-space:nowrap}
 .modal-tabs button.active{background:#0f4c81;color:#fff;font-weight:700}
 .teach-step{padding:10px 0;border-bottom:1px dashed #e0e6ef;line-height:1.6}
 .teach-step:last-child{border-bottom:none}
 .teach-step b{color:#0f4c81;font-size:14px}
 .teach-step .step-num{display:inline-block;width:26px;height:26px;line-height:26px;text-align:center;background:#0f4c81;color:#fff;border-radius:50%;font-size:13px;font-weight:700;margin-right:8px}
-pre{white-space:pre-wrap;font-size:13px;background:#f4f7fa;padding:12px;border-radius:8px;line-height:1.7;border:1px solid #e8edf4}
+pre{white-space:pre-wrap;font-size:12px;background:#f4f7fa;padding:12px;border-radius:8px;line-height:1.7;border:1px solid #e8edf4;overflow-x:auto}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 .tactic{border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin:10px 0;background:linear-gradient(135deg,#fafbfc,#fff);transition:all .2s}
 .tactic:hover{box-shadow:0 4px 14px rgba(0,0,0,.08);transform:translateY(-2px)}
 .tactic h4{color:#0f4c81;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;font-size:15px}
 .tactic-rank{background:linear-gradient(135deg,#217ad9,#1a6fb5);color:#fff;border-radius:20px;padding:3px 12px;font-size:12px;font-weight:700}
-.tactic .equip{font-weight:600;color:#333;margin:4px 0}
-.tactic .bait,.tactic .skill{margin:3px 0;font-size:13px;color:#555}
 .pros{color:#27ae60;font-size:13px;margin-top:6px}
 .cons{color:#e74c3c;font-size:13px;margin-top:3px}
 .warn{color:#e74c3c}
 .ok{color:#27ae60}
 .source-tag{font-size:11px;color:#888;background:#f0f2f5;padding:3px 8px;border-radius:12px;display:inline-block;margin:4px 0}
 .wind-dir-block{background:linear-gradient(135deg,#f0f7ff,#e8f4fd);padding:10px 14px;border-radius:10px;margin:8px 0;border-left:4px solid #217ad9}
+.moon-block{background:linear-gradient(135deg,#f5f0ff,#ede4ff);padding:10px 14px;border-radius:10px;margin:8px 0;border-left:4px solid #8e44ad}
 .tide-block{background:linear-gradient(135deg,#f0f7ff,#e8f4fd);padding:12px 14px;border-radius:10px;margin:8px 0;font-family:monospace;font-size:12px;border-left:4px solid #0f4c81}
 .diagram{font-family:monospace;white-space:pre;font-size:11px;line-height:1.3;background:#f7f9fc;padding:10px;border-radius:8px;margin:8px 0;border:1px solid #e8edf4;overflow-x:auto}
 #map-container{width:100%;height:360px;border-radius:12px;margin:8px 0;background:#e9edf2;display:flex;align-items:center;justify-content:center;color:#555;overflow:hidden;position:relative}
@@ -71,6 +69,10 @@ table.spot-table th,table.spot-table td{border:1px solid #e0e6ef;padding:8px 6px
 table.spot-table th{background:#0f4c81;color:#fff;font-weight:600}
 table.spot-table tr:nth-child(even){background:#f7f9fc}
 table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
+.manual-table{width:100%;border-collapse:collapse;font-size:12px;margin:10px 0;overflow-x:auto;display:block}
+.manual-table th,.manual-table td{border:1px solid #e0e6ef;padding:7px 8px;text-align:left;vertical-align:top}
+.manual-table th{background:#0f4c81;color:#fff;font-weight:600;white-space:nowrap}
+.manual-table tr:nth-child(even){background:#f7f9fc}
 .time-label{font-size:14px;color:#0f4c81;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
 .time-label .clock{font-family:monospace;font-size:16px;color:#1a6fb5}
 .gear-list{line-height:2}
@@ -81,6 +83,10 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 .fish-score-bar{height:10px;background:#e8edf4;border-radius:5px;margin:8px 0;overflow:hidden}
 .fish-score-fill{height:100%;background:linear-gradient(90deg,#27ae60,#f39c12,#e74c3c);border-radius:5px;transition:width .5s}
 .advice-block{margin:8px 0;padding:8px 12px;background:#f7f9fc;border-radius:8px;border-left:3px solid #217ad9;font-size:13px;line-height:1.6}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-grid label{font-size:12px;color:#666;font-weight:600}
+.scene-result{margin-top:12px;padding:14px;background:#f7f9fc;border-radius:10px;border:1px solid #e8edf4}
+.scene-result h4{color:#0f4c81;margin-bottom:8px}
 </style>
 </head>
 <body>
@@ -103,6 +109,24 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 </div>
 
 <div class="card">
+<h3><span class="icon">📝</span>文字描述钓点场景（获取大师建议）</h3>
+<div class="form-grid">
+<div><label>钓点环境</label><select id="scEnv"><option value="">请选择</option><option value="jetty">码头/栈桥</option><option value="reef">礁石岸/岩礁</option><option value="rocky_shore">乱石滩</option><option value="beach">沙滩/沙底</option><option value="sand_flat">沙泥平滩</option><option value="estuary">河口/咸淡水</option><option value="inland_river">内河/淡水河</option></select></div>
+<div><label>水深</label><select id="scDepth"><option value="">请选择</option><option value="shallow">浅水(1-3m)</option><option value="medium">中水(3-7m)</option><option value="deep">深水(7-12m+)</option></select></div>
+<div><label>水流</label><select id="scFlow"><option value="">请选择</option><option value="still">静水/死潮</option><option value="moderate">中等流速</option><option value="strong">强流/大潮</option></select></div>
+<div><label>水质</label><select id="scQuality"><option value="">请选择</option><option value="clear">水清/透明度高</option><option value="slightly_murky">微浑/一般</option><option value="murky">浑水/透明度低</option></select></div>
+<div><label>天气</label><select id="scWeather"><option value="">请选择</option><option value="sunny">晴天</option><option value="cloudy">阴天/多云</option><option value="rainy">雨天</option><option value="dawn_dusk">晨昏/日出日落</option><option value="night">夜间</option></select></div>
+<div><label>光线</label><select id="scLight"><option value="">请选择</option><option value="strong">强光/直射</option><option value="moderate">中等光线</option><option value="low">弱光/阴天</option><option value="backlit">逆光/背阴</option></select></div>
+<div><label>潮汐</label><select id="scTide"><option value="">请选择</option><option value="rising">涨潮</option><option value="high">满潮</option><option value="falling">退潮</option><option value="dead">死潮/平潮</option></select></div>
+<div><label>目标鱼种</label><select id="scFish"><option value="">请选择</option><option value="trevally">Trevally/鲹鱼</option><option value="flathead">Flathead/牛尾鱼</option><option value="bream">Bream/鲷鱼</option><option value="mulloway">Mulloway/银身中棘鱼</option><option value="kingfish">Kingfish/王鱼</option><option value="squid">鱿鱼/墨鱼</option></select></div>
+<div><label>时间段</label><select id="scTime"><option value="">请选择</option><option value="dawn">黎明/日出前</option><option value="morning">上午</option><option value="noon">正午</option><option value="afternoon">下午</option><option value="dusk">黄昏/日落</option><option value="night">夜间/夜钓</option></select></div>
+<div><label>追炸水/饵鱼逃窜</label><select id="scChase"><option value="no">否</option><option value="yes">是</option></select></div>
+</div>
+<button class="btn" id="btnSceneAnalyse" style="margin-top:10px">🎯 生成大师作钓建议</button>
+<div id="sceneResult" class="scene-result hidden"></div>
+</div>
+
+<div class="card">
 <h3><span class="icon">📷</span>上传钓点现场照片</h3>
 <input type="file" id="photoInput" accept="image/*">
 <div><img id="photoPreview" class="hidden" alt="预览图片"></div>
@@ -113,13 +137,13 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 <div class="modal" id="modalTeach">
 <div class="modal-box">
 <h3>🎯 大师选饵七步法</h3>
-<div class="teach-step"><span class="step-num">1</span><b>确认钓点类型</b>：码头 / 礁石 / 沙滩 / 河口，不同地形对应不同鱼种和钓法</div>
-<div class="teach-step"><span class="step-num">2</span><b>读取潮汐阶段</b>：涨潮 -> 满潮 -> 落潮 -> 平潮，涨落潮转换期鱼口最旺</div>
-<div class="teach-step"><span class="step-num">3</span><b>参考月相</b>：满月/新月大潮水流强鱼活性高，弦月中潮适中，小潮需精细钓法</div>
-<div class="teach-step"><span class="step-num">4</span><b>读取天气</b>：气压、风力、水温、浪况，气压高+微风=好钓鱼</div>
-<div class="teach-step"><span class="step-num">5</span><b>确定目标鱼种</b>：Bream/Flathead/鲈鱼等，选择饵类型（活饵虾仁/软饵/亮片）</div>
-<div class="teach-step"><span class="step-num">6</span><b>匹配配重</b>：根据水流强度选铅坠、咬铅重量，水流大加重，水流轻减轻</div>
-<div class="teach-step"><span class="step-num">7</span><b>匹配作钓手法</b>：确认最佳出钓时间窗口，沉底等口/浮漂看信号/路亚搜索</div>
+<div class="teach-step"><span class="step-num">1</span><b>读水读环境</b>：确认钓点类型（码头/礁石/沙滩/河口），观察水流、水深、水质</div>
+<div class="teach-step"><span class="step-num">2</span><b>定目标鱼和水层</b>：根据季节、潮汐、钓点确定目标鱼种和作钓水层</div>
+<div class="teach-step"><span class="step-num">3</span><b>选饵型</b>：亮片/软饵/米诺/活饵，根据目标鱼和水层选择</div>
+<div class="teach-step"><span class="step-num">4</span><b>定克重</b>：根据水深、水流、风力选择合适克重，确保能到达目标水层</div>
+<div class="teach-step"><span class="step-num">5</span><b>定颜色</b>：根据光线、水质选择颜色（清水用自然色，浑水用亮色）</div>
+<div class="teach-step"><span class="step-num">6</span><b>定手法</b>：根据鱼活性选择收线速度和动作（慢收/抽动/飘落）</div>
+<div class="teach-step"><span class="step-num">7</span><b>试钓迭代</b>：先试一种方案，无口及时调整饵型、克重、颜色、手法</div>
 <div style="margin-top:16px;text-align:center"><button class="btn" onclick="closeModal('modalTeach')">关闭</button></div>
 </div>
 </div>
@@ -128,100 +152,387 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 <div class="modal-box">
 <h3>📚 大师速查手册</h3>
 <div class="modal-tabs">
-<button class="active" data-mtab="rig">钓组示意图</button>
-<button data-mtab="hook">钩子和引线</button>
-<button data-mtab="time">出钓时机</button>
-<button data-mtab="rule">NSW渔规</button>
+<button class="active" data-mtab="overview">总览</button>
+<button data-mtab="lure">路亚</button>
+<button data-mtab="float">通用浮漂</button>
+<button data-mtab="bottom">沉底钓</button>
+<button data-mtab="rig">钓组图解</button>
+<button data-mtab="weight">克重对照</button>
+<button data-mtab="gear">预购对照</button>
+<button data-mtab="bait">饵库</button>
+<button data-mtab="tide">潮汐</button>
 </div>
-<div class="modal-tab-content" id="mtab-rig">
-<h4 style="color:#0f4c81;margin:8px 0">滑铅沉底钓组</h4>
-<pre class="diagram">
-主线 --> [通心铅坠] --> 挡豆 --- 转环
-                              |
-                              +--> 氟碳引线 --> 鱼钩(圆钩)
-饵料：虾仁/鱼块，铅可在线自由滑动
-鱼咬饵时铅不动，线自由穿过，信号灵敏
-</pre>
-<h4 style="color:#0f4c81;margin:8px 0">阿波浮漂矶钓</h4>
-<pre class="diagram">
-主线 --> [阿波浮漂] --> 挡豆 --> [咬铅] --> 引线 --> 钩
-饵贴近礁石底部，顺着水流自然飘
-咬铅调整浮力，让饵缓慢下沉
-</pre>
-<h4 style="color:#0f4c81;margin:8px 0">路亚直出</h4>
-<pre class="diagram">
-主线(PE) --> 转环 --> 氟碳前导(1m) --> 亮片/软饵
-前导防磨防咬，增加隐蔽性
-</pre>
-<h4 style="color:#0f4c81;margin:8px 0">沙滩远投沉底</h4>
-<pre class="diagram">
-主线 --> [水滴铅80-120g] --> 转环 --> 长引线 --> 双钩
-大克重铅抗浪，远投到沙底鱼道
-</pre>
+
+<div class="modal-tab-content" id="mtab-overview">
+<h4 style="color:#0f4c81;margin:10px 0">季节作钓指南</h4>
+<table class="manual-table"><thead><tr><th>季节</th><th>月份</th><th>水温</th><th>目标鱼种</th><th>最佳钓法</th><th>备注</th></tr></thead><tbody>
+<tr><td>夏季</td><td>12-2月</td><td>20-26°C</td><td>Bream、Flathead、Trevally、鱿鱼</td><td>路亚、浮漂、夜钓沉底</td><td>早晚窗口期，午间休息；鱿鱼季1-3月</td></tr>
+<tr><td>秋季</td><td>3-5月</td><td>17-22°C</td><td>Bream、Flathead、海鲈、Kingfish</td><td>沉底、路亚、浮漂</td><td>水温稳定，全天可钓；Kingfish洄游</td></tr>
+<tr><td>冬季</td><td>6-8月</td><td>12-17°C</td><td>海鲈、Mulloway、Bream</td><td>沉底钓、深水浮漂</td><td>钓深水，操作放慢；Mulloway冬季活跃</td></tr>
+<tr><td>春季</td><td>9-11月</td><td>15-20°C</td><td>Bream、Flathead、Trevally</td><td>路亚、浮漂</td><td>鱼活性回升，近岸产卵；黄金季节开始</td></tr>
+</tbody></table>
+<h4 style="color:#0f4c81;margin:14px 0 8px">潮汐窗口总纲</h4>
+<div style="line-height:1.8;font-size:13px">
+<b>黄金窗口</b>：涨潮前1h - 满潮、落潮初期（刚退1-2h）<br>
+<b>一般窗口</b>：半潮（涨/退50%）<br>
+<b>最差窗口</b>：死潮/平潮顶（高低潮前后30min）<br>
+<b>大潮vs小潮</b>：大潮（朔望潮）水流强、鱼活跃、咬口窗口长；小潮水流慢、需精细作钓
 </div>
-<div class="modal-tab-content hidden" id="mtab-hook">
-<pre>
-【钩子选择】
-偏移圆钩(Offset Circle Hook)：活饵虾仁，不易吐钩，自动刺鱼
-直柄圆钩(Non-offset)：NSW礁石码头推荐，减少挂底
-长柄钩：沙虫、蠕虫类活饵，方便穿饵
-章鱼钩：鱿鱼、八爪鱼专用
-
-【引线参考】
-礁石区：氟碳引线 12-18lb，防磨防割
-沙滩码头：7-12lb，更灵敏
-大物(Mulloway/Kingfish)：25-40lb
-路亚前导：氟碳18-22lb，长度约1米
-
-【铅坠选择】
-码头滑铅：通心橄榄铅 10-20g
-沙滩远投：水滴铅/星型铅 80-120g
-浮漂咬铅：G8(0.43g) 到 6B(2.68g)
-阿波浮漂：B(0.55g) 到 3号(9.7g)
-</pre>
+<h4 style="color:#0f4c81;margin:14px 0 8px">安全守则</h4>
+<div style="line-height:1.8;font-size:13px">
+- 礁石岸穿防滑鞋、戴救生衣，结伴同行<br>
+- 注意离岸流（Rip），被卷走时平行海岸游<br>
+- 关注BOM风速和海浪预警，大风大浪不出钓<br>
+- 夜间作钓至少2人同行，告知家人位置
 </div>
-<div class="modal-tab-content hidden" id="mtab-time">
-<pre>
-【出钓时间黄金窗口】
-涨潮初~涨潮中期：鱼随潮水进岸觅食，最佳
-落潮中期：鱼退水时集中在深沟，次佳
-平潮(slack)：水流停止，鱼口差，建议休息
-日出前后30分钟：掠食鱼活跃
-日落前后30分钟：底层鱼觅食高峰
-
-【月相对策】
-满月/新月大潮：水流强，鱼活性高，用重铅
-上下弦月中潮：水流适中，稳定作钓
-小潮：水流弱，需要轻钓组精细操作
-月黑风高夜：大型掠食鱼靠岸
-
-【季节参考】
-春季(9-11月)：Bream繁殖期，近岸活跃
-夏季(12-2月)：清晨傍晚作钓，中午休息
-秋季(3-5月)：Flathead旺季，沙滩远投
-冬季(6-8月)：深水钓点，慢节奏等口
-</pre>
 </div>
-<div class="modal-tab-content hidden" id="mtab-rule">
-<pre>
-【澳洲NSW钓鱼法规注意事项】
-1. 悉尼大桥以西(Parramatta河)水域鱼不建议食用，有工业污染历史
-2. North Harbour Aquatic Reserve 禁止使用鱿鱼木虾(jig)
-3. 严格遵守尺寸限制和袋限，查阅NSW DPI官网最新规定
-4. 部分保护区禁止钓鱼，注意岸边标识
-5. 礁石垂钓注意海浪，穿防滑鞋，穿戴救生衣
-6. 钓鱼需要支付Recreational Fishing Fee(年费约$7)
-7. 保护幼鱼，不够尺寸必须放生
-8. 不要丢弃鱼线和垃圾，保护海洋环境
 
-【常见鱼种尺寸限制(参考)】
-Bream(鲷鱼)：最小25cm，袋限20条
-Flathead(鲬鱼)：最小33cm，袋限10条
-Whiting(沙尖)：最小27cm，袋限20条
-Tailor(扁鲹)：最小30cm，袋限10条
-*具体以NSW DPI最新公告为准
-</pre>
+<div class="modal-tab-content hidden" id="mtab-lure">
+<h4 style="color:#0f4c81;margin:10px 0">码头/礁石/沙滩路亚策略对比</h4>
+<table class="manual-table"><thead><tr><th>场景</th><th>首选饵型</th><th>克重</th><th>颜色</th><th>目标鱼</th><th>核心手法</th></tr></thead><tbody>
+<tr><td>码头</td><td>勺子亮片+铅头软饵</td><td>8-14g</td><td>锤纹银</td><td>Bream/Flathead/小海鲈</td><td>贴桩边飘落，慢收+长停顿</td></tr>
+<tr><td>礁石岸</td><td>铅头软饵+勺子</td><td>12-18g</td><td>锤纹银/金色</td><td>Flathead/Trevally/海鲈</td><td>结构边搜索，触礁立刻抬竿</td></tr>
+<tr><td>沙滩</td><td>勺子亮片+小铁板</td><td>12-20g</td><td>锤纹银</td><td>Flathead/Whiting/Trevally</td><td>远投搜浪槽，匀速+飘落</td></tr>
+<tr><td>追炸水</td><td>米诺+小铁板</td><td>10-18g</td><td>银色</td><td>Trevally/海鲈/Kingfish</td><td>快速收线+短抽，模拟逃窜饵鱼</td></tr>
+</tbody></table>
+<h4 style="color:#0f4c81;margin:14px 0 8px">收线手法总结</h4>
+<table class="manual-table"><thead><tr><th>手法</th><th>适用场景</th><th>操作方式</th></tr></thead><tbody>
+<tr><td>匀速慢收</td><td>静水/低活性</td><td>摇2-3圈/秒，保持饵稳定运动</td></tr>
+<tr><td>停顿飘落</td><td>勺子核心</td><td>摇3-4圈停1-2s，让饵自由下沉</td></tr>
+<tr><td>抽动</td><td>追炸水/高活性</td><td>快速摇2圈+挑竿尖，模拟逃窜</td></tr>
+<tr><td>小跳底</td><td>铅头软饵/Flathead</td><td>触底后抬竿20cm，让饵飘落</td></tr>
+<tr><td>底拖</td><td>沉底搜索</td><td>竿尖压低，慢拖贴底，感知触底</td></tr>
+</tbody></table>
+<h4 style="color:#0f4c81;margin:14px 0 8px">软饵（铅头钩钓组）</h4>
+<div style="line-height:1.8;font-size:13px">
+- 3寸桨尾+7-10g铅头：浅水底层、礁石耐挂、Flathead首选<br>
+- 4寸桨尾+14g铅头：深水底层、Flathead/Bream<br>
+- 操作：贴底慢拖+小跳+停顿；咬口多在下落飘落时<br>
+- 优势：礁石区耐挂底（vs亮片），鱼咬得深
 </div>
+<h4 style="color:#0f4c81;margin:14px 0 8px">钩型选择</h4>
+<div style="line-height:1.8;font-size:13px">
+- 亮片原装三本钩（Treble #6-#10）：标准配置<br>
+- 单钩替换（去倒刺 #1/0-#2/0）：环保放流，减少挂底<br>
+- 铅头钩曲柄钩（1/8-1/4 oz）：软饵专用
+</div>
+</div>
+
+<div class="modal-tab-content hidden" id="mtab-float">
+<h4 style="color:#0f4c81;margin:10px 0">浮漂钓法分类</h4>
+<table class="manual-table"><thead><tr><th>类型</th><th>漂型</th><th>适用场景</th><th>水深</th><th>难度</th></tr></thead><tbody>
+<tr><td>阿波漂钓</td><td>阿波漂（椭圆形）</td><td>礁石岸/码头/通用矶钓</td><td>2-10m+</td><td>中等</td></tr>
+<tr><td>立漂钓</td><td>立漂（棒形/水滴形）</td><td>静水/内湾/码头内侧</td><td>1-5m</td><td>简单</td></tr>
+<tr><td>远投浮漂</td><td>远投阿波/长漂</td><td>沙滩远投/大风浪</td><td>2-8m</td><td>中等</td></tr>
+<tr><td>全游动</td><td>全游动阿波</td><td>深场/变化大的礁石区</td><td>5-15m</td><td>高</td></tr>
+</tbody></table>
+<h4 style="color:#0f4c81;margin:14px 0 8px">阿波漂参数表</h4>
+<table class="manual-table"><thead><tr><th>型号</th><th>自重(g)</th><th>浮力</th><th>适用场景</th><th>咬铅建议</th></tr></thead><tbody>
+<tr><td>000号</td><td>0.8</td><td>极小</td><td>静水/无流浅水</td><td>G6-G7咬铅精细微调</td></tr>
+<tr><td>00号</td><td>1.2</td><td>极小</td><td>轻流/近岸</td><td>G5-G6咬铅</td></tr>
+<tr><td>0号</td><td>1.6</td><td>小</td><td>轻流/浅水</td><td>B咬铅</td></tr>
+<tr><td>B号</td><td>2.1</td><td>小-中</td><td>中等流/近岸</td><td>2B咬铅</td></tr>
+<tr><td>2B号</td><td>2.6</td><td>中</td><td>中等流/礁石</td><td>3B咬铅</td></tr>
+<tr><td>3B号</td><td>3.1</td><td>中-大</td><td>中等偏强流</td><td>4B咬铅</td></tr>
+<tr><td>0.5号</td><td>4.0</td><td>中-大</td><td>强流/深水</td><td>5B或多颗组合</td></tr>
+<tr><td>1号</td><td>5.5</td><td>大</td><td>强流/深场</td><td>5B-6B组合</td></tr>
+<tr><td>2号</td><td>8.0</td><td>大</td><td>强流/深水</td><td>6B x 2颗组合</td></tr>
+<tr><td>3号</td><td>11.0</td><td>很大</td><td>深水/强流/大风</td><td>大咬铅多颗配重</td></tr>
+</tbody></table>
+<h4 style="color:#0f4c81;margin:14px 0 8px">核心钓组结构（阿波漂）</h4>
+<pre class="diagram">主线 → 棉线结 → 阿波漂 → 水中漂 → 卡拉曼棒 → 8字转环
+                                                  ↓
+                                          子线(1.5-3m) + 咬铅
+                                                  ↓
+                                                  鱼钩 + 饵</pre>
+<h4 style="color:#0f4c81;margin:14px 0 8px">调漂要领</h4>
+<div style="line-height:1.8;font-size:13px">
+- 咬铅分段配置（不要集中一颗），让饵自然下沉<br>
+- 标准状态：阿波刚好露出顶部，风浪大换大一号漂<br>
+- 钓棚深度 = 棉线结到钩的距离，略深于实际水深20-30cm
+</div>
+<h4 style="color:#0f4c81;margin:14px 0 8px">咬钩识别</h4>
+<div style="line-height:1.8;font-size:13px">
+- 阿波快速下沉（黑漂）→ 大鱼吞饵，立刻扬竿<br>
+- 阿波横向走线 → 鱼衔饵游走，等1-2秒扬竿<br>
+- 阿波上下点动 → 小鱼啄饵或大鱼试探，耐心等
+</div>
+</div>
+
+<div class="modal-tab-content hidden" id="mtab-bottom">
+<h4 style="color:#0f4c81;margin:10px 0">沉底钓法分类</h4>
+<table class="manual-table"><thead><tr><th>钓法</th><th>铅坠方式</th><th>适用场景</th><th>目标鱼</th><th>难度</th></tr></thead><tbody>
+<tr><td>滑铅沉底（跑铅）</td><td>通心滑动铅</td><td>码头/礁石/通用</td><td>Bream/海鲈/Flathead</td><td>简单</td></tr>
+<tr><td>平铅沉底</td><td>固定铅坠</td><td>沙滩远投/急流</td><td>Flathead/Whiting/海鲈</td><td>简单</td></tr>
+<tr><td>双钩沉底</td><td>上漂下铅/双钩</td><td>沙滩/开阔水域</td><td>多种底栖鱼</td><td>中等</td></tr>
+<tr><td>防挂底沉底</td><td>球形铅/弱力扣</td><td>礁石区/乱石底</td><td>石斑/海鲈/Bream</td><td>中等</td></tr>
+</tbody></table>
+<h4 style="color:#0f4c81;margin:14px 0 8px">钩子选择</h4>
+<div style="line-height:1.8;font-size:13px">
+- 首选：Non-offset直柄Circle圆钩 1/0-2/0（自动刺鱼）<br>
+- 大物：Circle圆钩 3/0-4/0<br>
+- 沙滩Whiting：长柄钩 6-8号
+</div>
+<h4 style="color:#0f4c81;margin:14px 0 8px">子线/前导</h4>
+<div style="line-height:1.8;font-size:13px">
+- 普通沉底：氟碳20-25lb，80-120cm<br>
+- 礁石区：氟碳25-30lb，50-80cm（防割）<br>
+- 夜钓大物：氟碳25-30lb，80-150cm<br>
+- 沙滩远投：氟碳16-25lb，60-100cm（双钩）
+</div>
+<h4 style="color:#0f4c81;margin:14px 0 8px">虾仁挂饵方法</h4>
+<div style="line-height:1.8;font-size:13px">
+1. 整只虾挂法：钩从虾头刺入，穿过虾身，钩尖从虾尾1/3处穿出，虾身自然弯曲<br>
+2. 去壳虾仁：钩穿入2-3次，让虾仁紧贴钩弯，钩尖微露<br>
+3. 分段挂法：大虾仁切2-3段，每段穿钩，适合小鱼多的情况<br>
+4. 秘诀：挂钩后轻轻拉一下，确保饵不会轻易被鱼叼走；Circle钩钩尖一定要露出
+</div>
+<h4 style="color:#0f4c81;margin:14px 0 8px">核心操作要点</h4>
+<div style="line-height:1.8;font-size:13px">
+1. 抛投后收紧余线，竿尖保持微弯<br>
+2. Circle圆钩<b>不要猛扬竿</b>，看到出线后缓慢绷紧收线即自动刺鱼<br>
+3. 中鱼后第一时间把鱼拉出结构区（礁石/木桩）<br>
+4. 同位置20-30分钟无口 → 换标点或换饵<br>
+5. 滑铅坠必须通心可滑动，死铅鱼会吐饵
+</div>
+</div>
+
+<div class="modal-tab-content hidden" id="mtab-rig">
+<h4 style="color:#0f4c81;margin:10px 0">8种钓组完整装配图</h4>
+<table class="manual-table"><thead><tr><th>编号</th><th>钓组名称</th><th>类别</th><th>适用场景</th></tr></thead><tbody>
+<tr><td>1</td><td>直出亮片钓组</td><td>路亚</td><td>表层至中上层掠食鱼·近岸结构·码头防波桩</td></tr>
+<tr><td>2</td><td>铅头钩软饵钓组</td><td>路亚</td><td>底层Flathead/Bream·礁石沙底交界·结构边</td></tr>
+<tr><td>3</td><td>阿波漂钓组</td><td>浮漂</td><td>礁石岸矶钓·码头边·近岸结构·Bream/海鲈</td></tr>
+<tr><td>4</td><td>立漂钓组</td><td>浮漂</td><td>内湾静水·码头内侧·沙质浅滩·轻矶钓</td></tr>
+<tr><td>5</td><td>码头滑铅钓组</td><td>沉底</td><td>码头沉底钓·防波堤内·近岸礁石底·Bream/Flathead</td></tr>
+<tr><td>6</td><td>沙滩远投钓组</td><td>沉底</td><td>沙滩远投·冲浪带·浪槽内侧·Whiting/Flathead</td></tr>
+<tr><td>7</td><td>礁石沉底钓组</td><td>沉底</td><td>礁石区·岩礁底·结构复杂水域·大鱼/石斑类</td></tr>
+<tr><td>8</td><td>夜钓沉底钓组</td><td>沉底</td><td>夜钓·码头灯下·礁石边·海鲈/真鲷/石斑</td></tr>
+</tbody></table>
+<h4 style="color:#0f4c81;margin:14px 0 8px">码头滑铅钓组</h4>
+<pre class="diagram">竿尖
+ │
+ ▼
+【主线】 PE 1.0-1.5号
+ │
+ ▼
+【通心滑动铅】 10-18g 梨形/橄榄形  ← 可自由滑动
+ │
+ ▼
+【挡豆/太空豆】  ← 限制铅坠下滑位置
+ │
+ ▼
+【8字转环】
+ │
+ ▼
+【子线】 氟碳 20-25lb · 80-120cm
+ │
+ ▼
+【Circle圆钩】 1/0-2/0  ← 挂饵（虾仁/鱿鱼条/鱼肉块）</pre>
+<h4 style="color:#0f4c81;margin:14px 0 8px">阿波漂钓组</h4>
+<pre class="diagram">竿尖
+ │
+ ▼
+【主线】 PE 0.8-1.2号
+ │
+ ▼
+【棉线结】  ← 控制钓棚深度
+ │
+ ▼
+【阿波漂】 B-3B号
+ │
+ ▼
+【水中漂/咬铅】  ← 配重调整
+ │
+ ▼
+【卡拉曼棒】 → 【8字转环】
+ │
+ ▼
+【子线】 氟碳 12-18lb · 1.5-3m
+ │
+ ▼
+【鱼钩】 矶钓钩2-4号  ← 虾仁/南极虾</pre>
+<h4 style="color:#0f4c81;margin:14px 0 8px">直出亮片钓组</h4>
+<pre class="diagram">竿尖
+ │
+ ▼
+【主线】 PE 0.8-1.0号
+ │
+ ▼
+【8字转环】  ← 防缠绕
+ │
+ ▼
+【前导】 氟碳 18-22lb · 约1米
+ │
+ ▼
+【亮片/软饵】 勺子7-12g / 铅头软饵7-14g</pre>
+</div>
+
+<div class="modal-tab-content hidden" id="mtab-weight">
+<h4 style="color:#0f4c81;margin:10px 0">咬铅对照表</h4>
+<table class="manual-table"><thead><tr><th>型号</th><th>克重(g)</th><th>说明</th><th>应用场景</th></tr></thead><tbody>
+<tr><td>G8</td><td>0.02</td><td>最轻/精细钓组</td><td>浮漂微调整</td></tr>
+<tr><td>G7</td><td>0.03</td><td>极轻/轻矶钓</td><td>深水漂精细调漂</td></tr>
+<tr><td>G6</td><td>0.05</td><td>轻/浅水静水</td><td>静水漂微调</td></tr>
+<tr><td>G5</td><td>0.12</td><td>轻/静水近岸</td><td>近岸静水钓</td></tr>
+<tr><td>G4</td><td>0.15</td><td>轻/轻流</td><td>轻流近岸</td></tr>
+<tr><td>G3</td><td>0.20</td><td>轻-中/轻流浅水</td><td>轻流浅水礁区</td></tr>
+<tr><td>G2</td><td>0.30</td><td>中/中等流</td><td>中等流礁区</td></tr>
+<tr><td>G1</td><td>0.40</td><td>中/中等流近岸</td><td>近岸中等流</td></tr>
+<tr><td>B</td><td>0.55</td><td>中/通用浮漂钓法</td><td>通用浮漂钓法标配</td></tr>
+<tr><td>2B</td><td>0.75</td><td>中-大/阿波B号配</td><td>阿波B号标配</td></tr>
+<tr><td>3B</td><td>0.95</td><td>大/阿波2B-3B</td><td>阿波2B-3B标配</td></tr>
+<tr><td>4B</td><td>1.20</td><td>大/强流深场</td><td>强流深场阿波3B以上</td></tr>
+<tr><td>5B</td><td>1.85</td><td>很大/深水强流</td><td>深水强流阿波1号</td></tr>
+<tr><td>6B</td><td>2.65</td><td>极大/深水大风浪</td><td>深水大风浪阿波2-3号</td></tr>
+</tbody></table>
+<h4 style="color:#0f4c81;margin:14px 0 8px">铅坠对照表</h4>
+<table class="manual-table"><thead><tr><th>类型</th><th>克重(g)</th><th>钓法</th><th>场景</th></tr></thead><tbody>
+<tr><td>通心滑动铅</td><td>5</td><td>码头静水</td><td>码头浅水</td></tr>
+<tr><td>通心滑动铅</td><td>10</td><td>码头滑铅</td><td>通用首选</td></tr>
+<tr><td>通心滑动铅</td><td>15</td><td>码头+礁石</td><td>中强流礁石</td></tr>
+<tr><td>通心滑动铅</td><td>20</td><td>礁石沉底</td><td>礁石岸中强流</td></tr>
+<tr><td>通心滑动铅</td><td>30</td><td>礁石+河口</td><td>强流深水</td></tr>
+<tr><td>通心滑动铅</td><td>40</td><td>河口沉底</td><td>河口强流</td></tr>
+<tr><td>远投铅</td><td>80</td><td>沙滩远投</td><td>开阔沙滩浪槽</td></tr>
+<tr><td>远投铅</td><td>100</td><td>沙滩远投</td><td>浪大沙滩（首选）</td></tr>
+<tr><td>远投铅</td><td>120</td><td>沙滩远投</td><td>大浪远投</td></tr>
+</tbody></table>
+<h4 style="color:#0f4c81;margin:14px 0 8px">鱼钩型号对照表</h4>
+<table class="manual-table"><thead><tr><th>钩型</th><th>型号</th><th>特征</th><th>场景</th><th>目标鱼</th><th>线组</th></tr></thead><tbody>
+<tr><td>直柄圆钩</td><td>1/0-2/0</td><td>钩尖内弯、自动刺鱼</td><td>沉底钓首选</td><td>Bream/Flathead/海鲈</td><td>氟碳20-25lb</td></tr>
+<tr><td>直柄圆钩</td><td>3/0-4/0</td><td>大口径</td><td>大个体沉底/夜钓</td><td>Mulloway/大Flathead</td><td>氟碳25-30lb</td></tr>
+<tr><td>Offset圆钩</td><td>1/0-2/0</td><td>钩尖偏侧、挂饵牢</td><td>活饵钓/鱿鱼</td><td>鱿鱼/Whiting/Bream</td><td>氟碳18-22lb</td></tr>
+<tr><td>长柄钩</td><td>6-8号</td><td>长柄、挂饵条</td><td>河口/Whiting</td><td>Whiting/鲻鱼/小鱼</td><td>尼龙8-12lb</td></tr>
+<tr><td>小矶钩</td><td>6-10号</td><td>小钩细线、灵敏</td><td>矶钓浮漂/轻矶</td><td>Bream/黑鲷/小鱼</td><td>尼龙4-8lb</td></tr>
+<tr><td>铅头钩</td><td>1/8-1/4oz</td><td>铅头+软饵一体</td><td>路亚底栖/软饵钓</td><td>Flathead/海鲈/Bream</td><td>PE+氟碳12-18lb</td></tr>
+<tr><td>三本钩</td><td>6-10号</td><td>三钩尖、挂拟饵</td><td>路亚亮片/米诺替换</td><td>海鲈/鲹鱼/青甘</td><td>PE+前导</td></tr>
+<tr><td>大物钩</td><td>6/0-8/0</td><td>极粗、大钩</td><td>远投沉底/巨物</td><td>鲨鱼/大Mulloway</td><td>PE1.5-2.0+钢丝</td></tr>
+</tbody></table>
+<h4 style="color:#0f4c81;margin:14px 0 8px">路亚亮片克重速查</h4>
+<div style="line-height:1.8;font-size:13px">
+- 浅1-3m：勺子8-12g / 旋转10-14g<br>
+- 中3-7m：勺子12-16g / 旋转14-18g<br>
+- 深7-12m强流：勺子18-22g / 旋转18-24g
+</div>
+</div>
+
+<div class="modal-tab-content hidden" id="mtab-gear">
+<h4 style="color:#0f4c81;margin:10px 0">澳洲NSW钓鱼装备采购清单</h4>
+<h4 style="color:#0f4c81;margin:12px 0 6px">鱼竿类（3支）</h4>
+<div style="line-height:1.8;font-size:13px">
+1. Shimano Maikuro II 2.1m 路亚竿 ML调 ✓ 已有 - 主力路亚竿，近海通用<br>
+2. 矶竿/海竿 3.0-3.6m 中调 - 浮漂钓/沉底钓必备，建议2号矶竿<br>
+3. 远投竿 3.9-4.2m 40-80g抛投 - 沙滩远投沉底用
+</div>
+<h4 style="color:#0f4c81;margin:12px 0 6px">渔轮类（2个）</h4>
+<div style="line-height:1.8;font-size:13px">
+1. Savage SG 3000H 纺车轮 高速比 ✓ 已有 - 主线容量PE1.0/150m<br>
+2. 远投轮 5000-6000型 - 沙滩远投沉底用，线容量要大
+</div>
+<h4 style="color:#0f4c81;margin:12px 0 6px">线类（4种）</h4>
+<div style="line-height:1.8;font-size:13px">
+1. PE主线 0.8-1.0号 ✓ 已有 - 路亚常用<br>
+2. PE主线 1.2-1.5号 - 远投沉底/深场浮漂用<br>
+3. 氟碳前导 18-22lb ✓ 已有 - 路亚通用前导<br>
+4. 氟碳前导（粗号）25-30lb - 沉底钓/礁石区/大鱼必备
+</div>
+<h4 style="color:#0f4c81;margin:12px 0 6px">路亚饵（5种）</h4>
+<div style="line-height:1.8;font-size:13px">
+1. 勺子亮片套装 3-7g多色 ✓ 已有 - 建议补充10-18g<br>
+2. 旋转亮片套装 10-20g银/金叶片 - 浑水震动诱鱼效果好<br>
+3. 铅头软饵套装 7-14g桨尾/卷尾 - 礁石区耐挂<br>
+4. 深潜米诺 12-18g长舌板 - 中上层掠食鱼/追炸水<br>
+5. 木虾Egi 3.5号夜光 - 夜钓鱿鱼
+</div>
+<h4 style="color:#0f4c81;margin:12px 0 6px">浮漂类（2种）</h4>
+<div style="line-height:1.8;font-size:13px">
+1. 阿波漂套装（B/2B/3B/5B各一支）- 通用浮漂钓必备<br>
+2. 立漂/远投漂 2B-4B吃铅 - 沙滩远投浮漂/静水近岸用
+</div>
+<h4 style="color:#0f4c81;margin:12px 0 6px">铅坠类（3种）</h4>
+<div style="line-height:1.8;font-size:13px">
+1. 咬铅套装（B/2B/3B/5B）- 浮漂钓必备<br>
+2. 通心滑动铅 10-40g梨形/橄榄形 - 滑铅沉底钓必备<br>
+3. 远投铅 80-120g - 沙滩远投沉底用
+</div>
+<h4 style="color:#0f4c81;margin:12px 0 6px">鱼钩类（2种）</h4>
+<div style="line-height:1.8;font-size:13px">
+1. Circle圆钩 1/0-3/0 Non-offset - 沉底钓必备<br>
+2. 矶钓黑鲷钩 #3-#6 - 浮漂钓Bream/黑鲷用
+</div>
+<h4 style="color:#0f4c81;margin:12px 0 6px">配件类（2种）</h4>
+<div style="line-height:1.8;font-size:13px">
+1. 8字转环/太空豆 小-中号 - 沉底钓/浮漂钓必备<br>
+2. 挡豆/卡拉曼棒 小号 - 浮漂钓线组配件
+</div>
+</div>
+
+<div class="modal-tab-content hidden" id="mtab-bait">
+<h4 style="color:#0f4c81;margin:10px 0">活饵/冷冻饵对照表</h4>
+<table class="manual-table"><thead><tr><th>饵料</th><th>形态</th><th>目标鱼种</th><th>最佳季节</th><th>挂法</th><th>备注</th></tr></thead><tbody>
+<tr><td>虾仁(Prawn)</td><td>冷冻/活</td><td>Bream、Flathead、海鲈、Whiting</td><td>全年</td><td>整只/切段/去壳</td><td>万能饵，首选</td></tr>
+<tr><td>鱿鱼条(Squid)</td><td>冷冻/鲜</td><td>海鲈、Mulloway、石斑、Bream</td><td>全年</td><td>切条/切圈</td><td>大物最爱，耐小鱼啄</td></tr>
+<tr><td>沙丁鱼块(Pilchard)</td><td>冷冻</td><td>海鲈、Flathead、Mulloway、Kingfish</td><td>全年</td><td>切块/整段</td><td>沉底钓大物首选</td></tr>
+<tr><td>南极虾(Krill)</td><td>冷冻/砖</td><td>Bream、黑鲷、小杂鱼</td><td>春-夏</td><td>整只/打窝</td><td>窝料首选，钓饵也可用</td></tr>
+<tr><td>沙蚕/海蚯蚓</td><td>活/冷冻</td><td>Whiting、Bream、鲻鱼</td><td>春-秋</td><td>整条穿钩</td><td>Whiting特效饵</td></tr>
+<tr><td>鱼肉块(Fish Strip)</td><td>鲜/冷冻</td><td>海鲈、Mulloway、石斑</td><td>全年</td><td>切条/菱形</td><td>大鱼饵，大个体偏好</td></tr>
+<tr><td>蟹肉</td><td>鲜/冷冻</td><td>Bream、石斑、黑鲷</td><td>夏-秋</td><td>去壳取肉挂</td><td>礁石区效果佳</td></tr>
+<tr><td>贝肉/青口</td><td>鲜/冷冻</td><td>Bream、黑鲷、鲻鱼</td><td>全年</td><td>取肉挂钩</td><td>静水/轻流效果好</td></tr>
+<tr><td>海蟑螂</td><td>活</td><td>Bream、黑鲷</td><td>全年</td><td>整只挂</td><td>礁石矶钓必杀饵</td></tr>
+<tr><td>面饵</td><td>自制/商品</td><td>Bream、鲻鱼、小鱼</td><td>静水</td><td>搓团挂钩</td><td>静水小鱼防啄</td></tr>
+<tr><td>木虾/假饵</td><td>路亚假饵</td><td>鱿鱼/墨鱼</td><td>夏-秋（鱿鱼季）</td><td>直接使用</td><td>Egi 3.0-3.5号</td></tr>
+</tbody></table>
+<h4 style="color:#0f4c81;margin:14px 0 8px">窝料指南</h4>
+<div style="line-height:1.8;font-size:13px">
+<b>粉饵基料</b>：面包糠+鱼粉+南极虾粉<br>
+<b>颗粒窝料</b>：玉米粒+麦粒+鱼料颗粒<br>
+<b>打窝节奏</b>：<br>
+- 浮漂钓：涨潮前30min开始打窝，每10-15min补一小勺<br>
+- 沉底钓：钓前打2-3勺沉底窝，中鱼后补一勺<br>
+- 路亚：不需要打窝，但可以抛洒少量碎虾引鱼
+</div>
+</div>
+
+<div class="modal-tab-content hidden" id="mtab-tide">
+<h4 style="color:#0f4c81;margin:10px 0">潮汐基础</h4>
+<div style="line-height:1.8;font-size:13px">
+- 成因：月球引力+太阳引力共同作用<br>
+- 周期：约12小时25分钟（半日潮），每天延迟约50分钟<br>
+- 一天通常2次高潮+2次低潮
+</div>
+<h4 style="color:#0f4c81;margin:14px 0 8px">大潮vs小潮判断</h4>
+<table class="manual-table"><thead><tr><th>潮型</th><th>月相</th><th>潮差</th><th>鱼情</th><th>作钓建议</th></tr></thead><tbody>
+<tr><td>大潮(Spring)</td><td>新月/满月（朔望潮）</td><td>最大（1.5m+）</td><td>最好</td><td>水流强、咬口窗口长，抓紧黄金时段</td></tr>
+<tr><td>中潮(Mid)</td><td>盈凸月/亏凸月</td><td>中等（0.8-1.5m）</td><td>好</td><td>水流适中，全天可钓</td></tr>
+<tr><td>小潮(Neap)</td><td>上弦月/下弦月</td><td>较小（0.4-0.8m）</td><td>一般</td><td>水流慢，精细作钓，找结构边</td></tr>
+<tr><td>死潮(Dead)</td><td>小潮最低点</td><td>极小（<0.4m）</td><td>最差</td><td>几乎无口，建议休息</td></tr>
+</tbody></table>
+<h4 style="color:#0f4c81;margin:14px 0 8px">作钓窗口</h4>
+<div style="line-height:1.8;font-size:13px">
+<b>最佳窗口</b>：涨潮前1小时 → 满潮+1小时（鱼随潮水涌入近岸）<br>
+<b>次佳窗口</b>：落潮初期1-2小时（鱼随退潮撤出，在深槽集中）<br>
+<b>最差窗口</b>：死潮/平潮顶（高低潮前后30分钟，水流静止）<br>
+<b>转流瞬间</b>：平潮转流后15-30分钟，往往出现咬口高峰
+</div>
+<h4 style="color:#0f4c81;margin:14px 0 8px">潮汐与鱼种对应</h4>
+<table class="manual-table"><thead><tr><th>鱼种</th><th>最佳潮汐</th><th>水层</th><th>备注</th></tr></thead><tbody>
+<tr><td>Bream黑鲷</td><td>涨潮→满潮</td><td>中下层</td><td>潮水越大越活跃</td></tr>
+<tr><td>Flathead牛尾鱼</td><td>刚退潮初期</td><td>底层</td><td>退潮时在沙地埋伏</td></tr>
+<tr><td>Trevally鲹鱼</td><td>涨潮-满潮</td><td>中上层</td><td>追炸水，活跃于流里</td></tr>
+<tr><td>海鲈</td><td>涨潮后期-满潮</td><td>全水层</td><td>结构边伏击</td></tr>
+<tr><td>Mulloway</td><td>满潮前后/夜间</td><td>底层</td><td>大个体，潮汐窗口</td></tr>
+<tr><td>鱿鱼</td><td>满潮前后/夜间</td><td>中下层</td><td>灯光区聚集</td></tr>
+</tbody></table>
+<h4 style="color:#0f4c81;margin:14px 0 8px">潮汐口诀</h4>
+<div style="line-height:1.8;font-size:13px">
+- 涨潮钓鱼，退潮挖蛤（涨潮鱼靠岸）<br>
+- 大潮大钓，小潮小钓，死潮睡觉<br>
+- 转流如开关，一开鱼就来<br>
+- 初一十五赶大潮，二十三来小潮还
+</div>
+</div>
+
 <div style="margin-top:16px;text-align:center"><button class="btn" onclick="closeModal('modalManual')">关闭</button></div>
 </div>
 </div>
@@ -269,6 +580,7 @@ WillyWeather提供更精准的澳洲本地潮汐和天气数据。
 <h3><span class="icon">🌤</span>实况信息</h3>
 <div class="time-label">🕐 悉尼本地时间：<span class="clock" id="localTime"></span></div>
 <div id="weatherBox" style="line-height:1.8">点击"刷新钓点分析"获取天气</div>
+<div id="moonBox" class="moon-block hidden"></div>
 <div id="windDirBox" class="wind-dir-block hidden"></div>
 <div id="tideBox" class="tide-block hidden"></div>
 </div>
@@ -355,6 +667,36 @@ function updateSydneyTime(){
     if(el)el.innerText=s;
 }
 setInterval(updateSydneyTime,1000);
+
+function getMoonPhase(date){
+    var synodicMonth=29.53059;
+    var baseNewMoon=new Date(2026,0,19,0,0,0);
+    var daysSinceNew=((date.getTime()-baseNewMoon.getTime())/86400000)%synodicMonth;
+    if(daysSinceNew<0)daysSinceNew+=synodicMonth;
+    var phaseAngle=(daysSinceNew/synodicMonth)*360;
+    var illumination=(1-Math.cos((phaseAngle*Math.PI)/180))/2;
+    var phasePct=Math.round(illumination*100);
+    var phaseName='';
+    var phaseEmoji='';
+    if(phasePct<8){phaseName='新月';phaseEmoji='🌑';}
+    else if(phasePct<35){phaseName='蛾眉月';phaseEmoji='🌒';}
+    else if(phasePct<55){phaseName='上弦月';phaseEmoji='🌓';}
+    else if(phasePct<85){phaseName='盈凸月';phaseEmoji='🌔';}
+    else if(phasePct>=92){phaseName='满月';phaseEmoji='🌕';}
+    else{phaseName='亏凸月';phaseEmoji='🌖';}
+    var riseHour=Math.round(6+(daysSinceNew/synodicMonth)*12)%24;
+    var setHour=Math.round((riseHour+12)%24);
+    var moonrise=String(riseHour).padStart(2,'0')+':'+String(30+((riseHour*7)%30)).padStart(2,'0');
+    var moonset=String(setHour).padStart(2,'0')+':'+String((setHour*11)%60).padStart(2,'0');
+    var fishingImpact='';
+    var moonScore=0;
+    if(phasePct>=92){fishingImpact='满月夜大鱼靠边，夜间作钓最佳，用大饵钓大物';moonScore=15;}
+    else if(phasePct<=8){fishingImpact='新月夜间用夜光饵，选择结构边缘作钓';moonScore=10;}
+    else if(phasePct>60){fishingImpact='夜间可路亚或浮漂钓，注意月出月落时间';moonScore=8;}
+    else if(phasePct<30){fishingImpact='夜间用振动型假饵或真饵，靠嗅觉和触觉诱鱼';moonScore=-2;}
+    else{fishingImpact='正常作钓即可';moonScore=0;}
+    return {phaseName:phaseName,phaseEmoji:phaseEmoji,phasePct:phasePct,moonrise:moonrise,moonset:moonset,fishingImpact:fishingImpact,moonScore:moonScore};
+}
 
 function windAngleToText(deg){
     var dirs=["北","东北","东","东南","南","西南","西","西北"];
@@ -567,6 +909,89 @@ function renderSpotTable(){
     });
 }
 
+function analyseScene(){
+    var env=$('scEnv').value;
+    var depth=$('scDepth').value;
+    var flow=$('scFlow').value;
+    var quality=$('scQuality').value;
+    var weather=$('scWeather').value;
+    var light=$('scLight').value;
+    var tide=$('scTide').value;
+    var fish=$('scFish').value;
+    var time=$('scTime').value;
+    var chase=$('scChase').value;
+
+    if(!env&&!depth&&!flow&&!tide&&!fish&&!time){
+        alert('请至少填写一项场景信息');
+        return;
+    }
+
+    var scores={lure:50,float:50,bottom:50};
+    if(env==='jetty'||env==='reef'){scores.bottom+=15;scores.float+=10;}
+    if(env==='beach'||env==='sand_flat'){scores.bottom+=20;scores.lure+=5;}
+    if(env==='estuary'){scores.float+=15;scores.bottom+=10;}
+    if(depth==='shallow'){scores.lure+=10;scores.float+=5;}
+    if(depth==='deep'){scores.bottom+=15;scores.float+=10;}
+    if(flow==='strong'){scores.bottom+=15;scores.lure-=5;}
+    if(flow==='still'){scores.float+=10;scores.lure+=5;}
+    if(tide==='rising'||tide==='high'){scores.float+=10;scores.bottom+=5;}
+    if(tide==='falling'){scores.bottom+=10;}
+    if(tide==='dead'){scores.lure-=10;scores.bottom-=5;}
+    if(fish==='flathead'||fish==='bream'){scores.bottom+=15;scores.float+=10;}
+    if(fish==='trevally'||fish==='kingfish'){scores.lure+=20;}
+    if(fish==='squid'){scores.lure+=15;}
+    if(fish==='mulloway'){scores.bottom+=15;}
+    if(time==='dawn'||time==='dusk'){scores.lure+=10;scores.float+=5;}
+    if(time==='night'){scores.bottom+=10;scores.float+=5;}
+    if(chase==='yes'){scores.lure+=20;scores.bottom-=10;scores.float-=10;}
+    if(light==='backlit'||light==='low'){scores.lure+=5;}
+    if(quality==='murky'){scores.lure+=5;scores.bottom+=5;}
+
+    var sorted=Object.keys(scores).sort(function(a,b){return scores[b]-scores[a];});
+    var names={lure:'路亚钓法',float:'通用浮漂钓法',bottom:'沉底钓法'};
+    var result='<h4>🎯 大师作钓建议</h4>';
+    result+='<div style="margin:8px 0"><b>推荐排名：</b></div>';
+    sorted.forEach(function(method,i){
+        var rank=i+1;
+        var color=rank===1?'#27ae60':(rank===2?'#f39c12':'#95a5a6');
+        result+='<div style="margin:6px 0;padding:8px 12px;background:#f7f9fc;border-radius:8px;border-left:4px solid '+color+'">'
+            +'<b style="color:'+color+'">第'+rank+'名：'+names[method]+'</b>（匹配度 '+scores[method]+'分）</div>';
+    });
+
+    var best=sorted[0];
+    result+='<div style="margin-top:12px;padding:10px;background:#e8f4fd;border-radius:8px"><b>📋 首选方案详细配置：</b><br>';
+    if(best==='lure'){
+        result+='<b>装备</b>：路亚竿2.1-2.7m，轮3000，PE0.8，前导18lb<br>'
+            +'<b>饵</b>：勺子亮片7-12g（银/金）或铅头软饵7-14g<br>'
+            +'<b>手法</b>：慢卷+轻抽贴近结构搜索，快慢交替制造闪动<br>'
+            +'<b>优势</b>：高效率大范围搜索，不用活饵<br>'
+            +'<b>劣势</b>：底层底栖鱼难钓，对手法要求高';
+    }else if(best==='float'){
+        result+='<b>装备</b>：矶竿3.3m，轮2500，PE0.8，前导18lb，阿波B，咬铅2B<br>'
+            +'<b>饵料</b>：虾仁；窝料：碎沙丁鱼，每3-5分钟少量打窝<br>'
+            +'<b>手法</b>：调漂让饵贴底，顺流自然飘不绷线，看阿波下沉/走线刺鱼<br>'
+            +'<b>优势</b>：随流搜索大片水域，兼顾底中层，信号直观<br>'
+            +'<b>劣势</b>：强潮难控漂，学习门槛高';
+    }else{
+        result+='<b>装备</b>：竿2.4-2.7m，轮3000-4000，PE1.0，前导22lb，滑动铅14g，直柄圆钩1/0<br>'
+            +'<b>饵料</b>：新鲜虾仁/沙丁鱼块<br>'
+            +'<b>手法</b>：抛投至礁石-沙地交界，铅到底收紧虚线，看到持续出线等2-3秒刺鱼<br>'
+            +'<b>优势</b>：底层鱼命中率高，抗水流强，操作简单<br>'
+            +'<b>劣势</b>：只能钓底层，需频繁换饵，易挂礁石';
+    }
+    result+='</div>';
+
+    if(tide==='dead'){
+        result+='<div style="margin-top:10px;color:#e74c3c;font-weight:600">⚠ 当前死潮/平潮，鱼口较差，建议休息或换标点</div>';
+    }
+    if(chase==='yes'){
+        result+='<div style="margin-top:10px;color:#217ad9;font-weight:600">💡 检测到追炸水，优先路亚快速收线+短抽，模拟逃窜饵鱼</div>';
+    }
+
+    $('sceneResult').innerHTML=result;
+    $('sceneResult').classList.remove('hidden');
+}
+
 document.addEventListener('DOMContentLoaded',function(){
     updateSydneyTime();
     console.log('钓鱼大师助手初始化...');
@@ -574,6 +999,8 @@ document.addEventListener('DOMContentLoaded',function(){
     var osmMapStyle='https://raw.githubusercontent.com/openstreetmap/maplibre-gl-style-osm-bright/master/style.json';
     loadMapLibre(defaultMapStyle);
     renderSpotTable();
+
+    bind('btnSceneAnalyse','click',analyseScene);
 
     var photoFile=null;
     bind('photoInput','change',function(e){
@@ -603,7 +1030,7 @@ document.addEventListener('DOMContentLoaded',function(){
             +'<b>开阔沙滩</b>：远投沉底钓组，大克重铅，目标Flathead等底层鱼<br>'
             +'<b>开阔水面</b>：可以尝试路亚亮片搜索掠食鱼'
             +'</div>'
-            +'<div style="margin-top:8px;font-size:13px;color:#666">配合上方GPS经纬度+潮汐天气数据，综合判断最佳方案。</div>';
+            +'<div style="margin-top:8px;font-size:13px;color:#666">配合上方GPS经纬度+潮汐天气数据，综合判断最佳方案。也可以使用上方文字表单更精确地描述场景。</div>';
     });
 
     bind('mapSourceSel','change',async function(){
@@ -736,13 +1163,20 @@ document.addEventListener('DOMContentLoaded',function(){
     function fetchWeather(lng,lat){
         var box=$('weatherBox');
         var windBox=$('windDirBox');
+        var moonBox=$('moonBox');
         var tideBox=$('tideBox');
         var forecastBox=$('forecastBox');
         box.innerHTML='正在获取天气数据...';
         windBox.classList.add('hidden');
+        moonBox.classList.add('hidden');
         tideBox.classList.remove('hidden');
         tideBox.innerHTML=fetchTideMock();
         forecastBox.innerHTML="加载7天预报...";
+
+        var moon=getMoonPhase(new Date());
+        moonBox.classList.remove('hidden');
+        moonBox.innerHTML=moon.phaseEmoji+' 月相：<b>'+moon.phaseName+'</b>（'+moon.phasePct+'%亮度）| 月出：'+moon.moonrise+' 月落：'+moon.moonset
+            +'<br><span style="font-size:12px">🐟 钓鱼影响：'+moon.fishingImpact+'</span>';
 
         var url='https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lng
             +'&current=temperature_2m,pressure_msl,wind_speed_10m,wind_direction_10m,wave_height'
@@ -764,7 +1198,8 @@ document.addEventListener('DOMContentLoaded',function(){
                 press:c.pressure_msl,
                 wind:c.wind_speed_10m,
                 wave:c.wave_height||0,
-                windDeg:windDeg
+                windDeg:windDeg,
+                moonScore:moon.moonScore
             });
 
             var forecastHtml="";
@@ -778,8 +1213,9 @@ document.addEventListener('DOMContentLoaded',function(){
                 else if(wc>=60&&wc<70)weatherIcon="🌧";
                 else if(wc>=70&&wc<80)weatherIcon="❄";
                 else if(wc>=80)weatherIcon="⛈";
+                var dayMoon=getMoonPhase(new Date(daily.time[i]));
                 forecastHtml+='<div class="day-item">'
-                    +'<div class="day-date">'+weatherIcon+' '+daily.time[i]+'</div>'
+                    +'<div class="day-date">'+weatherIcon+' '+daily.time[i]+' '+dayMoon.phaseEmoji+' '+dayMoon.phaseName+'</div>'
                     +'<div class="day-info">最高'+daily.temperature_2m_max[i]+'℃ / 最低'+daily.temperature_2m_min[i]+'℃ | 最大风速'+daily.wind_speed_10m_max[i]+'km/h</div>'
                     +'</div>';
             }
@@ -795,11 +1231,13 @@ document.addEventListener('DOMContentLoaded',function(){
         var press=Number(w.press)||1013;
         var wind=Number(w.wind)||10;
         var wave=Number(w.wave)||0.5;
+        var moonScore=Number(w.moonScore)||0;
         var score=60;
         if(press>1013)score+=8;else if(press<1005)score-=10;
         if(wind<15)score+=5;else if(wind>25)score-=15;
         if(wave<1.0)score+=5;else if(wave>1.5)score-=12;
         if(temp>=15&&temp<=24)score+=5;else if(temp<12||temp>28)score-=8;
+        score+=moonScore;
         score=Math.max(0,Math.min(100,score));
 
         var scoreColor=score>=70?'#27ae60':(score>=50?'#f39c12':'#e74c3c');
@@ -808,7 +1246,7 @@ document.addEventListener('DOMContentLoaded',function(){
         $('fishScoreFill').style.width=score+'%';
 
         var advice='<div class="advice-block"><b>🌊 潮汐影响：</b>涨潮初~中期、落潮中期鱼口最佳；平潮鱼口差。满潮转流前后1小时为黄金咬口期。</div>';
-        advice+='<div class="advice-block"><b>🌙 月相影响：</b>满月/新月大潮水流强鱼活性高；弦月中潮适中；小潮水流弱需精细钓法。</div>';
+        advice+='<div class="advice-block"><b>🌙 月相影响：</b>满月/新月大潮水流强鱼活性高；弦月中潮适中；小潮水流弱需精细钓法。当前月相已纳入评分（'+(moonScore>=0?'+':'')+moonScore+'分）。</div>';
         advice+='<div class="advice-block"><b>🌤 天气影响：</b>';
         if(press>1013)advice+='气压偏高，鱼索饵积极；';
         else if(press<1005)advice+='气压偏低，鱼活性下降；';
@@ -863,9 +1301,9 @@ document.addEventListener('DOMContentLoaded',function(){
         tacticList.forEach(function(item){
             html+='<div class="tactic">'
                 +'<h4>'+item.title+' <span class="tactic-rank">评分：'+item.score+'</span></h4>'
-                +'<div class="equip">'+item.equip+'</div>'
-                +'<div class="bait">'+item.bait+'</div>'
-                +'<div class="skill">'+item.skill+'</div>'
+                +'<div style="font-weight:600;color:#333;margin:4px 0">'+item.equip+'</div>'
+                +'<div style="margin:3px 0;font-size:13px;color:#555">'+item.bait+'</div>'
+                +'<div style="margin:3px 0;font-size:13px;color:#555">'+item.skill+'</div>'
                 +'<div class="pros">'+item.pros+'</div>'
                 +'<div class="cons">'+item.cons+'</div>'
                 +'</div>';
