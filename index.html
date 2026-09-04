@@ -1042,25 +1042,28 @@ function fetchTidesAtlasTide(lat,lng){
 
 function renderTidesAtlasTide(data){
     var html="<div style='font-weight:700;margin-bottom:6px'>今日潮汐（TidesAtlas）：</div>";
-    var stationName=data.station_name||'自动匹配站点';
-    var distance=data.distance_km||null;
+    var stationName=(data.port&&data.port.name)?data.port.name:'自动匹配站点';
+    var distance=null;
+    if(data.port&&data.port.lat&&data.port.lon&&state.selectedLat&&state.selectedLng){
+        distance=haversineDistance(state.selectedLat,state.selectedLng,data.port.lat,data.port.lon);
+    }
     html+="<div style='font-size:11px;color:#217ad9;margin-bottom:6px'>数据来源："+stationName;
-    if(distance!=null)html+=" 距离约"+distance+"km";
+    if(distance!=null)html+=" 距离约"+distance.toFixed(1)+"km";
     html+="</div>";
     try{
-        var events=data.tide_events||data.events||[];
+        var events=data.extremes||data.tide_events||data.events||[];
         if(events.length>0){
             var today=new Date();
             var todayStr=today.toISOString().slice(0,10);
             var todayTides=events.filter(function(v){
-                var t=v.time||v.dateTime||'';
+                var t=v.datetime||v.time||v.dateTime||'';
                 return t.slice(0,10)===todayStr;
             });
             if(todayTides.length===0)todayTides=events.slice(0,6);
             todayTides.slice(0,8).forEach(function(v){
-                var t=v.time||v.dateTime||'';
+                var t=v.datetime||v.time||v.dateTime||'';
                 var time=t.slice(11,16);
-                var height=v.height!=null?v.height.toFixed(2)+'m':'--';
+                var height=v.height_m!=null?v.height_m.toFixed(2)+'m':(v.height!=null?v.height.toFixed(2)+'m':'--');
                 var type=(v.type==='low'||v.type==='低潮')?'低潮':'满潮';
                 if(v.tide_type)type=v.tide_type==='high'?'满潮':'低潮';
                 html+="<div style='margin:2px 0'>  "+time+"  "+type+"  "+height+"</div>";
