@@ -120,8 +120,8 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 <div id="itab-mapTab">
 <label style="font-size:13px;color:#666">地图源切换</label>
 <select id="mapSourceSel">
-<option value="default">MapLibre 默认</option>
-<option value="osm">OpenStreetMap</option>
+<option value="osm">OpenStreetMap 标准</option>
+<option value="maplibre">MapLibre 矢量</option>
 </select>
 <div id="map-container">地图加载中，请稍候...</div>
 <div id="locStatus" style="margin:8px 0;font-size:13px;color:#666">手动输入经纬度，或使用GPS定位，也可点击地图拾取坐标</div>
@@ -755,7 +755,7 @@ function showMapFallback(){
     });
 }
 
-async function loadMapLibre(mapStyleUrl){
+async function loadMapLibre(mapStyle){
     var mapDiv=$('map-container');
     mapDiv.innerText='地图加载中，请稍候...';
     if(!checkWebGL2()){
@@ -788,9 +788,10 @@ async function loadMapLibre(mapStyleUrl){
         clearTimeout(timeoutId);
         mapLibreLoaded=true;
         if(map)map.remove();
+        var isOsm=typeof mapStyle==='object';
         map=new maplibregl.Map({
             container:'map-container',
-            style:mapStyleUrl,
+            style:mapStyle,
             center:[151.2847,-33.8031],
             zoom:10
         });
@@ -799,9 +800,20 @@ async function loadMapLibre(mapStyleUrl){
             $('inpLng').value=e.lngLat.lng.toFixed(4);
             $('inpLat').value=e.lngLat.lat.toFixed(4);
         });
+        var styleFailed=false;
         map.on('error',function(e){
             console.warn("Map error:",e);
             if(e.error&&e.error.message&&e.error.message.indexOf('GPU')>-1){
+                map=null;
+                showMapFallback();
+                return;
+            }
+            if(!styleFailed&&!isOsm){
+                styleFailed=true;
+                console.warn("Style load failed, falling back to OSM tiles");
+                try{map.setStyle(OSM_STYLE);}catch(err){map=null;showMapFallback();}
+            }else if(!styleFailed&&isOsm){
+                styleFailed=true;
                 map=null;
                 showMapFallback();
             }
@@ -997,9 +1009,24 @@ function analyseScene(){
 document.addEventListener('DOMContentLoaded',function(){
     updateSydneyTime();
     console.log('钓鱼大师助手初始化...');
-    var defaultMapStyle='https://demotiles.maplibre.org/style.json';
-    var osmMapStyle='https://raw.githubusercontent.com/openstreetmap/maplibre-gl-style-osm-bright/master/style.json';
-    loadMapLibre(defaultMapStyle);
+    var OSM_STYLE={
+        version:8,
+        sources:{
+            osm:{
+                type:'raster',
+                tiles:[
+                    'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
+                ],
+                tileSize:256,
+                attribution:'&copy; OpenStreetMap contributors'
+            }
+        },
+        layers:[{id:'osm',type:'raster',source:'osm'}]
+    };
+    var maplibreStyle='https://demotiles.maplibre.org/style.json';
+    loadMapLibre(OSM_STYLE);
     renderSpotTable();
 
     document.querySelectorAll('.inner-tabs button').forEach(function(btn){
@@ -1054,11 +1081,11 @@ document.addEventListener('DOMContentLoaded',function(){
 
     bind('mapSourceSel','change',async function(){
         var sel=$('mapSourceSel').value;
-        var styleUrl=sel==='osm'?osmMapStyle:defaultMapStyle;
+        var styleObj=sel==='osm'?OSM_STYLE:maplibreStyle;
         if(mapLibreLoaded&&map){
-            try{map.setStyle(styleUrl);}catch(err){$('map-container').innerHTML='切换地图源失败，网络问题，其余功能正常';}
+            try{map.setStyle(styleObj);}catch(err){$('map-container').innerHTML='切换地图源失败，网络问题，其余功能正常';}
         }else{
-            await loadMapLibre(styleUrl);
+            await loadMapLibre(styleObj);
         }
     });
 
