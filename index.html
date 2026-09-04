@@ -1358,7 +1358,7 @@ function analyseScene(){
 }
 
 // 全局函数引用（在DOMContentLoaded初始化后赋值）
-var tryFetchTide, generateMockForecast, renderFishAdvice, renderTactics;
+var generateMockForecast, renderFishAdvice, renderTactics;
 
 function fetchWeather(lng,lat){
         var box=$('weatherBox');
@@ -1374,6 +1374,62 @@ function fetchWeather(lng,lat){
         tideBox.classList.remove('hidden');
         tideBox.innerHTML=fetchTideMock();
         forecastBox.innerHTML="加载7天预报...";
+
+                function tryFetchTide(){
+                    // 1. TidesAtlas（最高优先）
+                    if(state.tidesKey){
+                        fetchTidesAtlasTide(lat,lng)
+                        .then(function(data){
+                            tideBox.innerHTML=renderTidesAtlasTide(data);
+                            // 解析当前潮汐状态并更新鱼情分析
+                            var tidePhase=getCurrentTidePhase(data);
+                            if(tidePhase&&window._lastWeather){
+                                window._lastWeather.tidePhase=tidePhase;
+                                renderFishAdvice(window._lastWeather);
+                            }
+                        })
+                        .catch(function(err){
+                            console.warn("TidesAtlas潮汐获取失败，尝试WillyWeather:",err);
+                            // 2. WillyWeather（备选）
+                            if(state.wwKey){
+                                tryFetchWW();
+                            }
+                        });
+                        return;
+                    }
+                    // 2. 无TidesAtlas Key，直接用WillyWeather
+                    if(state.wwKey){
+                        tryFetchWW();
+                    }
+                }
+                function tryFetchWW(){
+                    var tideStationId=state.tideStation;
+                    var tideStationName='';
+                    var tideDistance=null;
+                    if(tideStationId==='auto'){
+                        var nearest=findNearestTideStation(lat,lng);
+                        if(nearest.station&&nearest.distance<100){
+                            tideStationId=nearest.station.id;
+                            tideStationName=nearest.station.name;
+                            tideDistance=nearest.distance;
+                        }else{
+                            tideBox.innerHTML+="<div style='color:#f39c12;font-size:11px;margin-top:4px'>当前位置超出预设站点范围，使用模拟潮汐</div>";
+                            tideStationId=null;
+                        }
+                    }else{
+                        var manualStation=TIDE_STATIONS.find(function(s){return String(s.id)===tideStationId;});
+                        if(manualStation){tideStationName=manualStation.name+' (手动选择)';}
+                    }
+                    if(tideStationId){
+                        fetchWillyWeatherTide(tideStationId,tideStationName,tideDistance)
+                        .then(function(result){
+                            tideBox.innerHTML=renderWillyWeatherTide(result);
+                        })
+                        .catch(function(err){
+                            console.warn("WillyWeather潮汐获取失败，使用模拟:",err);
+                        });
+                    }
+                }
 
         // 潮汐数据源优先级：TidesAtlas → WillyWeather → 模拟潮汐
     
@@ -1708,61 +1764,6 @@ document.addEventListener('DOMContentLoaded',function(){
         a.href=url;a.download='fishing_spots.json';a.click();
     });
 
-    function tryFetchTide(){
-            // 1. TidesAtlas（最高优先）
-            if(state.tidesKey){
-                fetchTidesAtlasTide(lat,lng)
-                .then(function(data){
-                    tideBox.innerHTML=renderTidesAtlasTide(data);
-                    // 解析当前潮汐状态并更新鱼情分析
-                    var tidePhase=getCurrentTidePhase(data);
-                    if(tidePhase&&window._lastWeather){
-                        window._lastWeather.tidePhase=tidePhase;
-                        renderFishAdvice(window._lastWeather);
-                    }
-                })
-                .catch(function(err){
-                    console.warn("TidesAtlas潮汐获取失败，尝试WillyWeather:",err);
-                    // 2. WillyWeather（备选）
-                    if(state.wwKey){
-                        tryFetchWW();
-                    }
-                });
-                return;
-            }
-            // 2. 无TidesAtlas Key，直接用WillyWeather
-            if(state.wwKey){
-                tryFetchWW();
-            }
-        }
-        function tryFetchWW(){
-            var tideStationId=state.tideStation;
-            var tideStationName='';
-            var tideDistance=null;
-            if(tideStationId==='auto'){
-                var nearest=findNearestTideStation(lat,lng);
-                if(nearest.station&&nearest.distance<100){
-                    tideStationId=nearest.station.id;
-                    tideStationName=nearest.station.name;
-                    tideDistance=nearest.distance;
-                }else{
-                    tideBox.innerHTML+="<div style='color:#f39c12;font-size:11px;margin-top:4px'>当前位置超出预设站点范围，使用模拟潮汐</div>";
-                    tideStationId=null;
-                }
-            }else{
-                var manualStation=TIDE_STATIONS.find(function(s){return String(s.id)===tideStationId;});
-                if(manualStation){tideStationName=manualStation.name+' (手动选择)';}
-            }
-            if(tideStationId){
-                fetchWillyWeatherTide(tideStationId,tideStationName,tideDistance)
-                .then(function(result){
-                    tideBox.innerHTML=renderWillyWeatherTide(result);
-                })
-                .catch(function(err){
-                    console.warn("WillyWeather潮汐获取失败，使用模拟:",err);
-                });
-            }
-        }
     function generateMockForecast(){
         var html="";
         var today=new Date();
@@ -1946,7 +1947,6 @@ document.addEventListener('DOMContentLoaded',function(){
     }
     renderRateLimitUi();
     // 将内部函数暴露到全局，供fetchWeather调用
-    tryFetchTide = window.tryFetchTide = tryFetchTide;
     generateMockForecast = window.generateMockForecast = generateMockForecast;
     renderFishAdvice = window.renderFishAdvice = renderFishAdvice;
     renderTactics = window.renderTactics = renderTactics;
