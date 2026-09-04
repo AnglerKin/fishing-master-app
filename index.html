@@ -32,13 +32,15 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#217ad9;backgr
 .modal-tabs{display:flex;gap:2px;margin-bottom:16px;border-bottom:2px solid #e8edf4;flex-wrap:wrap}
 .modal-tabs button{border:none;background:transparent;padding:7px 10px;border-radius:8px 8px 0 0;cursor:pointer;font-size:12px;color:#6c757d;font-weight:500;transition:all .2s;white-space:nowrap}
 .modal-tabs button.active{background:#0f4c81;color:#fff;font-weight:700}
+.inner-tabs{display:flex;gap:2px;margin-bottom:12px;border-bottom:2px solid #e8edf4}
+.inner-tabs button{border:none;background:transparent;padding:8px 14px;border-radius:8px 8px 0 0;cursor:pointer;font-size:13px;color:#6c757d;font-weight:500;transition:all .2s}
+.inner-tabs button.active{background:#0f4c81;color:#fff;font-weight:700}
 .teach-step{padding:10px 0;border-bottom:1px dashed #e0e6ef;line-height:1.6}
 .teach-step:last-child{border-bottom:none}
 .teach-step b{color:#0f4c81;font-size:14px}
 .teach-step .step-num{display:inline-block;width:26px;height:26px;line-height:26px;text-align:center;background:#0f4c81;color:#fff;border-radius:50%;font-size:13px;font-weight:700;margin-right:8px}
 pre{white-space:pre-wrap;font-size:12px;background:#f4f7fa;padding:12px;border-radius:8px;line-height:1.7;border:1px solid #e8edf4;overflow-x:auto}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 .tactic{border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin:10px 0;background:linear-gradient(135deg,#fafbfc,#fff);transition:all .2s}
 .tactic:hover{box-shadow:0 4px 14px rgba(0,0,0,.08);transform:translateY(-2px)}
 .tactic h4{color:#0f4c81;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;font-size:15px}
@@ -87,6 +89,14 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 .form-grid label{font-size:12px;color:#666;font-weight:600}
 .scene-result{margin-top:12px;padding:14px;background:#f7f9fc;border-radius:10px;border:1px solid #e8edf4}
 .scene-result h4{color:#0f4c81;margin-bottom:8px}
+.factor-score{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f0f2f5;font-size:13px}
+.factor-score:last-child{border-bottom:none}
+.factor-bar{height:6px;background:#e8edf4;border-radius:3px;flex:1;margin:0 10px;overflow:hidden}
+.factor-fill{height:100%;border-radius:3px;transition:width .5s}
+.collapse-header{cursor:pointer;padding:10px;background:#f7f9fc;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-weight:600;color:#0f4c81;margin:8px 0}
+.collapse-header:hover{background:#e8f4fd}
+.collapse-content{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.collapse-content.open{max-height:5000px;overflow-y:auto}
 </style>
 </head>
 <body>
@@ -100,16 +110,37 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 
 <div class="card">
 <h3><span class="icon">🗺</span>地图与钓点</h3>
+<div class="inner-tabs">
+<button class="active" data-itab="mapTab">地图/GPS</button>
+<button data-itab="textTab">文字场景</button>
+<button data-itab="photoTab">照片分析</button>
+</div>
+
+<div id="itab-mapTab">
 <label style="font-size:13px;color:#666">地图源切换</label>
 <select id="mapSourceSel">
 <option value="default">MapLibre 默认</option>
 <option value="osm">OpenStreetMap</option>
 </select>
-<div id="map-container">地图加载中...</div>
+<div id="map-container">地图加载中，请稍候...</div>
+<div id="locStatus" style="margin:8px 0;font-size:13px;color:#666">手动输入经纬度，或使用GPS定位，也可点击地图拾取坐标</div>
+<div id="locRegion" style="margin-bottom:10px;color:#0f4c81;font-weight:700;font-size:14px"></div>
+<div class="grid2">
+<div>经度:<input id="inpLng" placeholder="如 151.2847"></div>
+<div>纬度:<input id="inpLat" placeholder="如 -33.8031"></div>
+</div>
+<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+<button class="btn" id="btnRefresh">刷新钓点分析</button>
+<button class="btn btn-gps" id="btnGps">📍 GPS定位</button>
+<button class="btn" id="btnSaveSpot">💾 保存钓点</button>
+</div>
+<div style="margin-top:8px">
+<label style="font-size:13px;color:#666">钓点备注</label>
+<input id="spotNote" placeholder="例如：悉尼码头，涨潮作钓">
+</div>
 </div>
 
-<div class="card">
-<h3><span class="icon">📝</span>文字描述钓点场景（获取大师建议）</h3>
+<div id="itab-textTab" class="hidden">
 <div class="form-grid">
 <div><label>钓点环境</label><select id="scEnv"><option value="">请选择</option><option value="jetty">码头/栈桥</option><option value="reef">礁石岸/岩礁</option><option value="rocky_shore">乱石滩</option><option value="beach">沙滩/沙底</option><option value="sand_flat">沙泥平滩</option><option value="estuary">河口/咸淡水</option><option value="inland_river">内河/淡水河</option></select></div>
 <div><label>水深</label><select id="scDepth"><option value="">请选择</option><option value="shallow">浅水(1-3m)</option><option value="medium">中水(3-7m)</option><option value="deep">深水(7-12m+)</option></select></div>
@@ -126,12 +157,12 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 <div id="sceneResult" class="scene-result hidden"></div>
 </div>
 
-<div class="card">
-<h3><span class="icon">📷</span>上传钓点现场照片</h3>
+<div id="itab-photoTab" class="hidden">
 <input type="file" id="photoInput" accept="image/*">
 <div><img id="photoPreview" class="hidden" alt="预览图片"></div>
 <button class="btn" id="btnAnalysePhoto" style="margin-top:8px;">分析钓点图片给出作钓建议</button>
 <div id="photoAdvice" style="margin-top:10px;line-height:1.7;"></div>
+</div>
 </div>
 
 <div class="modal" id="modalTeach">
@@ -162,14 +193,13 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 <button data-mtab="bait">饵库</button>
 <button data-mtab="tide">潮汐</button>
 </div>
-
 <div class="modal-tab-content" id="mtab-overview">
 <h4 style="color:#0f4c81;margin:10px 0">季节作钓指南</h4>
 <table class="manual-table"><thead><tr><th>季节</th><th>月份</th><th>水温</th><th>目标鱼种</th><th>最佳钓法</th><th>备注</th></tr></thead><tbody>
-<tr><td>夏季</td><td>12-2月</td><td>20-26°C</td><td>Bream、Flathead、Trevally、鱿鱼</td><td>路亚、浮漂、夜钓沉底</td><td>早晚窗口期，午间休息；鱿鱼季1-3月</td></tr>
-<tr><td>秋季</td><td>3-5月</td><td>17-22°C</td><td>Bream、Flathead、海鲈、Kingfish</td><td>沉底、路亚、浮漂</td><td>水温稳定，全天可钓；Kingfish洄游</td></tr>
-<tr><td>冬季</td><td>6-8月</td><td>12-17°C</td><td>海鲈、Mulloway、Bream</td><td>沉底钓、深水浮漂</td><td>钓深水，操作放慢；Mulloway冬季活跃</td></tr>
-<tr><td>春季</td><td>9-11月</td><td>15-20°C</td><td>Bream、Flathead、Trevally</td><td>路亚、浮漂</td><td>鱼活性回升，近岸产卵；黄金季节开始</td></tr>
+<tr><td>夏季</td><td>12-2月</td><td>20-26C</td><td>Bream、Flathead、Trevally、鱿鱼</td><td>路亚、浮漂、夜钓沉底</td><td>早晚窗口期，午间休息；鱿鱼季1-3月</td></tr>
+<tr><td>秋季</td><td>3-5月</td><td>17-22C</td><td>Bream、Flathead、海鲈、Kingfish</td><td>沉底、路亚、浮漂</td><td>水温稳定，全天可钓；Kingfish洄游</td></tr>
+<tr><td>冬季</td><td>6-8月</td><td>12-17C</td><td>海鲈、Mulloway、Bream</td><td>沉底钓、深水浮漂</td><td>钓深水，操作放慢；Mulloway冬季活跃</td></tr>
+<tr><td>春季</td><td>9-11月</td><td>15-20C</td><td>Bream、Flathead、Trevally</td><td>路亚、浮漂</td><td>鱼活性回升，近岸产卵；黄金季节开始</td></tr>
 </tbody></table>
 <h4 style="color:#0f4c81;margin:14px 0 8px">潮汐窗口总纲</h4>
 <div style="line-height:1.8;font-size:13px">
@@ -186,7 +216,6 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 - 夜间作钓至少2人同行，告知家人位置
 </div>
 </div>
-
 <div class="modal-tab-content hidden" id="mtab-lure">
 <h4 style="color:#0f4c81;margin:10px 0">码头/礁石/沙滩路亚策略对比</h4>
 <table class="manual-table"><thead><tr><th>场景</th><th>首选饵型</th><th>克重</th><th>颜色</th><th>目标鱼</th><th>核心手法</th></tr></thead><tbody>
@@ -210,14 +239,7 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 - 操作：贴底慢拖+小跳+停顿；咬口多在下落飘落时<br>
 - 优势：礁石区耐挂底（vs亮片），鱼咬得深
 </div>
-<h4 style="color:#0f4c81;margin:14px 0 8px">钩型选择</h4>
-<div style="line-height:1.8;font-size:13px">
-- 亮片原装三本钩（Treble #6-#10）：标准配置<br>
-- 单钩替换（去倒刺 #1/0-#2/0）：环保放流，减少挂底<br>
-- 铅头钩曲柄钩（1/8-1/4 oz）：软饵专用
 </div>
-</div>
-
 <div class="modal-tab-content hidden" id="mtab-float">
 <h4 style="color:#0f4c81;margin:10px 0">浮漂钓法分类</h4>
 <table class="manual-table"><thead><tr><th>类型</th><th>漂型</th><th>适用场景</th><th>水深</th><th>难度</th></tr></thead><tbody>
@@ -240,10 +262,10 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 <tr><td>3号</td><td>11.0</td><td>很大</td><td>深水/强流/大风</td><td>大咬铅多颗配重</td></tr>
 </tbody></table>
 <h4 style="color:#0f4c81;margin:14px 0 8px">核心钓组结构（阿波漂）</h4>
-<pre class="diagram">主线 → 棉线结 → 阿波漂 → 水中漂 → 卡拉曼棒 → 8字转环
-                                                  ↓
+<pre class="diagram">主线 -> 棉线结 -> 阿波漂 -> 水中漂 -> 卡拉曼棒 -> 8字转环
+                                                  |
                                           子线(1.5-3m) + 咬铅
-                                                  ↓
+                                                  |
                                                   鱼钩 + 饵</pre>
 <h4 style="color:#0f4c81;margin:14px 0 8px">调漂要领</h4>
 <div style="line-height:1.8;font-size:13px">
@@ -253,12 +275,11 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 </div>
 <h4 style="color:#0f4c81;margin:14px 0 8px">咬钩识别</h4>
 <div style="line-height:1.8;font-size:13px">
-- 阿波快速下沉（黑漂）→ 大鱼吞饵，立刻扬竿<br>
-- 阿波横向走线 → 鱼衔饵游走，等1-2秒扬竿<br>
-- 阿波上下点动 → 小鱼啄饵或大鱼试探，耐心等
+- 阿波快速下沉（黑漂）-> 大鱼吞饵，立刻扬竿<br>
+- 阿波横向走线 -> 鱼衔饵游走，等1-2秒扬竿<br>
+- 阿波上下点动 -> 小鱼啄饵或大鱼试探，耐心等
 </div>
 </div>
-
 <div class="modal-tab-content hidden" id="mtab-bottom">
 <h4 style="color:#0f4c81;margin:10px 0">沉底钓法分类</h4>
 <table class="manual-table"><thead><tr><th>钓法</th><th>铅坠方式</th><th>适用场景</th><th>目标鱼</th><th>难度</th></tr></thead><tbody>
@@ -292,82 +313,80 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 1. 抛投后收紧余线，竿尖保持微弯<br>
 2. Circle圆钩<b>不要猛扬竿</b>，看到出线后缓慢绷紧收线即自动刺鱼<br>
 3. 中鱼后第一时间把鱼拉出结构区（礁石/木桩）<br>
-4. 同位置20-30分钟无口 → 换标点或换饵<br>
+4. 同位置20-30分钟无口 -> 换标点或换饵<br>
 5. 滑铅坠必须通心可滑动，死铅鱼会吐饵
 </div>
 </div>
-
 <div class="modal-tab-content hidden" id="mtab-rig">
 <h4 style="color:#0f4c81;margin:10px 0">8种钓组完整装配图</h4>
 <table class="manual-table"><thead><tr><th>编号</th><th>钓组名称</th><th>类别</th><th>适用场景</th></tr></thead><tbody>
-<tr><td>1</td><td>直出亮片钓组</td><td>路亚</td><td>表层至中上层掠食鱼·近岸结构·码头防波桩</td></tr>
-<tr><td>2</td><td>铅头钩软饵钓组</td><td>路亚</td><td>底层Flathead/Bream·礁石沙底交界·结构边</td></tr>
-<tr><td>3</td><td>阿波漂钓组</td><td>浮漂</td><td>礁石岸矶钓·码头边·近岸结构·Bream/海鲈</td></tr>
-<tr><td>4</td><td>立漂钓组</td><td>浮漂</td><td>内湾静水·码头内侧·沙质浅滩·轻矶钓</td></tr>
-<tr><td>5</td><td>码头滑铅钓组</td><td>沉底</td><td>码头沉底钓·防波堤内·近岸礁石底·Bream/Flathead</td></tr>
-<tr><td>6</td><td>沙滩远投钓组</td><td>沉底</td><td>沙滩远投·冲浪带·浪槽内侧·Whiting/Flathead</td></tr>
-<tr><td>7</td><td>礁石沉底钓组</td><td>沉底</td><td>礁石区·岩礁底·结构复杂水域·大鱼/石斑类</td></tr>
-<tr><td>8</td><td>夜钓沉底钓组</td><td>沉底</td><td>夜钓·码头灯下·礁石边·海鲈/真鲷/石斑</td></tr>
+<tr><td>1</td><td>直出亮片钓组</td><td>路亚</td><td>表层至中上层掠食鱼-近岸结构-码头防波桩</td></tr>
+<tr><td>2</td><td>铅头钩软饵钓组</td><td>路亚</td><td>底层Flathead/Bream-礁石沙底交界-结构边</td></tr>
+<tr><td>3</td><td>阿波漂钓组</td><td>浮漂</td><td>礁石岸矶钓-码头边-近岸结构-Bream/海鲈</td></tr>
+<tr><td>4</td><td>立漂钓组</td><td>浮漂</td><td>内湾静水-码头内侧-沙质浅滩-轻矶钓</td></tr>
+<tr><td>5</td><td>码头滑铅钓组</td><td>沉底</td><td>码头沉底钓-防波堤内-近岸礁石底-Bream/Flathead</td></tr>
+<tr><td>6</td><td>沙滩远投钓组</td><td>沉底</td><td>沙滩远投-冲浪带-浪槽内侧-Whiting/Flathead</td></tr>
+<tr><td>7</td><td>礁石沉底钓组</td><td>沉底</td><td>礁石区-岩礁底-结构复杂水域-大鱼/石斑类</td></tr>
+<tr><td>8</td><td>夜钓沉底钓组</td><td>沉底</td><td>夜钓-码头灯下-礁石边-海鲈/真鲷/石斑</td></tr>
 </tbody></table>
 <h4 style="color:#0f4c81;margin:14px 0 8px">码头滑铅钓组</h4>
 <pre class="diagram">竿尖
- │
- ▼
+ |
+ v
 【主线】 PE 1.0-1.5号
- │
- ▼
-【通心滑动铅】 10-18g 梨形/橄榄形  ← 可自由滑动
- │
- ▼
-【挡豆/太空豆】  ← 限制铅坠下滑位置
- │
- ▼
+ |
+ v
+【通心滑动铅】 10-18g 梨形/橄榄形  <- 可自由滑动
+ |
+ v
+【挡豆/太空豆】  <- 限制铅坠下滑位置
+ |
+ v
 【8字转环】
- │
- ▼
-【子线】 氟碳 20-25lb · 80-120cm
- │
- ▼
-【Circle圆钩】 1/0-2/0  ← 挂饵（虾仁/鱿鱼条/鱼肉块）</pre>
+ |
+ v
+【子线】 氟碳 20-25lb - 80-120cm
+ |
+ v
+【Circle圆钩】 1/0-2/0  <- 挂饵（虾仁/鱿鱼条/鱼肉块）</pre>
 <h4 style="color:#0f4c81;margin:14px 0 8px">阿波漂钓组</h4>
 <pre class="diagram">竿尖
- │
- ▼
+ |
+ v
 【主线】 PE 0.8-1.2号
- │
- ▼
-【棉线结】  ← 控制钓棚深度
- │
- ▼
+ |
+ v
+【棉线结】  <- 控制钓棚深度
+ |
+ v
 【阿波漂】 B-3B号
- │
- ▼
-【水中漂/咬铅】  ← 配重调整
- │
- ▼
-【卡拉曼棒】 → 【8字转环】
- │
- ▼
-【子线】 氟碳 12-18lb · 1.5-3m
- │
- ▼
-【鱼钩】 矶钓钩2-4号  ← 虾仁/南极虾</pre>
+ |
+ v
+【水中漂/咬铅】  <- 配重调整
+ |
+ v
+【卡拉曼棒】 -> 【8字转环】
+ |
+ v
+【子线】 氟碳 12-18lb - 1.5-3m
+ |
+ v
+【鱼钩】 矶钓钩2-4号  <- 虾仁/南极虾</pre>
 <h4 style="color:#0f4c81;margin:14px 0 8px">直出亮片钓组</h4>
 <pre class="diagram">竿尖
- │
- ▼
+ |
+ v
 【主线】 PE 0.8-1.0号
- │
- ▼
-【8字转环】  ← 防缠绕
- │
- ▼
-【前导】 氟碳 18-22lb · 约1米
- │
- ▼
+ |
+ v
+【8字转环】  <- 防缠绕
+ |
+ v
+【前导】 氟碳 18-22lb - 约1米
+ |
+ v
 【亮片/软饵】 勺子7-12g / 铅头软饵7-14g</pre>
 </div>
-
 <div class="modal-tab-content hidden" id="mtab-weight">
 <h4 style="color:#0f4c81;margin:10px 0">咬铅对照表</h4>
 <table class="manual-table"><thead><tr><th>型号</th><th>克重(g)</th><th>说明</th><th>应用场景</th></tr></thead><tbody>
@@ -416,30 +435,29 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 - 深7-12m强流：勺子18-22g / 旋转18-24g
 </div>
 </div>
-
 <div class="modal-tab-content hidden" id="mtab-gear">
 <h4 style="color:#0f4c81;margin:10px 0">澳洲NSW钓鱼装备采购清单</h4>
 <h4 style="color:#0f4c81;margin:12px 0 6px">鱼竿类（3支）</h4>
 <div style="line-height:1.8;font-size:13px">
-1. Shimano Maikuro II 2.1m 路亚竿 ML调 ✓ 已有 - 主力路亚竿，近海通用<br>
+1. Shimano Maikuro II 2.1m 路亚竿 ML调 - 已有 - 主力路亚竿，近海通用<br>
 2. 矶竿/海竿 3.0-3.6m 中调 - 浮漂钓/沉底钓必备，建议2号矶竿<br>
 3. 远投竿 3.9-4.2m 40-80g抛投 - 沙滩远投沉底用
 </div>
 <h4 style="color:#0f4c81;margin:12px 0 6px">渔轮类（2个）</h4>
 <div style="line-height:1.8;font-size:13px">
-1. Savage SG 3000H 纺车轮 高速比 ✓ 已有 - 主线容量PE1.0/150m<br>
+1. Savage SG 3000H 纺车轮 高速比 - 已有 - 主线容量PE1.0/150m<br>
 2. 远投轮 5000-6000型 - 沙滩远投沉底用，线容量要大
 </div>
 <h4 style="color:#0f4c81;margin:12px 0 6px">线类（4种）</h4>
 <div style="line-height:1.8;font-size:13px">
-1. PE主线 0.8-1.0号 ✓ 已有 - 路亚常用<br>
+1. PE主线 0.8-1.0号 - 已有 - 路亚常用<br>
 2. PE主线 1.2-1.5号 - 远投沉底/深场浮漂用<br>
-3. 氟碳前导 18-22lb ✓ 已有 - 路亚通用前导<br>
+3. 氟碳前导 18-22lb - 已有 - 路亚通用前导<br>
 4. 氟碳前导（粗号）25-30lb - 沉底钓/礁石区/大鱼必备
 </div>
 <h4 style="color:#0f4c81;margin:12px 0 6px">路亚饵（5种）</h4>
 <div style="line-height:1.8;font-size:13px">
-1. 勺子亮片套装 3-7g多色 ✓ 已有 - 建议补充10-18g<br>
+1. 勺子亮片套装 3-7g多色 - 已有 - 建议补充10-18g<br>
 2. 旋转亮片套装 10-20g银/金叶片 - 浑水震动诱鱼效果好<br>
 3. 铅头软饵套装 7-14g桨尾/卷尾 - 礁石区耐挂<br>
 4. 深潜米诺 12-18g长舌板 - 中上层掠食鱼/追炸水<br>
@@ -461,13 +479,7 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 1. Circle圆钩 1/0-3/0 Non-offset - 沉底钓必备<br>
 2. 矶钓黑鲷钩 #3-#6 - 浮漂钓Bream/黑鲷用
 </div>
-<h4 style="color:#0f4c81;margin:12px 0 6px">配件类（2种）</h4>
-<div style="line-height:1.8;font-size:13px">
-1. 8字转环/太空豆 小-中号 - 沉底钓/浮漂钓必备<br>
-2. 挡豆/卡拉曼棒 小号 - 浮漂钓线组配件
 </div>
-</div>
-
 <div class="modal-tab-content hidden" id="mtab-bait">
 <h4 style="color:#0f4c81;margin:10px 0">活饵/冷冻饵对照表</h4>
 <table class="manual-table"><thead><tr><th>饵料</th><th>形态</th><th>目标鱼种</th><th>最佳季节</th><th>挂法</th><th>备注</th></tr></thead><tbody>
@@ -493,7 +505,6 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 - 路亚：不需要打窝，但可以抛洒少量碎虾引鱼
 </div>
 </div>
-
 <div class="modal-tab-content hidden" id="mtab-tide">
 <h4 style="color:#0f4c81;margin:10px 0">潮汐基础</h4>
 <div style="line-height:1.8;font-size:13px">
@@ -510,14 +521,14 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 </tbody></table>
 <h4 style="color:#0f4c81;margin:14px 0 8px">作钓窗口</h4>
 <div style="line-height:1.8;font-size:13px">
-<b>最佳窗口</b>：涨潮前1小时 → 满潮+1小时（鱼随潮水涌入近岸）<br>
+<b>最佳窗口</b>：涨潮前1小时 -> 满潮+1小时（鱼随潮水涌入近岸）<br>
 <b>次佳窗口</b>：落潮初期1-2小时（鱼随退潮撤出，在深槽集中）<br>
 <b>最差窗口</b>：死潮/平潮顶（高低潮前后30分钟，水流静止）<br>
 <b>转流瞬间</b>：平潮转流后15-30分钟，往往出现咬口高峰
 </div>
 <h4 style="color:#0f4c81;margin:14px 0 8px">潮汐与鱼种对应</h4>
 <table class="manual-table"><thead><tr><th>鱼种</th><th>最佳潮汐</th><th>水层</th><th>备注</th></tr></thead><tbody>
-<tr><td>Bream黑鲷</td><td>涨潮→满潮</td><td>中下层</td><td>潮水越大越活跃</td></tr>
+<tr><td>Bream黑鲷</td><td>涨潮->满潮</td><td>中下层</td><td>潮水越大越活跃</td></tr>
 <tr><td>Flathead牛尾鱼</td><td>刚退潮初期</td><td>底层</td><td>退潮时在沙地埋伏</td></tr>
 <tr><td>Trevally鲹鱼</td><td>涨潮-满潮</td><td>中上层</td><td>追炸水，活跃于流里</td></tr>
 <tr><td>海鲈</td><td>涨潮后期-满潮</td><td>全水层</td><td>结构边伏击</td></tr>
@@ -532,22 +543,25 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 - 初一十五赶大潮，二十三来小潮还
 </div>
 </div>
-
 <div style="margin-top:16px;text-align:center"><button class="btn" onclick="closeModal('modalManual')">关闭</button></div>
 </div>
 </div>
 
 <div class="modal" id="modalSetting">
 <div class="modal-box">
-<h3>⚙ 设置</h3>
+<h3>设置</h3>
 <div style="margin:10px 0">
-<label style="font-size:13px;color:#666">WillyWeather代理地址</label>
-<input id="proxyUrl" placeholder="https://你的项目名.vercel.app/api/ww-proxy">
+<label style="font-size:13px;color:#666">WillyWeather API Key</label>
+<input id="wwKey" placeholder="填入你的WillyWeather API Key">
+</div>
+<div style="margin:10px 0">
+<label style="font-size:13px;color:#666">WillyWeather代理地址（可选）</label>
+<input id="proxyUrl" placeholder="默认使用 /wwapi 代理路径">
 </div>
 <div style="font-size:12px;color:#888;margin:8px 0;line-height:1.6">
-部署Vercel后填入代理地址；为空则使用Open-Meteo免费模型数据。<br>
-代理格式：https://你的项目名.vercel.app/api/ww-proxy<br>
-WillyWeather提供更精准的澳洲本地潮汐和天气数据。
+填入WillyWeather API Key后，潮汐数据将从WillyWeather获取真实数据。<br>
+不填Key则使用模拟潮汐数据。需要在仓库根目录配置vercel.json代理。<br>
+代理格式：/wwapi -> https://api.willyweather.com.au
 </div>
 <div style="margin-top:14px;text-align:center">
 <button class="btn" id="saveSetting">保存设置</button>
@@ -558,37 +572,26 @@ WillyWeather提供更精准的澳洲本地潮汐和天气数据。
 
 <div id="page-live">
 <div class="card">
-<h3><span class="icon">📍</span>钓点状态</h3>
-<div id="locStatus" style="margin-bottom:8px;font-size:13px;color:#666">手动输入经纬度，或使用GPS定位，也可点击地图拾取坐标</div>
-<div id="locRegion" style="margin-bottom:10px;color:#0f4c81;font-weight:700;font-size:14px"></div>
-<div class="grid2">
-<div>经度:<input id="inpLng" placeholder="如 151.2847"></div>
-<div>纬度:<input id="inpLat" placeholder="如 -33.8031"></div>
-</div>
-<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
-<button class="btn" id="btnRefresh">刷新钓点分析</button>
-<button class="btn btn-gps" id="btnGps">📍 GPS定位</button>
-<button class="btn" id="btnSaveSpot">💾 保存钓点</button>
-</div>
-<div style="margin-top:8px">
-<label style="font-size:13px;color:#666">钓点备注</label>
-<input id="spotNote" placeholder="例如：悉尼码头，涨潮作钓">
-</div>
-</div>
-
-<div class="card">
 <h3><span class="icon">🌤</span>实况信息</h3>
-<div class="time-label">🕐 悉尼本地时间：<span class="clock" id="localTime"></span></div>
+<div class="time-label">悉尼本地时间：<span class="clock" id="localTime"></span></div>
 <div id="weatherBox" style="line-height:1.8">点击"刷新钓点分析"获取天气</div>
 <div id="moonBox" class="moon-block hidden"></div>
 <div id="windDirBox" class="wind-dir-block hidden"></div>
 <div id="tideBox" class="tide-block hidden"></div>
+<div class="collapse-header" id="forecastToggle">
+<span>📅 7天预报（点击展开）</span>
+<span id="forecastArrow">▼</span>
+</div>
+<div class="collapse-content" id="forecastContent">
+<div id="forecastBox">选择钓点后显示7天预报</div>
+</div>
 </div>
 
 <div class="card">
-<h3><span class="icon">📊</span>鱼情分析</h3>
+<h3><span class="icon">📊</span>鱼情综合分析</h3>
 <div id="fishScore" style="margin-bottom:8px">--</div>
 <div id="fishScoreBar" class="fish-score-bar hidden"><div class="fish-score-fill" id="fishScoreFill" style="width:0%"></div></div>
+<div id="fishFactors" style="margin:10px 0"></div>
 <div id="fishAdvice" style="margin-top:10px;line-height:1.7"></div>
 </div>
 
@@ -615,7 +618,7 @@ WillyWeather提供更精准的澳洲本地潮汐和天气数据。
 <div id="page-forecast" class="hidden">
 <div class="card">
 <h3><span class="icon">📅</span>7天预报和鱼情</h3>
-<div id="forecastBox">选择钓点后显示7天预报</div>
+<div id="forecastBox2">选择钓点后显示7天预报</div>
 </div>
 </div>
 
@@ -728,7 +731,7 @@ var presetSpots=[
 
 function showMapFallback(){
     var div=$('map-container');
-    var html='<div class="map-fallback"><h4>🗺 地图加载失败（网络/WebGL限制）</h4>'
+    var html='<div class="map-fallback"><h4>地图加载失败（网络/WebGL限制）</h4>'
         +'<p style="font-size:13px;color:#666;margin-bottom:8px">GPS定位、经纬度输入、钓点库、天气分析全部可用</p>'
         +'<p style="font-size:13px;color:#0f4c81;font-weight:600;margin-bottom:6px">快速选择悉尼钓点：</p>'
         +'<div class="spot-cards">';
@@ -758,11 +761,18 @@ function showMapFallback(){
 
 async function loadMapLibre(mapStyleUrl){
     var mapDiv=$('map-container');
+    mapDiv.innerText='地图加载中，请稍候...';
     if(!checkWebGL2()){
         console.warn("WebGL2 not supported, using fallback");
         showMapFallback();
         return;
     }
+    var timeoutId=setTimeout(function(){
+        if(!mapLibreLoaded){
+            console.warn("Map load timeout, using fallback");
+            showMapFallback();
+        }
+    },10000);
     try{
         var css=document.createElement('link');
         css.rel='stylesheet';
@@ -779,6 +789,7 @@ async function loadMapLibre(mapStyleUrl){
             };
             document.head.appendChild(script);
         });
+        clearTimeout(timeoutId);
         mapLibreLoaded=true;
         if(map)map.remove();
         map=new maplibregl.Map({
@@ -802,6 +813,7 @@ async function loadMapLibre(mapStyleUrl){
         await new Promise(function(resolve){map.on('load',resolve);});
         mapDiv.innerText='';
     }catch(err){
+        clearTimeout(timeoutId);
         console.warn("MapLibre地图加载失败：",err);
         map=null;
         showMapFallback();
@@ -810,12 +822,12 @@ async function loadMapLibre(mapStyleUrl){
 
 function fetchTideMock(){
     var tidePoints=[
-        {time:"05:20",type:"🌊 满潮"},
-        {time:"11:45",type:"⬇ 低潮"},
-        {time:"17:30",type:"🌊 满潮"},
-        {time:"23:55",type:"⬇ 低潮"}
+        {time:"05:20",type:"满潮"},
+        {time:"11:45",type:"低潮"},
+        {time:"17:30",type:"满潮"},
+        {time:"23:55",type:"低潮"}
     ];
-    var html="<div style='font-weight:700;margin-bottom:6px'>📅 今日潮汐（参考）：</div>";
+    var html="<div style='font-weight:700;margin-bottom:6px'>今日潮汐（模拟）：</div>";
     tidePoints.forEach(function(t){
         html+="<div style='margin:2px 0'>  "+t.time+"  "+t.type+"</div>";
     });
@@ -847,6 +859,7 @@ function getRegionName(lng,lat){
 }
 
 var state={
+    wwKey:localStorage.getItem('ww-key')||'',
     proxyUrl:localStorage.getItem('ww-proxy')||'',
     selectedLng:151.2847,
     selectedLat:-33.8031,
@@ -876,7 +889,6 @@ function renderSpotTable(){
     });
     html+='</tbody></table>';
     wrap.innerHTML=html;
-
     wrap.querySelectorAll('tbody tr').forEach(function(tr){
         tr.addEventListener('click',function(e){
             if(e.target.tagName==='BUTTON')return;
@@ -920,12 +932,10 @@ function analyseScene(){
     var fish=$('scFish').value;
     var time=$('scTime').value;
     var chase=$('scChase').value;
-
     if(!env&&!depth&&!flow&&!tide&&!fish&&!time){
         alert('请至少填写一项场景信息');
         return;
     }
-
     var scores={lure:50,float:50,bottom:50};
     if(env==='jetty'||env==='reef'){scores.bottom+=15;scores.float+=10;}
     if(env==='beach'||env==='sand_flat'){scores.bottom+=20;scores.lure+=5;}
@@ -946,10 +956,9 @@ function analyseScene(){
     if(chase==='yes'){scores.lure+=20;scores.bottom-=10;scores.float-=10;}
     if(light==='backlit'||light==='low'){scores.lure+=5;}
     if(quality==='murky'){scores.lure+=5;scores.bottom+=5;}
-
     var sorted=Object.keys(scores).sort(function(a,b){return scores[b]-scores[a];});
     var names={lure:'路亚钓法',float:'通用浮漂钓法',bottom:'沉底钓法'};
-    var result='<h4>🎯 大师作钓建议</h4>';
+    var result='<h4>大师作钓建议</h4>';
     result+='<div style="margin:8px 0"><b>推荐排名：</b></div>';
     sorted.forEach(function(method,i){
         var rank=i+1;
@@ -957,9 +966,8 @@ function analyseScene(){
         result+='<div style="margin:6px 0;padding:8px 12px;background:#f7f9fc;border-radius:8px;border-left:4px solid '+color+'">'
             +'<b style="color:'+color+'">第'+rank+'名：'+names[method]+'</b>（匹配度 '+scores[method]+'分）</div>';
     });
-
     var best=sorted[0];
-    result+='<div style="margin-top:12px;padding:10px;background:#e8f4fd;border-radius:8px"><b>📋 首选方案详细配置：</b><br>';
+    result+='<div style="margin-top:12px;padding:10px;background:#e8f4fd;border-radius:8px"><b>首选方案详细配置：</b><br>';
     if(best==='lure'){
         result+='<b>装备</b>：路亚竿2.1-2.7m，轮3000，PE0.8，前导18lb<br>'
             +'<b>饵</b>：勺子亮片7-12g（银/金）或铅头软饵7-14g<br>'
@@ -980,14 +988,12 @@ function analyseScene(){
             +'<b>劣势</b>：只能钓底层，需频繁换饵，易挂礁石';
     }
     result+='</div>';
-
     if(tide==='dead'){
-        result+='<div style="margin-top:10px;color:#e74c3c;font-weight:600">⚠ 当前死潮/平潮，鱼口较差，建议休息或换标点</div>';
+        result+='<div style="margin-top:10px;color:#e74c3c;font-weight:600">当前死潮/平潮，鱼口较差，建议休息或换标点</div>';
     }
     if(chase==='yes'){
-        result+='<div style="margin-top:10px;color:#217ad9;font-weight:600">💡 检测到追炸水，优先路亚快速收线+短抽，模拟逃窜饵鱼</div>';
+        result+='<div style="margin-top:10px;color:#217ad9;font-weight:600">检测到追炸水，优先路亚快速收线+短抽，模拟逃窜饵鱼</div>';
     }
-
     $('sceneResult').innerHTML=result;
     $('sceneResult').classList.remove('hidden');
 }
@@ -999,6 +1005,23 @@ document.addEventListener('DOMContentLoaded',function(){
     var osmMapStyle='https://raw.githubusercontent.com/openstreetmap/maplibre-gl-style-osm-bright/master/style.json';
     loadMapLibre(defaultMapStyle);
     renderSpotTable();
+
+    document.querySelectorAll('.inner-tabs button').forEach(function(btn){
+        btn.addEventListener('click',function(){
+            document.querySelectorAll('.inner-tabs button').forEach(function(b){b.classList.remove('active');});
+            btn.classList.add('active');
+            var tab=btn.dataset.itab;
+            ['mapTab','textTab','photoTab'].forEach(function(t){$('itab-'+t).classList.add('hidden');});
+            $('itab-'+tab).classList.remove('hidden');
+        });
+    });
+
+    bind('forecastToggle','click',function(){
+        var content=$('forecastContent');
+        var arrow=$('forecastArrow');
+        content.classList.toggle('open');
+        arrow.innerText=content.classList.contains('open')?'▲':'▼';
+    });
 
     bind('btnSceneAnalyse','click',analyseScene);
 
@@ -1022,15 +1045,15 @@ document.addEventListener('DOMContentLoaded',function(){
             return;
         }
         $('photoAdvice').innerHTML=
-            '<div class="ok" style="font-weight:600">✅ 已读取钓点照片（本地模拟分析）</div>'
-            +'<div style="margin-top:8px">💡 提示：本纯前端版本无法真正识别图片景物，请结合照片手动判断钓点类型：</div>'
+            '<div class="ok" style="font-weight:600">已读取钓点照片（本地模拟分析）</div>'
+            +'<div style="margin-top:8px">提示：本纯前端版本无法真正识别图片景物，请结合照片手动判断钓点类型：</div>'
             +'<div style="margin-top:8px;padding:10px;background:#f7f9fc;border-radius:8px;line-height:1.8">'
             +'<b>码头</b>：优先滑铅沉底钓，虾仁作饵，涨落潮转换窗口期作钓<br>'
             +'<b>礁石海岸</b>：阿波矶钓，18-22lb氟碳前导，注意防挂底<br>'
             +'<b>开阔沙滩</b>：远投沉底钓组，大克重铅，目标Flathead等底层鱼<br>'
             +'<b>开阔水面</b>：可以尝试路亚亮片搜索掠食鱼'
             +'</div>'
-            +'<div style="margin-top:8px;font-size:13px;color:#666">配合上方GPS经纬度+潮汐天气数据，综合判断最佳方案。也可以使用上方文字表单更精确地描述场景。</div>';
+            +'<div style="margin-top:8px;font-size:13px;color:#666">配合上方GPS经纬度+潮汐天气数据，综合判断最佳方案。也可以使用文字表单更精确地描述场景。</div>';
     });
 
     bind('mapSourceSel','change',async function(){
@@ -1055,9 +1078,11 @@ document.addEventListener('DOMContentLoaded',function(){
 
     bind('btnTeach','click',function(){$('modalTeach').style.display='block';});
     bind('btnManual','click',function(){$('modalManual').style.display='block';});
-    bind('btnSetting','click',function(){$('proxyUrl').value=state.proxyUrl;$('modalSetting').style.display='block';});
+    bind('btnSetting','click',function(){$('wwKey').value=state.wwKey;$('proxyUrl').value=state.proxyUrl;$('modalSetting').style.display='block';});
     bind('saveSetting','click',function(){
+        state.wwKey=$('wwKey').value.trim();
         state.proxyUrl=$('proxyUrl').value.trim();
+        localStorage.setItem('ww-key',state.wwKey);
         localStorage.setItem('ww-proxy',state.proxyUrl);
         alert('设置已保存');
         closeModal('modalSetting');
@@ -1078,13 +1103,13 @@ document.addEventListener('DOMContentLoaded',function(){
             $('inpLat').value=pos.coords.latitude.toFixed(4);
             var geoInfo=getRegionName(state.selectedLng,state.selectedLat);
             $('locRegion').innerText="点位大致区域："+geoInfo.fullText;
-            $('locStatus').innerHTML='<span class="ok">✅ GPS定位成功，精度'+pos.coords.accuracy.toFixed(0)+'米</span>';
+            $('locStatus').innerHTML='<span class="ok">GPS定位成功，精度'+pos.coords.accuracy.toFixed(0)+'米</span>';
             if(map){
                 try{map.jumpTo({center:[state.selectedLng,state.selectedLat],zoom:13});}catch(e){}
             }
             fetchWeather(state.selectedLng,state.selectedLat);
         },function(err){
-            $('locStatus').innerHTML='<span class="warn">❌ GPS定位失败：'+err.message+'</span>';
+            $('locStatus').innerHTML='<span class="warn">GPS定位失败：'+err.message+'</span>';
         },{enableHighAccuracy:true,timeout:10000});
     });
 
@@ -1121,7 +1146,7 @@ document.addEventListener('DOMContentLoaded',function(){
         saveSpotsToStorage();
         renderSpotTable();
         $('spotNote').value='';
-        alert('✅ 钓点已保存，切换到【钓点管理】标签查看表格');
+        alert('钓点已保存，切换到【钓点管理】标签查看表格');
     });
 
     bind('btnClearAllSpots','click',function(){
@@ -1166,32 +1191,34 @@ document.addEventListener('DOMContentLoaded',function(){
         var moonBox=$('moonBox');
         var tideBox=$('tideBox');
         var forecastBox=$('forecastBox');
+        var forecastBox2=$('forecastBox2');
         box.innerHTML='正在获取天气数据...';
         windBox.classList.add('hidden');
         moonBox.classList.add('hidden');
         tideBox.classList.remove('hidden');
         tideBox.innerHTML=fetchTideMock();
         forecastBox.innerHTML="加载7天预报...";
+        forecastBox2.innerHTML="加载7天预报...";
 
         var moon=getMoonPhase(new Date());
         moonBox.classList.remove('hidden');
         moonBox.innerHTML=moon.phaseEmoji+' 月相：<b>'+moon.phaseName+'</b>（'+moon.phasePct+'%亮度）| 月出：'+moon.moonrise+' 月落：'+moon.moonset
-            +'<br><span style="font-size:12px">🐟 钓鱼影响：'+moon.fishingImpact+'</span>';
+            +'<br><span style="font-size:12px">钓鱼影响：'+moon.fishingImpact+'</span>';
 
         var url='https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lng
             +'&current=temperature_2m,pressure_msl,wind_speed_10m,wind_direction_10m,wave_height'
             +'&daily=temperature_2m_max,temperature_2m_min,wind_speed_10m_max,weathercode&timezone=Australia/Sydney';
         fetch(url).then(function(r){return r.json();}).then(function(d){
             var c=d.current;
-            box.innerHTML='<span class="source-tag">📡 数据源：Open-Meteo '+(state.proxyUrl?"| WillyWeather代理已配置":"")+'</span><br>'
-                +'🌡 温度：'+c.temperature_2m+'℃ | 📊 气压：'+c.pressure_msl+'hPa<br>'
-                +'💨 风速：'+c.wind_speed_10m+'km/h | 🌊 浪高：'+(c.wave_height||0)+'m';
+            box.innerHTML='<span class="source-tag">数据源：Open-Meteo '+(state.wwKey?"| WillyWeather已配置":"")+'</span><br>'
+                +'温度：'+c.temperature_2m+'℃ | 气压：'+c.pressure_msl+'hPa<br>'
+                +'风速：'+c.wind_speed_10m+'km/h | 浪高：'+(c.wave_height||0)+'m';
 
             var windDeg=c.wind_direction_10m;
             var windText=windAngleToText(windDeg);
             var suggestDir=getSuggestFishDir(windDeg);
             windBox.classList.remove('hidden');
-            windBox.innerHTML='🧭 风向：'+windText+'（'+windDeg+'°）| ✅ 推荐优先背风方向作钓：<b>'+suggestDir+'</b>';
+            windBox.innerHTML='风向：'+windText+'（'+windDeg+'°）| 推荐优先背风方向作钓：<b>'+suggestDir+'</b>';
 
             renderFishAdvice({
                 temp:c.temperature_2m,
@@ -1214,15 +1241,19 @@ document.addEventListener('DOMContentLoaded',function(){
                 else if(wc>=70&&wc<80)weatherIcon="❄";
                 else if(wc>=80)weatherIcon="⛈";
                 var dayMoon=getMoonPhase(new Date(daily.time[i]));
+                var dayFishScore=Math.round(60+(daily.temperature_2m_max[i]>20?5:-5)+(daily.wind_speed_10m_max[i]<20?5:-10));
+                dayFishScore=Math.max(0,Math.min(100,dayFishScore+dayMoon.moonScore));
                 forecastHtml+='<div class="day-item">'
                     +'<div class="day-date">'+weatherIcon+' '+daily.time[i]+' '+dayMoon.phaseEmoji+' '+dayMoon.phaseName+'</div>'
-                    +'<div class="day-info">最高'+daily.temperature_2m_max[i]+'℃ / 最低'+daily.temperature_2m_min[i]+'℃ | 最大风速'+daily.wind_speed_10m_max[i]+'km/h</div>'
+                    +'<div class="day-info">最高'+daily.temperature_2m_max[i]+'℃ / 最低'+daily.temperature_2m_min[i]+'℃ | 最大风速'+daily.wind_speed_10m_max[i]+'km/h | 鱼情'+dayFishScore+'分</div>'
                     +'</div>';
             }
             forecastBox.innerHTML=forecastHtml;
+            forecastBox2.innerHTML=forecastHtml;
         }).catch(function(err){
-            box.innerHTML='<span class="warn">❌ 获取天气失败，请手动填写参数</span>';
+            box.innerHTML='<span class="warn">获取天气失败，请手动填写参数</span>';
             forecastBox.innerHTML='<span class="warn">7天预报获取失败</span>';
+            forecastBox2.innerHTML='<span class="warn">7天预报获取失败</span>';
         });
     }
 
@@ -1232,12 +1263,25 @@ document.addEventListener('DOMContentLoaded',function(){
         var wind=Number(w.wind)||10;
         var wave=Number(w.wave)||0.5;
         var moonScore=Number(w.moonScore)||0;
-        var score=60;
-        if(press>1013)score+=8;else if(press<1005)score-=10;
-        if(wind<15)score+=5;else if(wind>25)score-=15;
-        if(wave<1.0)score+=5;else if(wave>1.5)score-=12;
-        if(temp>=15&&temp<=24)score+=5;else if(temp<12||temp>28)score-=8;
-        score+=moonScore;
+
+        var locScore=60;
+        var timeScore=60;
+        var weatherScore=60;
+        var tideScore=60;
+
+        if(press>1013)weatherScore+=15;else if(press<1005)weatherScore-=15;
+        if(wind<15)weatherScore+=10;else if(wind>25)weatherScore-=20;
+        if(wave<1.0)weatherScore+=10;else if(wave>1.5)weatherScore-=15;
+        if(temp>=15&&temp<=24)weatherScore+=10;else if(temp<12||temp>28)weatherScore-=10;
+
+        var hour=new Date().getHours();
+        if((hour>=5&&hour<=7)||(hour>=17&&hour<=19))timeScore+=20;
+        else if(hour>=11&&hour<=14)timeScore-=10;
+        timeScore+=moonScore;
+
+        tideScore=65;
+
+        var score=Math.round(locScore*0.2+timeScore*0.25+weatherScore*0.3+tideScore*0.25);
         score=Math.max(0,Math.min(100,score));
 
         var scoreColor=score>=70?'#27ae60':(score>=50?'#f39c12':'#e74c3c');
@@ -1245,9 +1289,23 @@ document.addEventListener('DOMContentLoaded',function(){
         $('fishScoreBar').classList.remove('hidden');
         $('fishScoreFill').style.width=score+'%';
 
-        var advice='<div class="advice-block"><b>🌊 潮汐影响：</b>涨潮初~中期、落潮中期鱼口最佳；平潮鱼口差。满潮转流前后1小时为黄金咬口期。</div>';
-        advice+='<div class="advice-block"><b>🌙 月相影响：</b>满月/新月大潮水流强鱼活性高；弦月中潮适中；小潮水流弱需精细钓法。当前月相已纳入评分（'+(moonScore>=0?'+':'')+moonScore+'分）。</div>';
-        advice+='<div class="advice-block"><b>🌤 天气影响：</b>';
+        var factorsHtml='<div style="font-size:13px;font-weight:600;color:#0f4c81;margin-bottom:6px">分项得分：</div>';
+        var factors=[
+            {name:'位置因素',score:locScore,color:'#217ad9',desc:'经纬度、Suburb区域、海区类型'},
+            {name:'时间因素',score:timeScore,color:'#8e44ad',desc:'当前时刻、昼夜、季节、月相'},
+            {name:'天气因素',score:weatherScore,color:'#f39c12',desc:'气压、风速、气温、浪高'},
+            {name:'潮汐因素',score:tideScore,color:'#16a085',desc:'潮位、涨落潮阶段、大潮小潮'}
+        ];
+        factors.forEach(function(f){
+            factorsHtml+='<div class="factor-score"><span style="min-width:70px">'+f.name+'</span>'
+                +'<div class="factor-bar"><div class="factor-fill" style="width:'+f.score+'%;background:'+f.color+'"></div></div>'
+                +'<span style="min-width:35px;text-align:right;font-weight:700;color:'+f.color+'">'+f.score+'</span></div>';
+        });
+        $('fishFactors').innerHTML=factorsHtml;
+
+        var advice='<div class="advice-block"><b>潮汐影响：</b>涨潮初~中期、落潮中期鱼口最佳；平潮鱼口差。满潮转流前后1小时为黄金咬口期。</div>';
+        advice+='<div class="advice-block"><b>月相影响：</b>满月/新月大潮水流强鱼活性高；弦月中潮适中；小潮水流弱需精细钓法。当前月相已纳入评分（'+(moonScore>=0?'+':'')+moonScore+'分）。</div>';
+        advice+='<div class="advice-block"><b>天气影响：</b>';
         if(press>1013)advice+='气压偏高，鱼索饵积极；';
         else if(press<1005)advice+='气压偏低，鱼活性下降；';
         else advice+='气压适中，鱼情稳定；';
@@ -1255,7 +1313,26 @@ document.addEventListener('DOMContentLoaded',function(){
         else if(wind<10)advice+='微风，水面平静，适合精细作钓；';
         else advice+='风力适中，溶氧充足；';
         advice+='</div>';
-        if(w.tideNote)advice+='<div class="advice-block"><b>📝 手动潮汐：</b>'+w.tideNote+'</div>';
+
+        var good=[];
+        var bad=[];
+        if(press>1013)good.push('气压偏高，鱼索饵积极');
+        if(wind<15)good.push('风力适中，溶氧充足');
+        if(wave<1.0)good.push('浪小，适合精细作钓');
+        if(moonScore>0)good.push('月相有利（'+moonScore+'分）');
+        if((hour>=5&&hour<=7)||(hour>=17&&hour<=19))good.push('晨昏黄金窗口期');
+        if(press<1005)bad.push('气压偏低，鱼活性下降');
+        if(wind>25)bad.push('大风影响抛投');
+        if(wave>1.5)bad.push('浪大，操作困难');
+        if(hour>=11&&hour<=14)bad.push('正午时段，鱼口较差');
+
+        if(good.length>0){
+            advice+='<div class="advice-block" style="border-left-color:#27ae60"><b>有利条件：</b>'+good.join('；')+'</div>';
+        }
+        if(bad.length>0){
+            advice+='<div class="advice-block" style="border-left-color:#e74c3c"><b>风险提示：</b>'+bad.join('；')+'</div>';
+        }
+        if(w.tideNote)advice+='<div class="advice-block"><b>手动潮汐：</b>'+w.tideNote+'</div>';
         $('fishAdvice').innerHTML=advice;
         renderTactics(wind,wave);
     }
@@ -1271,8 +1348,8 @@ document.addEventListener('DOMContentLoaded',function(){
             equip:"装备：竿2.4-2.7m，轮3000-4000，PE1.0，前导22lb，滑动铅"+(wind>20?'20':'14')+"g，直柄圆钩1/0",
             bait:"饵料：新鲜虾仁/沙丁鱼块",
             skill:"手法：抛投至礁石-沙地交界 -> 铅到底收紧虚线 -> 看到持续出线等2-3秒刺鱼",
-            pros:"✅ 优势：底层鱼命中率高；抗水流强；操作简单；适合Bream/Flathead",
-            cons:"❌ 劣势：只能钓底层；需频繁换饵；易挂礁石"
+            pros:"优势：底层鱼命中率高；抗水流强；操作简单；适合Bream/Flathead",
+            cons:"劣势：只能钓底层；需频繁换饵；易挂礁石"
         });
         var s2=65;
         if(wind<18&&wave<1.2)s2+=10;
@@ -1282,8 +1359,8 @@ document.addEventListener('DOMContentLoaded',function(){
             equip:"装备：矶竿3.3m，轮2500，PE0.8，前导18lb，阿波B，咬铅2B",
             bait:"饵料：虾仁；窝料：碎沙丁鱼，每3-5分钟少量打窝",
             skill:"手法：调漂让饵贴礁石底 -> 顺流自然飘不绷线 -> 看阿波下沉/走线刺鱼",
-            pros:"✅ 优势：随流搜索大片水域；兼顾底中层；信号直观；适合黑鲷/Bream",
-            cons:"❌ 劣势：强潮难控漂；学习门槛高；浪干扰信号"
+            pros:"优势：随流搜索大片水域；兼顾底中层；信号直观；适合黑鲷/Bream",
+            cons:"劣势：强潮难控漂；学习门槛高；浪干扰信号"
         });
         var s3=55;
         if(wind<22&&wave<1.4)s3+=18;
@@ -1293,8 +1370,8 @@ document.addEventListener('DOMContentLoaded',function(){
             equip:"装备：路亚竿2.1-2.7m，轮3000，PE0.8，前导18lb，7-12g银/金勺子亮片",
             bait:"无活饵，金属亮片",
             skill:"手法：慢卷+轻抽贴近结构搜索；快慢交替制造闪动",
-            pros:"✅ 优势：高效率大范围搜索；不用活饵；可钓中上层掠食鱼",
-            cons:"❌ 劣势：底层底栖鱼难钓；鱼口差效率低；对手法要求高"
+            pros:"优势：高效率大范围搜索；不用活饵；可钓中上层掠食鱼",
+            cons:"劣势：底层底栖鱼难钓；鱼口差效率低；对手法要求高"
         });
         tacticList.sort(function(a,b){return b.score-a.score;});
         var html="";
@@ -1310,7 +1387,7 @@ document.addEventListener('DOMContentLoaded',function(){
         });
         $('tacticsBox').innerHTML=html;
     }
-    console.log('钓鱼大师助手初始化完成 ✅');
+    console.log('钓鱼大师助手初始化完成');
 });
 </script>
 </body>
