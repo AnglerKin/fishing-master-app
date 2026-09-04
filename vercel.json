@@ -3,6 +3,10 @@
     {
       "source": "/wwapi/:path*",
       "destination": "https://api.willyweather.com.au/:path*"
+    },
+    {
+      "source": "/tidesatlas/:path*",
+      "destination": "https://tidesatlas.com/api/v1/:path*"
     }
   ]
 }
