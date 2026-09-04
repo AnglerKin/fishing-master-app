@@ -1028,6 +1028,7 @@ document.addEventListener('DOMContentLoaded',function(){
     var maplibreStyle='https://demotiles.maplibre.org/style.json';
     loadMapLibre(OSM_STYLE);
     renderSpotTable();
+    fetchWeather(151.2847,-33.8031);
 
     document.querySelectorAll('.inner-tabs button').forEach(function(btn){
         btn.addEventListener('click',function(){
@@ -1222,7 +1223,9 @@ document.addEventListener('DOMContentLoaded',function(){
         var moonBox=$('moonBox');
         var tideBox=$('tideBox');
         var forecastBox=$('forecastBox');
-        box.innerHTML='正在获取天气数据...';
+        var refreshBtn=$('btnRefresh');
+        if(refreshBtn){refreshBtn.disabled=true;refreshBtn.style.opacity='0.6';refreshBtn.innerText='加载中...';}
+        box.innerHTML='<span style="color:#217ad9">正在获取天气潮汐数据，请稍候...</span>';
         windBox.classList.add('hidden');
         moonBox.classList.add('hidden');
         tideBox.classList.remove('hidden');
@@ -1234,12 +1237,22 @@ document.addEventListener('DOMContentLoaded',function(){
         moonBox.innerHTML=moon.phaseEmoji+' 月相：<b>'+moon.phaseName+'</b>（'+moon.phasePct+'%亮度）| 月出：'+moon.moonrise+' 月落：'+moon.moonset
             +'<br><span style="font-size:12px">钓鱼影响：'+moon.fishingImpact+'</span>';
 
+        renderFishAdvice({temp:18,press:1013,wind:12,wave:0.8,moonScore:moon.moonScore,tideNote:'模拟数据'});
+
+        var timeoutId=setTimeout(function(){
+            box.innerHTML='<span class="warn">天气/潮汐获取超时，已使用模拟数据</span>';
+            forecastBox.innerHTML=generateMockForecast();
+            if(refreshBtn){refreshBtn.disabled=false;refreshBtn.style.opacity='1';refreshBtn.innerText='刷新钓点分析';}
+        },8000);
+
         var url='https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lng
             +'&current=temperature_2m,pressure_msl,wind_speed_10m,wind_direction_10m,wave_height'
             +'&daily=temperature_2m_max,temperature_2m_min,wind_speed_10m_max,weathercode&timezone=Australia/Sydney';
-        fetch(url).then(function(r){return r.json();}).then(function(d){
+        fetch(url).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}).then(function(d){
+            clearTimeout(timeoutId);
             var c=d.current;
-            box.innerHTML='<span class="source-tag">数据源：Open-Meteo '+(state.wwKey?"| WillyWeather已配置":"")+'</span><br>'
+            if(!c||typeof c.temperature_2m==='undefined')throw new Error('invalid data');
+            box.innerHTML='<span class="source-tag">数据源：Open-Meteo</span><br>'
                 +'温度：'+c.temperature_2m+'℃ | 气压：'+c.pressure_msl+'hPa<br>'
                 +'风速：'+c.wind_speed_10m+'km/h | 浪高：'+(c.wave_height||0)+'m';
 
@@ -1260,28 +1273,59 @@ document.addEventListener('DOMContentLoaded',function(){
 
             var forecastHtml="";
             var daily=d.daily;
-            for(var i=0;i<daily.time.length;i++){
-                var wc=daily.weathercode[i];
-                var weatherIcon="☀";
-                if(wc>0&&wc<3)weatherIcon="⛅";
-                else if(wc>=3&&wc<45)weatherIcon="☁";
-                else if(wc>=45&&wc<60)weatherIcon="🌫";
-                else if(wc>=60&&wc<70)weatherIcon="🌧";
-                else if(wc>=70&&wc<80)weatherIcon="❄";
-                else if(wc>=80)weatherIcon="⛈";
-                var dayMoon=getMoonPhase(new Date(daily.time[i]));
-                var dayFishScore=Math.round(60+(daily.temperature_2m_max[i]>20?5:-5)+(daily.wind_speed_10m_max[i]<20?5:-10));
-                dayFishScore=Math.max(0,Math.min(100,dayFishScore+dayMoon.moonScore));
-                forecastHtml+='<div class="day-item">'
-                    +'<div class="day-date">'+weatherIcon+' '+daily.time[i]+' '+dayMoon.phaseEmoji+' '+dayMoon.phaseName+'</div>'
-                    +'<div class="day-info">最高'+daily.temperature_2m_max[i]+'℃ / 最低'+daily.temperature_2m_min[i]+'℃ | 最大风速'+daily.wind_speed_10m_max[i]+'km/h | 鱼情'+dayFishScore+'分</div>'
-                    +'</div>';
+            if(daily&&daily.time&&daily.time.length){
+                for(var i=0;i<daily.time.length;i++){
+                    var wc=daily.weathercode[i];
+                    var weatherIcon="☀";
+                    if(wc>0&&wc<3)weatherIcon="⛅";
+                    else if(wc>=3&&wc<45)weatherIcon="☁";
+                    else if(wc>=45&&wc<60)weatherIcon="🌫";
+                    else if(wc>=60&&wc<70)weatherIcon="🌧";
+                    else if(wc>=70&&wc<80)weatherIcon="❄";
+                    else if(wc>=80)weatherIcon="⛈";
+                    var dayMoon=getMoonPhase(new Date(daily.time[i]));
+                    var dayFishScore=Math.round(60+(daily.temperature_2m_max[i]>20?5:-5)+(daily.wind_speed_10m_max[i]<20?5:-10));
+                    dayFishScore=Math.max(0,Math.min(100,dayFishScore+dayMoon.moonScore));
+                    forecastHtml+='<div class="day-item">'
+                        +'<div class="day-date">'+weatherIcon+' '+daily.time[i]+' '+dayMoon.phaseEmoji+' '+dayMoon.phaseName+'</div>'
+                        +'<div class="day-info">最高'+daily.temperature_2m_max[i]+'℃ / 最低'+daily.temperature_2m_min[i]+'℃ | 最大风速'+daily.wind_speed_10m_max[i]+'km/h | 鱼情'+dayFishScore+'分</div>'
+                        +'</div>';
+                }
+            }else{
+                forecastHtml=generateMockForecast();
             }
             forecastBox.innerHTML=forecastHtml;
+            if(refreshBtn){refreshBtn.disabled=false;refreshBtn.style.opacity='1';refreshBtn.innerText='刷新钓点分析';}
         }).catch(function(err){
-            box.innerHTML='<span class="warn">获取天气失败，请手动填写参数</span>';
-            forecastBox.innerHTML='<span class="warn">7天预报获取失败</span>';
+            clearTimeout(timeoutId);
+            console.warn("天气获取失败：",err);
+            box.innerHTML='<span class="warn">天气/潮汐获取失败，已使用模拟数据，仍可查看鱼情分析</span>';
+            forecastBox.innerHTML=generateMockForecast();
+            renderFishAdvice({temp:18,press:1013,wind:12,wave:0.8,moonScore:moon.moonScore,tideNote:'模拟数据'});
+            if(refreshBtn){refreshBtn.disabled=false;refreshBtn.style.opacity='1';refreshBtn.innerText='刷新钓点分析';}
         });
+    }
+
+    function generateMockForecast(){
+        var html="";
+        var today=new Date();
+        for(var i=0;i<7;i++){
+            var d=new Date(today);
+            d.setDate(today.getDate()+i);
+            var dateStr=d.toISOString().slice(0,10);
+            var moon=getMoonPhase(d);
+            var tempMax=18+Math.round(Math.random()*6);
+            var tempMin=12+Math.round(Math.random()*4);
+            var wind=8+Math.round(Math.random()*15);
+            var score=Math.round(55+Math.random()*30+moon.moonScore);
+            score=Math.max(0,Math.min(100,score));
+            var icon=i%3===0?"⛅":(i%3===1?"☀":"☁");
+            html+='<div class="day-item">'
+                +'<div class="day-date">'+icon+' '+dateStr+' '+moon.phaseEmoji+' '+moon.phaseName+'</div>'
+                +'<div class="day-info">最高'+tempMax+'℃ / 最低'+tempMin+'℃ | 最大风速'+wind+'km/h | 鱼情'+score+'分 <span style="color:#f39c12;font-size:11px">(模拟)</span></div>'
+                +'</div>';
+        }
+        return html;
     }
 
     function renderFishAdvice(w){
