@@ -102,6 +102,22 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 .collapse-header:hover{background:#e8f4fd}
 .collapse-content{max-height:0;overflow:hidden;transition:max-height .3s ease}
 .collapse-content.open{max-height:5000px;overflow-y:auto}
+
+  /*====装备库卡片内部分页样式====*/
+.gear-tab-btn{
+    background:#e9edf4;
+    border:1px solid #d1d9e6;
+    color:#333;
+}
+.gear-tab-btn.active{
+    background:#0f4c81;
+    color:#ffffff;
+    border-color:#0f4c81;
+}
+.gear-tab-panel{
+    width:100%;
+}
+
 </style>
 </head>
 <body>
@@ -697,6 +713,8 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 <div id="page-gear" class="hidden">
 <div class="card">
 <h3><span class="icon">🎒</span>我的装备库</h3>
+
+<!-- ==========【全局常驻：不参与分页切换，永远显示】 ========== -->
 <div id="activeGearInfo" style="margin-top:0;padding:10px;border:1px solid #b8c8e0;border-radius:8px;background:#f4f7fc;">
     <h5>✅当前启用作钓套装 - 装备分析</h5>
     <div id="activeGearText">
@@ -704,117 +722,129 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
     </div>
     <div id="activeGearAdvice" style="margin-top:8px;"></div>
 </div>
-  <!-- 下拉选择框 -->
+
 <div style="margin-top:12px;">
     <label>✅当前启用作钓套装：</label>
     <select id="currentGearSelect" style="min-width:360px;padding:6px;border-radius:8px;border:1px solid #d0d7e2;background:#fafbfc;"></select>
 </div>
 
-<div id="customGearList" style="margin-top:12px;"></div>
- <hr>
-  
-<h4>📦分类独立装备仓库（可单独新增、删除）</h4>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
-    <!--鱼竿-->
-    <div class="card" style="padding:8px;">
-        <h5>🎣鱼竿</h5>
-        <input id="newRodName" placeholder="名称：2-4kg路亚竿" style="width:100%;margin-bottom:4px;">
-        <input id="newRodLureRange" placeholder="饵重范围 7-21g" style="width:100%;margin-bottom:4px;">
-        <button class="btn" id="addRodBtn">新增鱼竿入库</button>
-        <div id="rodStorageList" style="margin-top:6px;max-height:140px;overflow:auto;"></div>
+<!-- ==========分页标签按钮 ========== -->
+<div style="display:flex;gap:6px;margin-top:14px;margin-bottom:12px;">
+    <button class="gear-tab-btn btn active" data-tab="tab-set">分页1：组装自定义作钓套装</button>
+    <button class="gear-tab-btn btn" data-tab="tab-storage">分页2：分类独立装备仓库</button>
+</div>
+
+<!-- ==========分页1：组装自定义作钓套装 ========== -->
+<div id="gear-tab-set" class="gear-tab-panel">
+    <div id="customGearList" style="margin-top:0;margin-bottom:12px;"></div>
+
+    <h4>🧩组装自定义作钓套装（从上面库挑选装备组合）</h4>
+    <div style="display:grid;gap:8px;grid-template-columns:1fr 1fr;">
+        <div>
+            <label>套装名称</label>
+            <input id="gearSetName" placeholder="悉尼码头岸投套装" style="width:100%;">
+        </div>
+        <div>
+            <label>作钓类型</label>
+            <input id="gearFishType" placeholder="路亚 /沉底 /矶钓" style="width:100%;">
+        </div>
+        <div>
+            <label>选择鱼竿</label>
+            <select id="selRod" style="width:100%;"></select>
+        </div>
+        <div>
+            <label>选择渔轮</label>
+            <select id="selReel" style="width:100%;"></select>
+        </div>
+        <div>
+            <label>选择主线</label>
+            <select id="selMainline" style="width:100%;"></select>
+        </div>
+        <div>
+            <label>选择前导</label>
+            <select id="selLeader" style="width:100%;"></select>
+        </div>
+        <div>
+            <label>选择铅坠</label>
+            <select id="selSinker" style="width:100%;"></select>
+        </div>
+        <div>
+            <label>选择浮漂</label>
+            <select id="selFloat" style="width:100%;"></select>
+        </div>
+        <div>
+            <label>选择饵料</label>
+            <select id="selBait" style="width:100%;"></select>
+        </div>
     </div>
-    <!--渔轮-->
-    <div class="card" style="padding:8px;">
-        <h5>⚙️渔轮</h5>
-        <input id="newReelName" placeholder="3000型纺车轮" style="width:100%;margin-bottom:4px;">
-        <input id="newReelType" placeholder="类型：纺车/水滴" style="width:100%;margin-bottom:4px;">
-        <button class="btn" id="addReelBtn">新增渔轮入库</button>
-        <div id="reelStorageList" style="margin-top:6px;max-height:140px;overflow:auto;"></div>
-    </div>
-    <!--主线-->
-    <div class="card" style="padding:8px;">
-        <h5>🧵主线</h5>
-        <input id="newMainlineName" placeholder="PE 4kg" style="width:100%;margin-bottom:4px;">
-        <button class="btn" id="addMainlineBtn">新增主线入库</button>
-        <div id="mainlineStorageList" style="margin-top:6px;max-height:140px;overflow:auto;"></div>
-    </div>
-    <!--前导-->
-    <div class="card" style="padding:8px;">
-        <h5>🔗前导碳线</h5>
-        <input id="newLeaderName" placeholder="碳8kg 1m" style="width:100%;margin-bottom:4px;">
-        <button class="btn" id="addLeaderBtn">新增前导入库</button>
-        <div id="leaderStorageList" style="margin-top:6px;max-height:140px;overflow:auto;"></div>
-    </div>
-    <!--铅坠-->
-    <div class="card" style="padding:8px;">
-        <h5>⚓铅坠</h5>
-        <input id="newSinkerName" placeholder="橄榄铅15g" style="width:100%;margin-bottom:4px;">
-        <button class="btn" id="addSinkerBtn">新增铅坠入库</button>
-        <div id="sinkerStorageList" style="margin-top:6px;max-height:140px;overflow:auto;"></div>
-    </div>
-    <!--浮漂-->
-    <div class="card" style="padding:8px;">
-        <h5>🏮浮漂</h5>
-        <input id="newFloatName" placeholder="阿波B-2B" style="width:100%;margin-bottom:4px;">
-        <button class="btn" id="addFloatBtn">新增浮漂入库</button>
-        <div id="floatStorageList" style="margin-top:6px;max-height:140px;overflow:auto;"></div>
-    </div>
-    <!--饵料-->
-    <div class="card" style="padding:8px;">
-        <h5>🦐饵料</h5>
-        <input id="newBaitName" placeholder="新鲜虾仁" style="width:100%;margin-bottom:4px;">
-        <button class="btn" id="addBaitBtn">新增饵料入库</button>
-        <div id="baitStorageList" style="margin-top:6px;max-height:140px;overflow:auto;"></div>
+    <div style="margin:10px 0;display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn" id="saveCustomGearBtn">保存套装</button>
+        <button class="btn btn-sec" id="clearGearFormBtn">清空套装表单</button>
     </div>
 </div>
 
-<hr>
-<h4>🧩组装自定义作钓套装（从上面库挑选装备组合）</h4>
-<div style="display:grid;gap:8px;grid-template-columns:1fr 1fr;">
-    <div>
-        <label>套装名称</label>
-        <input id="gearSetName" placeholder="悉尼码头岸投套装" style="width:100%;">
-    </div>
-    <div>
-        <label>作钓类型</label>
-        <input id="gearFishType" placeholder="路亚 /沉底 /矶钓" style="width:100%;">
-    </div>
-    <div>
-        <label>选择鱼竿</label>
-        <select id="selRod" style="width:100%;"></select>
-    </div>
-    <div>
-        <label>选择渔轮</label>
-        <select id="selReel" style="width:100%;"></select>
-    </div>
-    <div>
-        <label>选择主线</label>
-        <select id="selMainline" style="width:100%;"></select>
-    </div>
-    <div>
-        <label>选择前导</label>
-        <select id="selLeader" style="width:100%;"></select>
-    </div>
-    <div>
-        <label>选择铅坠</label>
-        <select id="selSinker" style="width:100%;"></select>
-    </div>
-    <div>
-        <label>选择浮漂</label>
-        <select id="selFloat" style="width:100%;"></select>
-    </div>
-    <div>
-        <label>选择饵料</label>
-        <select id="selBait" style="width:100%;"></select>
+<!-- ==========分页2：分类独立装备仓库 ========== -->
+<div id="gear-tab-storage" class="gear-tab-panel" style="display:none;">
+    <h4>📦分类独立装备仓库（可单独新增、删除）</h4>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+        <!--鱼竿-->
+        <div class="card" style="padding:8px;">
+            <h5>🎣鱼竿</h5>
+            <input id="newRodName" placeholder="名称：2‑4kg路亚竿" style="width:100%;margin-bottom:4px;">
+            <input id="newRodLureRange" placeholder="饵重范围 7‑21g" style="width:100%;margin-bottom:4px;">
+            <button class="btn" id="addRodBtn">新增鱼竿入库</button>
+            <div id="rodStorageList" style="margin-top:6px;max-height:140px;overflow:auto;"></div>
+        </div>
+        <!--渔轮-->
+        <div class="card" style="padding:8px;">
+            <h5>⚙️渔轮</h5>
+            <input id="newReelName" placeholder="3000型纺车轮" style="width:100%;margin-bottom:4px;">
+            <input id="newReelType" placeholder="类型：纺车/水滴" style="width:100%;margin-bottom:4px;">
+            <button class="btn" id="addReelBtn">新增渔轮入库</button>
+            <div id="reelStorageList" style="margin-top:6px;max-height:140px;overflow:auto;"></div>
+        </div>
+        <!--主线-->
+        <div class="card" style="padding:8px;">
+            <h5>🧵主线</h5>
+            <input id="newMainlineName" placeholder="PE 4kg" style="width:100%;margin-bottom:4px;">
+            <button class="btn" id="addMainlineBtn">新增主线入库</button>
+            <div id="mainlineStorageList" style="margin-top:6px;max-height:140px;overflow:auto;"></div>
+        </div>
+        <!--前导-->
+        <div class="card" style="padding:8px;">
+            <h5>🔗前导碳线</h5>
+            <input id="newLeaderName" placeholder="碳8kg 1m" style="width:100%;margin-bottom:4px;">
+            <button class="btn" id="addLeaderBtn">新增前导入库</button>
+            <div id="leaderStorageList" style="margin-top:6px;max-height:140px;overflow:auto;"></div>
+        </div>
+        <!--铅坠-->
+        <div class="card" style="padding:8px;">
+            <h5>⚓铅坠</h5>
+            <input id="newSinkerName" placeholder="橄榄铅15g" style="width:100%;margin-bottom:4px;">
+            <button class="btn" id="addSinkerBtn">新增铅坠入库</button>
+            <div id="sinkerStorageList" style="margin-top:6px;max-height:140px;overflow:auto;"></div>
+        </div>
+        <!--浮漂-->
+        <div class="card" style="padding:8px;">
+            <h5>🏮浮漂</h5>
+            <input id="newFloatName" placeholder="阿波B‑2B" style="width:100%;margin-bottom:4px;">
+            <button class="btn" id="addFloatBtn">新增浮漂入库</button>
+            <div id="floatStorageList" style="margin-top:6px;max-height:140px;overflow:auto;"></div>
+        </div>
+        <!--饵料-->
+        <div class="card" style="padding:8px;">
+            <h5>🦐饵料</h5>
+            <input id="newBaitName" placeholder="新鲜虾仁" style="width:100%;margin-bottom:4px;">
+            <button class="btn" id="addBaitBtn">新增饵料入库</button>
+            <div id="baitStorageList" style="margin-top:6px;max-height:140px;overflow:auto;"></div>
+        </div>
     </div>
 </div>
-<div style="margin:10px 0;display:flex;gap:8px;flex-wrap:wrap;">
-    <button class="btn" id="saveCustomGearBtn">保存套装</button>
-    <button class="btn btn-sec" id="clearGearFormBtn">清空套装表单</button>
-</div>
+
+</div><!--外层card闭合-->
 
 
-</div><!-- card闭合 -->
+
 </div><!-- page-gear闭合 -->
 
 <div class="tabbar">
@@ -3263,6 +3293,30 @@ renderAllGearStorage();
 // ========== 装备库绑定结束 ==========
 
 // ----------------装备绑定结束----------------
+
+// ==========装备库卡片内部分页切换==========
+document.querySelectorAll('.gear-tab-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+        const targetTab = this.dataset.tab;
+        //切换按钮active激活状态
+        document.querySelectorAll('.gear-tab-btn').forEach(function(b){
+            b.classList.remove('active');
+        });
+        this.classList.add('active');
+        //隐藏全部面板
+        document.querySelectorAll('.gear-tab-panel').forEach(function(panel){
+            panel.style.display = 'none';
+        });
+        //显示目标面板
+        document.getElementById('gear-'+targetTab).style.display = 'block';
+
+        //切到分类装备仓库，自动刷新装备列表
+        if(targetTab === 'tab-storage'){
+            renderAllGearStorage();
+        }
+    });
+});
+// ==========装备库分页切换结束==========
 
 });
 </script>
