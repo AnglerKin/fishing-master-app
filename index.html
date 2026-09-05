@@ -900,11 +900,21 @@ async function loadMapLibre(mapStyle){
 
     setPointLoading(true);
     try{
-        await fetchWeather(lng,lat);
-    }catch(err){
-        if(err.name!=='AbortError'){
-            console.warn("地图点击获取天气异常",err);
-        }
+    console.log("[地图点击]开始请求天气", lng, lat);
+    //接收fetchWeather返回的数据对象
+    const weatherData = await fetchWeather(lng,lat);
+    console.log("[地图点击]获取完成", weatherData);
+
+    // 这两行就是你缺失的，按钮点击会执行，地图点击之前漏掉
+    renderRealTimePanel(weatherData);
+    renderFishAdvice(weatherData);
+
+}catch(err){
+    if(err.name!=='AbortError'){
+        console.warn("地图点击获取天气异常",err);
+    }else{
+        console.log("[地图点击]请求被abort取消");
+    }
     }finally{
         setPointLoading(false);
         $('locStatus').innerText='已选坐标：'+lng.toFixed(4)+', '+lat.toFixed(4);
