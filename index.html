@@ -878,28 +878,39 @@ async function loadMapLibre(mapStyle){
             zoom:10
         });
         map.addControl(new maplibregl.NavigationControl({showCompass:true}));
-        map.on('click',async function(e){
-            var lng=e.lngLat.lng;
-            var lat=e.lngLat.lat;
-            $('inpLng').value=lng.toFixed(4);
-            $('inpLat').value=lat.toFixed(4);
-            state.selectedLng=lng;
-            state.selectedLat=lat;
-            setMapMarker(lng,lat);
-            var geoInfo=getRegionName(lng,lat);
-            $('locRegion').innerText="点位大致区域："+geoInfo.fullText;
-            $('locStatus').innerText='已选坐标：'+lng.toFixed(4)+', '+lat.toFixed(4)+' 正在更新天气...';
-            if(window._fetchWeatherAbortController){window._fetchWeatherAbortController.abort();}
-            window._fetchWeatherAbortController=new AbortController();
-            var refreshBtn=$('btnRefresh');
-            if(refreshBtn){refreshBtn.disabled=true;refreshBtn.style.opacity='0.6';refreshBtn.innerText='加载中...';}
-            try{
-                await fetchWeather(lng,lat);
-            }catch(err){
-                if(err.name!=='AbortError'){console.warn("地图点击获取天气异常",err);}
-            }finally{
-                if(refreshBtn){refreshBtn.disabled=false;refreshBtn.style.opacity='1';refreshBtn.innerText='刷新钓点分析';}
-            }
+        map.on('click', async function(e){
+    const lngLat = e.lngLat;
+    const lng = lngLat.lng;
+    const lat = lngLat.lat;
+
+    $('inpLng').value = lng.toFixed(4);
+    $('inpLat').value = lat.toFixed(4);
+    state.selectedLng=lng;
+    state.selectedLat=lat;
+    setMapMarker(lng,lat);
+
+    var geoInfo=getRegionName(lng,lat);
+    $('locRegion').innerText="点位大致区域："+geoInfo.fullText;
+    $('locStatus').innerText=`已选坐标：${lng.toFixed(4)}, ${lat.toFixed(4)} → 正在更新天气…`;
+
+    // 只终止旧请求，此处禁止 new AbortController
+    if(window._fetchWeatherAbortController){
+        window._fetchWeatherAbortController.abort();
+    }
+
+    setPointLoading(true);
+    try{
+        await fetchWeather(lng,lat);
+    }catch(err){
+        if(err.name!=='AbortError'){
+            console.warn("地图点击获取天气异常",err);
+        }
+    }finally{
+        setPointLoading(false);
+        $('locStatus').innerText='已选坐标：'+lng.toFixed(4)+', '+lat.toFixed(4);
+    }
+});
+
         });
         map.on('error',function(e){
             console.warn("Map error (ignored, continuing to wait):",e);
