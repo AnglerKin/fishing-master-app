@@ -105,14 +105,12 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 </style>
 </head>
 <body>
-
 <header>
 <h1>钓鱼大师助手</h1>
 <button class="hbtn" id="btnTeach">教学</button>
 <button class="hbtn" id="btnManual">手册</button>
 <button class="hbtn" id="btnSetting">设置</button>
 </header>
-
 <div class="card">
 <h3><span class="icon">🗺</span>地图与钓点</h3>
 <div class="inner-tabs">
@@ -120,7 +118,6 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 <button data-itab="comboTab">钓点综合设置</button>
 <button data-itab="photoTab">照片分析</button>
 </div>
-
 <div id="itab-mapTab">
 <label style="font-size:13px;color:#666">地图源切换</label>
 <select id="mapSourceSel">
@@ -145,7 +142,6 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 <input id="spotNote" placeholder="例如：悉尼码头，涨潮作钓">
 </div>
 </div>
-
 <div id="itab-comboTab" class="hidden">
 <div style="font-size:13px;color:#0f4c81;font-weight:700;margin-bottom:8px">🎯 场景参数（选择后自动参与鱼情分析）</div>
 <div class="form-grid">
@@ -177,10 +173,8 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 </div>
 <div id="sceneResult" class="scene-result hidden"></div>
 </div>
-
 </div>
 </div>
-
 <div class="modal" id="modalTeach">
 <div class="modal-box">
 <h3>🎯 大师选饵七步法</h3>
@@ -194,7 +188,6 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 <div style="margin-top:16px;text-align:center"><button class="btn" onclick="closeModal('modalTeach')">关闭</button></div>
 </div>
 </div>
-
 <div class="modal" id="modalManual">
 <div class="modal-box">
 <h3>📚 大师速查手册</h3>
@@ -306,22 +299,22 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 </tbody></table>
 <h4 style="color:#0f4c81;margin:14px 0 8px">钩子选择</h4>
 <div style="line-height:1.8;font-size:13px">
-- 首选：Non-offset直柄Circle圆钩 1/0-2/0（自动刺鱼）<br>
-- 大物：Circle圆钩 3/0-4/0<br>
-- 沙滩Whiting：长柄钩 6-8号
+- 首选：Non‑offset直柄Circle圆钩 1/0‑2/0（自动刺鱼）<br>
+- 大物：Circle圆钩 3/0‑4/0<br>
+- 沙滩Whiting：长柄钩 6‑8号
 </div>
 <h4 style="color:#0f4c81;margin:14px 0 8px">子线/前导</h4>
 <div style="line-height:1.8;font-size:13px">
-- 普通沉底：氟碳20-25lb，80-120cm<br>
-- 礁石区：氟碳25-30lb，50-80cm（防割）<br>
-- 夜钓大物：氟碳25-30lb，80-150cm<br>
-- 沙滩远投：氟碳16-25lb，60-100cm（双钩）
+- 普通沉底：氟碳20‑25lb，80‑120cm<br>
+- 礁石区：氟碳25‑30lb，50‑80cm（防割）<br>
+- 夜钓大物：氟碳25‑30lb，80‑150cm<br>
+- 沙滩远投：氟碳16‑25lb，60‑100cm（双钩）
 </div>
 <h4 style="color:#0f4c81;margin:14px 0 8px">虾仁挂饵方法</h4>
 <div style="line-height:1.8;font-size:13px">
 1. 整只虾挂法：钩从虾头刺入，穿过虾身，钩尖从虾尾1/3处穿出，虾身自然弯曲<br>
-2. 去壳虾仁：钩穿入2-3次，让虾仁紧贴钩弯，钩尖微露<br>
-3. 分段挂法：大虾仁切2-3段，每段穿钩，适合小鱼多的情况<br>
+2. 去壳虾仁：钩穿入2‑3次，让虾仁紧贴钩弯，钩尖微露<br>
+3. 分段挂法：大虾仁切2‑3段，每段穿钩，适合小鱼多的情况<br>
 4. 秘诀：挂钩后轻轻拉一下，确保饵不会轻易被鱼叼走；Circle钩钩尖一定要露出
 </div>
 <h4 style="color:#0f4c81;margin:14px 0 8px">核心操作要点</h4>
@@ -329,79 +322,79 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 1. 抛投后收紧余线，竿尖保持微弯<br>
 2. Circle圆钩<b>不要猛扬竿</b>，看到出线后缓慢绷紧收线即自动刺鱼<br>
 3. 中鱼后第一时间把鱼拉出结构区（礁石/木桩）<br>
-4. 同位置20-30分钟无口 -> 换标点或换饵<br>
+4. 同位置20‑30分钟无口 -> 换标点或换饵<br>
 5. 滑铅坠必须通心可滑动，死铅鱼会吐饵
 </div>
 </div>
 <div class="modal-tab-content hidden" id="mtab-rig">
 <h4 style="color:#0f4c81;margin:10px 0">8种钓组完整装配图</h4>
 <table class="manual-table"><thead><tr><th>编号</th><th>钓组名称</th><th>类别</th><th>适用场景</th></tr></thead><tbody>
-<tr><td>1</td><td>直出亮片钓组</td><td>路亚</td><td>表层至中上层掠食鱼-近岸结构-码头防波桩</td></tr>
-<tr><td>2</td><td>铅头钩软饵钓组</td><td>路亚</td><td>底层Flathead/Bream-礁石沙底交界-结构边</td></tr>
-<tr><td>3</td><td>阿波漂钓组</td><td>浮漂</td><td>礁石岸矶钓-码头边-近岸结构-Bream/海鲈</td></tr>
-<tr><td>4</td><td>立漂钓组</td><td>浮漂</td><td>内湾静水-码头内侧-沙质浅滩-轻矶钓</td></tr>
-<tr><td>5</td><td>码头滑铅钓组</td><td>沉底</td><td>码头沉底钓-防波堤内-近岸礁石底-Bream/Flathead</td></tr>
-<tr><td>6</td><td>沙滩远投钓组</td><td>沉底</td><td>沙滩远投-冲浪带-浪槽内侧-Whiting/Flathead</td></tr>
-<tr><td>7</td><td>礁石沉底钓组</td><td>沉底</td><td>礁石区-岩礁底-结构复杂水域-大鱼/石斑类</td></tr>
-<tr><td>8</td><td>夜钓沉底钓组</td><td>沉底</td><td>夜钓-码头灯下-礁石边-海鲈/真鲷/石斑</td></tr>
+<tr><td>1</td><td>直出亮片钓组</td><td>路亚</td><td>表层至中上层掠食鱼‑近岸结构‑码头防波桩</td></tr>
+<tr><td>2</td><td>铅头钩软饵钓组</td><td>路亚</td><td>底层Flathead/Bream‑礁石沙底交界‑结构边</td></tr>
+<tr><td>3</td><td>阿波漂钓组</td><td>浮漂</td><td>礁石岸矶钓‑码头边‑近岸结构‑Bream/海鲈</td></tr>
+<tr><td>4</td><td>立漂钓组</td><td>浮漂</td><td>内湾静水‑码头内侧‑沙质浅滩‑轻矶钓</td></tr>
+<tr><td>5</td><td>码头滑铅钓组</td><td>沉底</td><td>码头沉底钓‑防波堤内‑近岸礁石底‑Bream/Flathead</td></tr>
+<tr><td>6</td><td>沙滩远投钓组</td><td>沉底</td><td>沙滩远投‑冲浪带‑浪槽内侧‑Whiting/Flathead</td></tr>
+<tr><td>7</td><td>礁石沉底钓组</td><td>沉底</td><td>礁石区‑岩礁底‑结构复杂水域‑大鱼/石斑类</td></tr>
+<tr><td>8</td><td>夜钓沉底钓组</td><td>沉底</td><td>夜钓‑码头灯下‑礁石边‑海鲈/真鲷/石斑</td></tr>
 </tbody></table>
 <h4 style="color:#0f4c81;margin:14px 0 8px">码头滑铅钓组</h4>
 <pre class="diagram">竿尖
  |
  v
-【主线】 PE 1.0-1.5号
+【主线】 PE 1.0‑1.5号
  |
  v
-【通心滑动铅】 10-18g 梨形/橄榄形  <- 可自由滑动
+【通心滑动铅】 10‑18g 梨形/橄榄形  &lt;‑ 可自由滑动
  |
  v
-【挡豆/太空豆】  <- 限制铅坠下滑位置
+【挡豆/太空豆】  &lt;‑ 限制铅坠下滑位置
  |
  v
 【8字转环】
  |
  v
-【子线】 氟碳 20-25lb - 80-120cm
+【子线】 氟碳 20‑25lb ‑ 80‑120cm
  |
  v
-【Circle圆钩】 1/0-2/0  <- 挂饵（虾仁/鱿鱼条/鱼肉块）</pre>
+【Circle圆钩】 1/0‑2/0  &lt;‑ 挂饵（虾仁/鱿鱼条/鱼肉块）</pre>
 <h4 style="color:#0f4c81;margin:14px 0 8px">阿波漂钓组</h4>
 <pre class="diagram">竿尖
  |
  v
-【主线】 PE 0.8-1.2号
+【主线】 PE 0.8‑1.2号
  |
  v
-【棉线结】  <- 控制钓棚深度
+【棉线结】  &lt;‑ 控制钓棚深度
  |
  v
-【阿波漂】 B-3B号
+【阿波漂】 B‑3B号
  |
  v
-【水中漂/咬铅】  <- 配重调整
+【水中漂/咬铅】  &lt;‑ 配重调整
  |
  v
-【卡拉曼棒】 -> 【8字转环】
+【卡拉曼棒】 ‑&gt; 【8字转环】
  |
  v
-【子线】 氟碳 12-18lb - 1.5-3m
+【子线】 氟碳 12‑18lb ‑ 1.5‑3m
  |
  v
-【鱼钩】 矶钓钩2-4号  <- 虾仁/南极虾</pre>
+【鱼钩】 矶钓钩2‑4号  &lt;‑ 虾仁/南极虾</pre>
 <h4 style="color:#0f4c81;margin:14px 0 8px">直出亮片钓组</h4>
 <pre class="diagram">竿尖
  |
  v
-【主线】 PE 0.8-1.0号
+【主线】 PE 0.8‑1.0号
  |
  v
-【8字转环】  <- 防缠绕
+【8字转环】  &lt;‑ 防缠绕
  |
  v
-【前导】 氟碳 18-22lb - 约1米
+【前导】 氟碳 18‑22lb ‑ 约1米
  |
  v
-【亮片/软饵】 勺子7-12g / 铅头软饵7-14g</pre>
+【亮片/软饵】 勺子7‑12g / 铅头软饵7‑14g</pre>
 </div>
 <div class="modal-tab-content hidden" id="mtab-weight">
 <h4 style="color:#0f4c81;margin:10px 0">咬铅对照表</h4>
@@ -411,15 +404,15 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 <tr><td>G6</td><td>0.05</td><td>轻/浅水静水</td><td>静水漂微调</td></tr>
 <tr><td>G5</td><td>0.12</td><td>轻/静水近岸</td><td>近岸静水钓</td></tr>
 <tr><td>G4</td><td>0.15</td><td>轻/轻流</td><td>轻流近岸</td></tr>
-<tr><td>G3</td><td>0.20</td><td>轻-中/轻流浅水</td><td>轻流浅水礁区</td></tr>
+<tr><td>G3</td><td>0.20</td><td>轻‑中/轻流浅水</td><td>轻流浅水礁区</td></tr>
 <tr><td>G2</td><td>0.30</td><td>中/中等流</td><td>中等流礁区</td></tr>
 <tr><td>G1</td><td>0.40</td><td>中/中等流近岸</td><td>近岸中等流</td></tr>
 <tr><td>B</td><td>0.55</td><td>中/通用浮漂钓法</td><td>通用浮漂钓法标配</td></tr>
-<tr><td>2B</td><td>0.75</td><td>中-大/阿波B号配</td><td>阿波B号标配</td></tr>
-<tr><td>3B</td><td>0.95</td><td>大/阿波2B-3B</td><td>阿波2B-3B标配</td></tr>
+<tr><td>2B</td><td>0.75</td><td>中‑大/阿波B号配</td><td>阿波B号标配</td></tr>
+<tr><td>3B</td><td>0.95</td><td>大/阿波2B‑3B</td><td>阿波2B‑3B标配</td></tr>
 <tr><td>4B</td><td>1.20</td><td>大/强流深场</td><td>强流深场阿波3B以上</td></tr>
 <tr><td>5B</td><td>1.85</td><td>很大/深水强流</td><td>深水强流阿波1号</td></tr>
-<tr><td>6B</td><td>2.65</td><td>极大/深水大风浪</td><td>深水大风浪阿波2-3号</td></tr>
+<tr><td>6B</td><td>2.65</td><td>极大/深水大风浪</td><td>深水大风浪阿波2‑3号</td></tr>
 </tbody></table>
 <h4 style="color:#0f4c81;margin:14px 0 8px">铅坠对照表</h4>
 <table class="manual-table"><thead><tr><th>类型</th><th>克重(g)</th><th>钓法</th><th>场景</th></tr></thead><tbody>
@@ -435,65 +428,65 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 </tbody></table>
 <h4 style="color:#0f4c81;margin:14px 0 8px">鱼钩型号对照表</h4>
 <table class="manual-table"><thead><tr><th>钩型</th><th>型号</th><th>特征</th><th>场景</th><th>目标鱼</th><th>线组</th></tr></thead><tbody>
-<tr><td>直柄圆钩</td><td>1/0-2/0</td><td>钩尖内弯、自动刺鱼</td><td>沉底钓首选</td><td>Bream/Flathead/海鲈</td><td>氟碳20-25lb</td></tr>
-<tr><td>直柄圆钩</td><td>3/0-4/0</td><td>大口径</td><td>大个体沉底/夜钓</td><td>Mulloway/大Flathead</td><td>氟碳25-30lb</td></tr>
-<tr><td>Offset圆钩</td><td>1/0-2/0</td><td>钩尖偏侧、挂饵牢</td><td>活饵钓/鱿鱼</td><td>鱿鱼/Whiting/Bream</td><td>氟碳18-22lb</td></tr>
-<tr><td>长柄钩</td><td>6-8号</td><td>长柄、挂饵条</td><td>河口/Whiting</td><td>Whiting/鲻鱼/小鱼</td><td>尼龙8-12lb</td></tr>
-<tr><td>小矶钩</td><td>6-10号</td><td>小钩细线、灵敏</td><td>矶钓浮漂/轻矶</td><td>Bream/黑鲷/小鱼</td><td>尼龙4-8lb</td></tr>
-<tr><td>铅头钩</td><td>1/8-1/4oz</td><td>铅头+软饵一体</td><td>路亚底栖/软饵钓</td><td>Flathead/海鲈/Bream</td><td>PE+氟碳12-18lb</td></tr>
-<tr><td>三本钩</td><td>6-10号</td><td>三钩尖、挂拟饵</td><td>路亚亮片/米诺替换</td><td>海鲈/鲹鱼/青甘</td><td>PE+前导</td></tr>
-<tr><td>大物钩</td><td>6/0-8/0</td><td>极粗、大钩</td><td>远投沉底/巨物</td><td>鲨鱼/大Mulloway</td><td>PE1.5-2.0+钢丝</td></tr>
+<tr><td>直柄圆钩</td><td>1/0‑2/0</td><td>钩尖内弯、自动刺鱼</td><td>沉底钓首选</td><td>Bream/Flathead/海鲈</td><td>氟碳20‑25lb</td></tr>
+<tr><td>直柄圆钩</td><td>3/0‑4/0</td><td>大口径</td><td>大个体沉底/夜钓</td><td>Mulloway/大Flathead</td><td>氟碳25‑30lb</td></tr>
+<tr><td>Offset圆钩</td><td>1/0‑2/0</td><td>钩尖偏侧、挂饵牢</td><td>活饵钓/鱿鱼</td><td>鱿鱼/Whiting/Bream</td><td>氟碳18‑22lb</td></tr>
+<tr><td>长柄钩</td><td>6‑8号</td><td>长柄、挂饵条</td><td>河口/Whiting</td><td>Whiting/鲻鱼/小鱼</td><td>尼龙8‑12lb</td></tr>
+<tr><td>小矶钩</td><td>6‑10号</td><td>小钩细线、灵敏</td><td>矶钓浮漂/轻矶</td><td>Bream/黑鲷/小鱼</td><td>尼龙4‑8lb</td></tr>
+<tr><td>铅头钩</td><td>1/8‑1/4oz</td><td>铅头+软饵一体</td><td>路亚底栖/软饵钓</td><td>Flathead/海鲈/Bream</td><td>PE+氟碳12‑18lb</td></tr>
+<tr><td>三本钩</td><td>6‑10号</td><td>三钩尖、挂拟饵</td><td>路亚亮片/米诺替换</td><td>海鲈/鲹鱼/青甘</td><td>PE+前导</td></tr>
+<tr><td>大物钩</td><td>6/0‑8/0</td><td>极粗、大钩</td><td>远投沉底/巨物</td><td>鲨鱼/大Mulloway</td><td>PE1.5‑2.0+钢丝</td></tr>
 </tbody></table>
 <h4 style="color:#0f4c81;margin:14px 0 8px">路亚亮片克重速查</h4>
-<div style="line-height:1.8;font-size:13px">
-- 浅1-3m：勺子8-12g / 旋转10-14g<br>
-- 中3-7m：勺子12-16g / 旋转14-18g<br>
-- 深7-12m强流：勺子18-22g / 旋转18-24g
+<div style="line‑height:1.8;font‑size:13px">
+‑ 浅1‑3m：勺子8‑12g / 旋转10‑14g<br>
+‑ 中3‑7m：勺子12‑16g / 旋转14‑18g<br>
+‑ 深7‑12m强流：勺子18‑22g / 旋转18‑24g
 </div>
 </div>
 <div class="modal-tab-content hidden" id="mtab-gear">
 <h4 style="color:#0f4c81;margin:10px 0">澳洲NSW钓鱼装备采购清单</h4>
 <h4 style="color:#0f4c81;margin:12px 0 6px">鱼竿类（3支）</h4>
-<div style="line-height:1.8;font-size:13px">
-1. Shimano Maikuro II 2.1m 路亚竿 ML调 - 已有 - 主力路亚竿，近海通用<br>
-2. 矶竿/海竿 3.0-3.6m 中调 - 浮漂钓/沉底钓必备，建议2号矶竿<br>
-3. 远投竿 3.9-4.2m 40-80g抛投 - 沙滩远投沉底用
+<div style="line‑height:1.8;font‑size:13px">
+1. Shimano Maikuro II 2.1m 路亚竿 ML调 ‑ 已有 ‑ 主力路亚竿，近海通用<br>
+2. 矶竿/海竿 3.0‑3.6m 中调 ‑ 浮漂钓/沉底钓必备，建议2号矶竿<br>
+3. 远投竿 3.9‑4.2m 40‑80g抛投 ‑ 沙滩远投沉底用
 </div>
 <h4 style="color:#0f4c81;margin:12px 0 6px">渔轮类（2个）</h4>
-<div style="line-height:1.8;font-size:13px">
-1. Savage SG 3000H 纺车轮 高速比 - 已有 - 主线容量PE1.0/150m<br>
-2. 远投轮 5000-6000型 - 沙滩远投沉底用，线容量要大
+<div style="line‑height:1.8;font‑size:13px">
+1. Savage SG 3000H 纺车轮 高速比 ‑ 已有 ‑ 主线容量PE1.0/150m<br>
+2. 远投轮 5000‑6000型 ‑ 沙滩远投沉底用，线容量要大
 </div>
 <h4 style="color:#0f4c81;margin:12px 0 6px">线类（4种）</h4>
-<div style="line-height:1.8;font-size:13px">
-1. PE主线 0.8-1.0号 - 已有 - 路亚常用<br>
-2. PE主线 1.2-1.5号 - 远投沉底/深场浮漂用<br>
-3. 氟碳前导 18-22lb - 已有 - 路亚通用前导<br>
-4. 氟碳前导（粗号）25-30lb - 沉底钓/礁石区/大鱼必备
+<div style="line‑height:1.8;font‑size:13px">
+1. PE主线 0.8‑1.0号 ‑ 已有 ‑ 路亚常用<br>
+2. PE主线 1.2‑1.5号 ‑ 远投沉底/深场浮漂用<br>
+3. 氟碳前导 18‑22lb ‑ 已有 ‑ 路亚通用前导<br>
+4. 氟碳前导（粗号）25‑30lb ‑ 沉底钓/礁石区/大鱼必备
 </div>
 <h4 style="color:#0f4c81;margin:12px 0 6px">路亚饵（5种）</h4>
-<div style="line-height:1.8;font-size:13px">
-1. 勺子亮片套装 3-7g多色 - 已有 - 建议补充10-18g<br>
-2. 旋转亮片套装 10-20g银/金叶片 - 浑水震动诱鱼效果好<br>
-3. 铅头软饵套装 7-14g桨尾/卷尾 - 礁石区耐挂<br>
-4. 深潜米诺 12-18g长舌板 - 中上层掠食鱼/追炸水<br>
-5. 木虾Egi 3.5号夜光 - 夜钓鱿鱼
+<div style="line‑height:1.8;font‑size:13px">
+1. 勺子亮片套装 3‑7g多色 ‑ 已有 ‑ 建议补充10‑18g<br>
+2. 旋转亮片套装 10‑20g银/金叶片 ‑ 浑水震动诱鱼效果好<br>
+3. 铅头软饵套装 7‑14g桨尾/卷尾 ‑ 礁石区耐挂<br>
+4. 深潜米诺 12‑18g长舌板 ‑ 中上层掠食鱼/追炸水<br>
+5. 木虾Egi 3.5号夜光 ‑ 夜钓鱿鱼
 </div>
 <h4 style="color:#0f4c81;margin:12px 0 6px">浮漂类（2种）</h4>
-<div style="line-height:1.8;font-size:13px">
-1. 阿波漂套装（B/2B/3B/5B各一支）- 通用浮漂钓必备<br>
-2. 立漂/远投漂 2B-4B吃铅 - 沙滩远投浮漂/静水近岸用
+<div style="line‑height:1.8;font‑size:13px">
+1. 阿波漂套装（B/2B/3B/5B各一支）‑ 通用浮漂钓必备<br>
+2. 立漂/远投漂 2B‑4B吃铅 ‑ 沙滩远投浮漂/静水近岸用
 </div>
 <h4 style="color:#0f4c81;margin:12px 0 6px">铅坠类（3种）</h4>
-<div style="line-height:1.8;font-size:13px">
-1. 咬铅套装（B/2B/3B/5B）- 浮漂钓必备<br>
-2. 通心滑动铅 10-40g梨形/橄榄形 - 滑铅沉底钓必备<br>
-3. 远投铅 80-120g - 沙滩远投沉底用
+<div style="line‑height:1.8;font‑size:13px">
+1. 咬铅套装（B/2B/3B/5B）‑ 浮漂钓必备<br>
+2. 通心滑动铅 10‑40g梨形/橄榄形 ‑ 滑铅沉底钓必备<br>
+3. 远投铅 80‑120g ‑ 沙滩远投沉底用
 </div>
 <h4 style="color:#0f4c81;margin:12px 0 6px">鱼钩类（2种）</h4>
-<div style="line-height:1.8;font-size:13px">
-1. Circle圆钩 1/0-3/0 Non-offset - 沉底钓必备<br>
-2. 矶钓黑鲷钩 #3-#6 - 浮漂钓Bream/黑鲷用
+<div style="line‑height:1.8;font‑size:13px">
+1. Circle圆钩 1/0‑3/0 Non‑offset ‑ 沉底钓必备<br>
+2. 矶钓黑鲷钩 #3‑#6 ‑ 浮漂钓Bream/黑鲷用
 </div>
 </div>
 <div class="modal-tab-content hidden" id="mtab-bait">
@@ -502,1460 +495,47 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 <tr><td>虾仁(Prawn)</td><td>冷冻/活</td><td>Bream、Flathead、海鲈、Whiting</td><td>全年</td><td>整只/切段/去壳</td><td>万能饵，首选</td></tr>
 <tr><td>鱿鱼条(Squid)</td><td>冷冻/鲜</td><td>海鲈、Mulloway、石斑、Bream</td><td>全年</td><td>切条/切圈</td><td>大物最爱，耐小鱼啄</td></tr>
 <tr><td>沙丁鱼块(Pilchard)</td><td>冷冻</td><td>海鲈、Flathead、Mulloway、Kingfish</td><td>全年</td><td>切块/整段</td><td>沉底钓大物首选</td></tr>
-<tr><td>南极虾(Krill)</td><td>冷冻/砖</td><td>Bream、黑鲷、小杂鱼</td><td>春-夏</td><td>整只/打窝</td><td>窝料首选，钓饵也可用</td></tr>
-<tr><td>沙蚕/海蚯蚓</td><td>活/冷冻</td><td>Whiting、Bream、鲻鱼</td><td>春-秋</td><td>整条穿钩</td><td>Whiting特效饵</td></tr>
+<tr><td>南极虾(Krill)</td><td>冷冻/砖</td><td>Bream、黑鲷、小杂鱼</td><td>春‑夏</td><td>整只/打窝</td><td>窝料首选，钓饵也可用</td></tr>
+<tr><td>沙蚕/海蚯蚓</td><td>活/冷冻</td><td>Whiting、Bream、鲻鱼</td><td>春‑秋</td><td>整条穿钩</td><td>Whiting特效饵</td></tr>
 <tr><td>鱼肉块(Fish Strip)</td><td>鲜/冷冻</td><td>海鲈、Mulloway、石斑</td><td>全年</td><td>切条/菱形</td><td>大鱼饵，大个体偏好</td></tr>
-<tr><td>蟹肉</td><td>鲜/冷冻</td><td>Bream、石斑、黑鲷</td><td>夏-秋</td><td>去壳取肉挂</td><td>礁石区效果佳</td></tr>
+<tr><td>蟹肉</td><td>鲜/冷冻</td><td>Bream、石斑、黑鲷</td><td>夏‑秋</td><td>去壳取肉挂</td><td>礁石区效果佳</td></tr>
 <tr><td>贝肉/青口</td><td>鲜/冷冻</td><td>Bream、黑鲷、鲻鱼</td><td>全年</td><td>取肉挂钩</td><td>静水/轻流效果好</td></tr>
 <tr><td>海蟑螂</td><td>活</td><td>Bream、黑鲷</td><td>全年</td><td>整只挂</td><td>礁石矶钓必杀饵</td></tr>
 <tr><td>面饵</td><td>自制/商品</td><td>Bream、鲻鱼、小鱼</td><td>静水</td><td>搓团挂钩</td><td>静水小鱼防啄</td></tr>
-<tr><td>木虾/假饵</td><td>路亚假饵</td><td>鱿鱼/墨鱼</td><td>夏-秋（鱿鱼季）</td><td>直接使用</td><td>Egi 3.0-3.5号</td></tr>
+<tr><td>木虾/假饵</td><td>路亚假饵</td><td>鱿鱼/墨鱼</td><td>夏‑秋（鱿鱼季）</td><td>直接使用</td><td>Egi 3.0‑3.5号</td></tr>
 </tbody></table>
 <h4 style="color:#0f4c81;margin:14px 0 8px">窝料指南</h4>
-<div style="line-height:1.8;font-size:13px">
+<div style="line‑height:1.8;font‑size:13px">
 <b>粉饵基料</b>：面包糠+鱼粉+南极虾粉<br>
 <b>颗粒窝料</b>：玉米粒+麦粒+鱼料颗粒<br>
 <b>打窝节奏</b>：<br>
-- 浮漂钓：涨潮前30min开始打窝，每10-15min补一小勺<br>
-- 沉底钓：钓前打2-3勺沉底窝，中鱼后补一勺<br>
-- 路亚：不需要打窝，但可以抛洒少量碎虾引鱼
+‑ 浮漂钓：涨潮前30min开始打窝，每10‑15min补一小勺<br>
+‑ 沉底钓：钓前打2‑3勺沉底窝，中鱼后补一勺<br>
+‑ 路亚：不需要打窝，但可以抛洒少量碎虾引鱼
 </div>
 </div>
-<div class="modal-tab-content hidden" id="mtab-tide">
+<div class="modal‑tab‑content hidden" id="mtab‑tide">
 <h4 style="color:#0f4c81;margin:10px 0">潮汐基础</h4>
-<div style="line-height:1.8;font-size:13px">
-- 成因：月球引力+太阳引力共同作用<br>
-- 周期：约12小时25分钟（半日潮），每天延迟约50分钟<br>
-- 一天通常2次高潮+2次低潮
+<div style="line‑height:1.8;font‑size:13px">
+‑ 成因：月球引力+太阳引力共同作用<br>
+‑ 周期：约12小时25分钟（半日潮），每天延迟约50分钟<br>
+‑ 一天通常2次高潮+2次低潮
 </div>
 <h4 style="color:#0f4c81;margin:14px 0 8px">大潮vs小潮判断</h4>
-<table class="manual-table"><thead><tr><th>潮型</th><th>月相</th><th>潮差</th><th>鱼情</th><th>作钓建议</th></tr></thead><tbody>
+<table class="manual‑table"><thead><tr><th>潮型</th><th>月相</th><th>潮差</th><th>鱼情</th><th>作钓建议</th></tr></thead><tbody>
 <tr><td>大潮(Spring)</td><td>新月/满月（朔望潮）</td><td>最大（1.5m+）</td><td>最好</td><td>水流强、咬口窗口长，抓紧黄金时段</td></tr>
-<tr><td>中潮(Mid)</td><td>盈凸月/亏凸月</td><td>中等（0.8-1.5m）</td><td>好</td><td>水流适中，全天可钓</td></tr>
-<tr><td>小潮(Neap)</td><td>上弦月/下弦月</td><td>较小（0.4-0.8m）</td><td>一般</td><td>水流慢，精细作钓，找结构边</td></tr>
-<tr><td>死潮(Dead)</td><td>小潮最低点</td><td>极小（<0.4m）</td><td>最差</td><td>几乎无口，建议休息</td></tr>
+<tr><td>中潮(Mid)</td><td>盈凸月/亏凸月</td><td>中等（0.8‑1.5m）</td><td>好</td><td>水流适中，全天可钓</td></tr>
+<tr><td>小潮(Neap)</td><td>上弦月/下弦月</td><td>较小（0.4‑0.8m）</td><td>一般</td><td>水流慢，精细作钓，找结构边</td></tr>
+<tr><td>死潮(Dead)</td><td>小潮最低点</td><td>极小（&lt;0.4m）</td><td>最差</td><td>几乎无口，建议休息</td></tr>
 </tbody></table>
 <h4 style="color:#0f4c81;margin:14px 0 8px">作钓窗口</h4>
-<div style="line-height:1.8;font-size:13px">
-<b>最佳窗口</b>：涨潮前1小时 -> 满潮+1小时（鱼随潮水涌入近岸）<br>
-<b>次佳窗口</b>：落潮初期1-2小时（鱼随退潮撤出，在深槽集中）<br>
+<div style="line‑height:1.8;font‑size:13px">
+<b>最佳窗口</b>：涨潮前1小时 ‑&gt; 满潮+1小时（鱼随潮水涌入近岸）<br>
+<b>次佳窗口</b>：落潮初期1‑2小时（鱼随退潮撤出，在深槽集中）<br>
 <b>最差窗口</b>：死潮/平潮顶（高低潮前后30分钟，水流静止）<br>
-<b>转流瞬间</b>：平潮转流后15-30分钟，往往出现咬口高峰
+<b>转流瞬间</b>：平潮转流后15‑30分钟，往往出现咬口高峰
 </div>
 <h4 style="color:#0f4c81;margin:14px 0 8px">潮汐与鱼种对应</h4>
-<table class="manual-table"><thead><tr><th>鱼种</th><th>最佳潮汐</th><th>水层</th><th>备注</th></tr></thead><tbody>
-<tr><td>Bream黑鲷</td><td>涨潮->满潮</td><td>中下层</td><td>潮水越大越活跃</td></tr>
-<tr><td>Flathead牛尾鱼</td><td>刚退潮初期</td><td>底层</td><td>退潮时在沙地埋伏</td></tr>
-<tr><td>Trevally鲹鱼</td><td>涨潮-满潮</td><td>中上层</td><td>追炸水，活跃于流里</td></tr>
-<tr><td>海鲈</td><td>涨潮后期-满潮</td><td>全水层</td><td>结构边伏击</td></tr>
-<tr><td>Mulloway</td><td>满潮前后/夜间</td><td>底层</td><td>大个体，潮汐窗口</td></tr>
-<tr><td>鱿鱼</td><td>满潮前后/夜间</td><td>中下层</td><td>灯光区聚集</td></tr>
-</tbody></table>
-<h4 style="color:#0f4c81;margin:14px 0 8px">潮汐口诀</h4>
-<div style="line-height:1.8;font-size:13px">
-- 涨潮钓鱼，退潮挖蛤（涨潮鱼靠岸）<br>
-- 大潮大钓，小潮小钓，死潮睡觉<br>
-- 转流如开关，一开鱼就来<br>
-- 初一十五赶大潮，二十三来小潮还
-</div>
-</div>
-<div style="margin-top:16px;text-align:center"><button class="btn" onclick="closeModal('modalManual')">关闭</button></div>
-</div>
-</div>
-
-<div class="modal" id="modalSetting">
-<div class="modal-box">
-<h3>设置</h3>
-<div style="margin:10px 0">
-<label style="font-size:13px;color:#666">TidesAtlas API Key（推荐，潮汐首选）</label>
-<input id="tidesKey" placeholder="填入你的TidesAtlas API Key">
-<div style="font-size:11px;color:#27ae60;margin-top:4px">潮汐数据源优先级：TidesAtlas → WillyWeather → 模拟潮汐</div>
-</div>
-<div style="margin:10px 0">
-<label style="font-size:13px;color:#666">WillyWeather API Key（可选）</label>
-<input id="wwKey" placeholder="填入你的WillyWeather API Key">
-<div style="font-size:11px;color:#27ae60;margin-top:4px">密钥会自动清理首尾空格，请直接粘贴完整Private Key</div>
-</div>
-<div style="margin:10px 0">
-<label style="font-size:13px;color:#666">WillyWeather代理地址（可选）</label>
-<input id="proxyUrl" placeholder="默认使用 /wwapi 代理路径">
-</div>
-<div style="margin:10px 0">
-<label style="font-size:13px;color:#666">潮汐站点</label>
-<select id="tideStationSel">
-<option value="auto">自动匹配最近站点</option>
-<option value="2280">Sydney / Fort Denison</option>
-<option value="2281">Manly / Little Manly</option>
-<option value="2282">Rose Bay</option>
-<option value="2283">Parramatta River</option>
-<option value="2284">Botany Bay</option>
-<option value="2285">Newcastle</option>
-<option value="2286">Wollongong</option>
-<option value="2287">Central Coast</option>
-<option value="2288">Port Stephens</option>
-<option value="2289">Jervis Bay</option>
-</select>
-</div>
-<div style="font-size:12px;color:#888;margin:8px 0;line-height:1.6">
-<strong>潮汐数据源优先级：</strong><br>
-1. <strong>TidesAtlas</strong>（推荐）：填入Key后优先获取澳洲真实站点潮汐，通过 /tidesatlas 代理转发<br>
-2. <strong>WillyWeather</strong>：填入Key后作为备选，通过 /wwapi 代理转发<br>
-3. <strong>模拟潮汐</strong>：以上都失败或未填Key时兜底使用<br>
-需要在仓库根目录配置vercel.json代理。<br>
-代理格式：/tidesatlas -> https://tidesatlas.com/api/v1 ，/wwapi -> https://api.willyweather.com.au
-</div>
-<div style="margin-top:14px;text-align:center">
-<button class="btn" id="saveSetting">保存设置</button>
-<button class="btn btn-sec" onclick="closeModal('modalSetting')" style="margin-left:8px">关闭</button>
-</div>
-</div>
-</div>
-
-<div id="page-live">
-<div class="card">
-<h3><span class="icon">🌤</span>实况信息</h3>
-<div class="time-label">悉尼本地时间：<span class="clock" id="localTime"></span></div>
-<div id="weatherBox" style="line-height:1.8">点击"刷新钓点分析"获取天气</div>
-<div id="moonBox" class="moon-block hidden"></div>
-<div id="windDirBox" class="wind-dir-block hidden"></div>
-<div id="tideBox" class="tide-block hidden">
-<div id="tide-rate-text" style="font-size:12px;color:#888;margin-bottom:4px;"></div>
-<div id="tide-rate-alert" style="display:none;padding:6px 8px;border-radius:6px;margin-bottom:6px;font-size:12px;"></div>
-<div id="tide-source-info" style="font-size:11px;color:#217ad9;margin-bottom:4px;"></div>
-<div id="tide-svg-wrap" style="width:100%;height:180px;overflow:hidden;margin:6px 0;">
-<svg id="tide-svg" width="100%" height="180" viewBox="0 0 600 180"></svg>
-</div>
-<div id="tide-current-status" style="font-size:13px;margin:4px 0;"></div>
-<div id="tide-next-countdown" style="font-size:13px;margin:4px 0;"></div>
-<div id="tide-extremes-list" style="font-size:12px;line-height:1.6;margin-top:4px;"></div>
-<div id="tide-error-tip" style="color:#d32f2f;display:none;font-size:12px;margin-top:4px;"></div>
-</div>
-<div class="collapse-header" id="forecastToggle">
-<span>📅 7天预报（点击展开）</span>
-<span id="forecastArrow">▼</span>
-</div>
-<div class="collapse-content" id="forecastContent">
-<div id="forecastBox">选择钓点后显示7天预报</div>
-</div>
-</div>
-
-<div class="card">
-<h3><span class="icon">📊</span>鱼情综合分析</h3>
-<div id="fishScore" style="margin-bottom:8px">--</div>
-<div id="fishScoreBar" class="fish-score-bar hidden"><div class="fish-score-fill" id="fishScoreFill" style="width:0%"></div></div>
-<div id="fishFactors" style="margin:10px 0"></div>
-<div id="fishAdvice" style="margin-top:10px;line-height:1.7"></div>
-</div>
-
-<div class="card">
-<h3><span class="icon">🎣</span>推荐作钓方案（按评分排名）</h3>
-<div id="tacticsBox">选择钓点后显示多套方案</div>
-</div>
-</div>
-
-<div id="page-spots" class="hidden">
-<div class="card">
-<h3><span class="icon">🗂</span>我的钓点库（点击行调取点位）</h3>
-<div id="spotsTableWrap"></div>
-<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-<button class="btn" id="btnExportSpots">导出JSON备份</button>
-<button class="btn btn-danger" id="btnClearAllSpots">清空全部钓点</button>
-</div>
-</div>
-</div>
-
-<div id="page-gear" class="hidden">
-<div class="card">
-<h3><span class="icon">🎒</span>我的装备库</h3>
-<div class="gear-list">
-<div class="gear-item"><b>路亚竿</b>Shimano Maikuro II 2.1m</div>
-<div class="gear-item"><b>纺车轮</b>Savage SG 3000H</div>
-<div class="gear-item"><b>主线</b>PE 0.8-1.0</div>
-<div class="gear-item"><b>前导</b>氟碳 18-22lb / 1米</div>
-<div class="gear-item"><b>亮片</b>勺子亮片 7-12g（银/金）</div>
-<div class="gear-item"><b>沉底装备</b>通心橄榄铅 10-20g，直柄圆钩 1/0-2/0</div>
-<div class="gear-item"><b>浮漂装备</b>阿波 B-2B，咬铅 G8-3B</div>
-<div class="gear-item"><b>矶钓竿</b>3.3m 矶竿，轮2500</div>
-<div class="gear-item"><b>远投装备</b>水滴铅 80-120g，沙滩远投竿</div>
-<div class="gear-item"><b>饵料</b>新鲜虾仁、沙丁鱼块、碎鱼窝料</div>
-</div>
-</div>
-</div>
-
-<div class="tabbar">
-<button class="active" data-page="live"><span class="tab-icon">🎯</span>实时鱼情</button>
-<button data-page="spots"><span class="tab-icon">🗂</span>钓点管理</button>
-<button data-page="gear"><span class="tab-icon">🎒</span>装备库</button>
-</div>
-
-<script>
-function closeModal(id){var m=document.getElementById(id);if(m)m.style.display='none';}
-function $(id){return document.getElementById(id);}
-function bind(id,event,fn){var el=$(id);if(el)el.addEventListener(event,fn);}
-
-function updateSydneyTime(){
-    var now=new Date();
-    var s=new Intl.DateTimeFormat('en-AU',{timeZone:'Australia/Sydney',hour:'2-digit',minute:'2-digit',second:'2-digit',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
-    var el=$('localTime');
-    if(el)el.innerText=s;
-}
-setInterval(updateSydneyTime,1000);
-
-function getMoonPhase(date){
-    var synodicMonth=29.53059;
-    var baseNewMoon=new Date(2026,0,19,0,0,0);
-    var daysSinceNew=((date.getTime()-baseNewMoon.getTime())/86400000)%synodicMonth;
-    if(daysSinceNew<0)daysSinceNew+=synodicMonth;
-    var phaseAngle=(daysSinceNew/synodicMonth)*360;
-    var illumination=(1-Math.cos((phaseAngle*Math.PI)/180))/2;
-    var phasePct=Math.round(illumination*100);
-    var phaseName='';
-    var phaseEmoji='';
-    if(phasePct<8){phaseName='新月';phaseEmoji='🌑';}
-    else if(phasePct<35){phaseName='蛾眉月';phaseEmoji='🌒';}
-    else if(phasePct<55){phaseName='上弦月';phaseEmoji='🌓';}
-    else if(phasePct<85){phaseName='盈凸月';phaseEmoji='🌔';}
-    else if(phasePct>=92){phaseName='满月';phaseEmoji='🌕';}
-    else{phaseName='亏凸月';phaseEmoji='🌖';}
-    var riseHour=Math.round(6+(daysSinceNew/synodicMonth)*12)%24;
-    var setHour=Math.round((riseHour+12)%24);
-    var moonrise=String(riseHour).padStart(2,'0')+':'+String(30+((riseHour*7)%30)).padStart(2,'0');
-    var moonset=String(setHour).padStart(2,'0')+':'+String((setHour*11)%60).padStart(2,'0');
-    var fishingImpact='';
-    var moonScore=0;
-    if(phasePct>=92){fishingImpact='满月夜大鱼靠边，夜间作钓最佳，用大饵钓大物';moonScore=15;}
-    else if(phasePct<=8){fishingImpact='新月夜间用夜光饵，选择结构边缘作钓';moonScore=10;}
-    else if(phasePct>60){fishingImpact='夜间可路亚或浮漂钓，注意月出月落时间';moonScore=8;}
-    else if(phasePct<30){fishingImpact='夜间用振动型假饵或真饵，靠嗅觉和触觉诱鱼';moonScore=-2;}
-    else{fishingImpact='正常作钓即可';moonScore=0;}
-    return {phaseName:phaseName,phaseEmoji:phaseEmoji,phasePct:phasePct,moonrise:moonrise,moonset:moonset,fishingImpact:fishingImpact,moonScore:moonScore};
-}
-
-function windAngleToText(deg){
-    var dirs=["北","东北","东","东南","南","西南","西","西北"];
-    var idx=Math.round(((deg%360)/45))%8;
-    return dirs[idx];
-}
-function getSuggestFishDir(windDeg){
-    var opposite=(windDeg+180)%360;
-    return windAngleToText(opposite);
-}
-
-function checkWebGL2(){
-    try{
-        var canvas=document.createElement('canvas');
-        return !!(window.WebGL2RenderingContext && canvas.getContext('webgl2'));
-    }catch(e){return false;}
-}
-
-var map=null;
-var mapLibreLoaded=false;
-var presetSpots=[
-    {name:"Little Manly Park",sub:"Manly / Fairlight",lng:151.2847,lat:-33.8031,note:"礁石岸+小码头，North Harbour保护区"},
-    {name:"Beulah St Wharf",sub:"Milsons Point",lng:151.2115,lat:-33.8485,note:"悉尼大桥附近码头，可食用鱼"},
-    {name:"Bradleys Head",sub:"Mosman",lng:151.2430,lat:-33.8510,note:"礁石岸，视野开阔"},
-    {name:"Dawes Point",sub:"The Rocks",lng:151.2090,lat:-33.8570,note:"大桥下码头，注意鱼不能吃"},
-    {name:"Rose Bay",sub:"Rose Bay / Vaucluse",lng:151.2680,lat:-33.8760,note:"海湾沙滩，Flathead多"},
-    {name:"Cooks River",sub:"Marrickville / Tempe",lng:151.1950,lat:-33.9150,note:"河口区域，Bream多"}
-];
-
-function showMapFallback(){
-    var div=$('map-container');
-    var html='<div class="map-fallback"><h4>地图加载失败（网络/WebGL限制）</h4>'
-        +'<p style="font-size:13px;color:#666;margin-bottom:8px">GPS定位、经纬度输入、钓点库、天气分析全部可用</p>'
-        +'<p style="font-size:13px;color:#0f4c81;font-weight:600;margin-bottom:6px">快速选择悉尼钓点：</p>'
-        +'<div class="spot-cards">';
-    presetSpots.forEach(function(s){
-        html+='<div class="spot-card" data-lng="'+s.lng+'" data-lat="'+s.lat+'" data-name="'+s.name+'" data-sub="'+s.sub+'">'
-            +'<div class="spot-name">'+s.name+'</div>'
-            +'<div class="spot-sub">'+s.sub+'</div>'
-            +'</div>';
-    });
-    html+='</div></div>';
-    div.innerHTML=html;
-    div.querySelectorAll('.spot-card').forEach(function(card){
-        card.addEventListener('click',function(){
-            var lng=Number(card.dataset.lng);
-            var lat=Number(card.dataset.lat);
-            $('inpLng').value=lng.toFixed(4);
-            $('inpLat').value=lat.toFixed(4);
-            state.selectedLng=lng;
-            state.selectedLat=lat;
-            var geo=getRegionName(lng,lat);
-            $('locRegion').innerText="点位大致区域："+geo.fullText;
-            $('locStatus').innerText='已选择：'+card.dataset.name;
-            fetchWeather(lng,lat);
-        });
-    });
-}
-
-var currentMarker=null;
-
-function setMapMarker(lng,lat){
-    if(!map||!window.maplibregl)return;
-    try{
-        if(currentMarker)currentMarker.remove();
-        var el=document.createElement('div');
-        el.style.width='24px';
-        el.style.height='24px';
-        el.style.background='radial-gradient(circle, #e74c3c 30%, #c0392b 70%)';
-        el.style.borderRadius='50%';
-        el.style.border='3px solid #fff';
-        el.style.boxShadow='0 2px 8px rgba(0,0,0,0.4)';
-        el.style.cursor='pointer';
-        currentMarker=new maplibregl.Marker({element:el,draggable:false})
-            .setLngLat([lng,lat])
-            .addTo(map);
-    }catch(e){console.warn("Marker error:",e);}
-}
-
-function showMapLoading(text){
-    hideMapLoading();
-    var mapDiv=$('map-container');
-    var overlay=document.createElement('div');
-    overlay.className='map-loading-overlay';
-    overlay.id='mapLoadingOverlay';
-    overlay.innerHTML='<div class="spinner"></div><div class="loading-text">'+(text||'地图加载中...')+'</div><div class="loading-sub">正在请求地图瓦片，请耐心等待</div>';
-    mapDiv.appendChild(overlay);
-}
-function hideMapLoading(){
-    var overlay=$('mapLoadingOverlay');
-    if(overlay)overlay.remove();
-}
-async function loadMapLibre(mapStyle){
-    var mapDiv=$('map-container');
-    showMapLoading('地图加载中，请耐心等待...');
-    if(!checkWebGL2()){
-        hideMapLoading();
-        mapDiv.innerHTML='<div style="padding:20px;text-align:center;color:#666">当前浏览器不支持WebGL，无法显示地图<br>GPS定位和经纬度输入仍可正常使用</div>';
-        return;
-    }
-    try{
-        if(!window.maplibregl){
-            var css=document.createElement('link');
-            css.rel='stylesheet';
-            css.href='https://cdn.jsdelivr.net/npm/maplibre-gl@4/dist/maplibre-gl.css';
-            document.head.appendChild(css);
-            await new Promise(function(resolve,reject){
-                var script=document.createElement('script');
-                script.src='https://cdn.jsdelivr.net/npm/maplibre-gl@4/dist/maplibre-gl.js';
-                script.onload=resolve;
-                script.onerror=function(){
-                    script.src='https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.js';
-                    script.onload=resolve;
-                    script.onerror=reject;
-                };
-                document.head.appendChild(script);
-            });
-        }
-        mapLibreLoaded=true;
-        if(map){try{map.remove();}catch(e){}}
-        map=new maplibregl.Map({
-            container:'map-container',
-            style:mapStyle,
-            center:[151.2847,-33.8031],
-            zoom:10
-        });
-        map.addControl(new maplibregl.NavigationControl({showCompass:true}));
-        map.on('click',function(e){
-            var lng=e.lngLat.lng;
-            var lat=e.lngLat.lat;
-            $('inpLng').value=lng.toFixed(4);
-            $('inpLat').value=lat.toFixed(4);
-            state.selectedLng=lng;
-            state.selectedLat=lat;
-            setMapMarker(lng,lat);
-            var geoInfo=getRegionName(lng,lat);
-            $('locRegion').innerText="点位大致区域："+geoInfo.fullText;
-            $('locStatus').innerText='已选坐标：'+lng.toFixed(4)+', '+lat.toFixed(4)+' 正在更新天气...';
-            fetchWeather(lng,lat);
-        });
-        map.on('error',function(e){
-            console.warn("Map error (ignored, continuing to wait):",e);
-        });
-        map.on('load',function(){
-            hideMapLoading();
-            console.log("Map fully loaded");
-            if(state.selectedLng&&state.selectedLat){
-                setMapMarker(state.selectedLng,state.selectedLat);
-            }
-        });
-        map.on('idle',function(){
-            hideMapLoading();
-        });
-    }catch(err){
-        console.warn("MapLibre加载异常：",err);
-        hideMapLoading();
-        mapDiv.innerHTML='<div style="padding:20px;text-align:center">'
-            +'<div style="color:#e74c3c;margin-bottom:10px;font-weight:600">地图加载失败：'+err.message+'</div>'
-            +'<div style="color:#666;margin-bottom:10px">GPS定位、经纬度输入、钓点库、天气分析全部可用</div>'
-            +'<button class="btn" onclick="location.reload()">刷新页面重试</button>'
-            +'</div>';
-    }
-}
-
-function reloadMap(){
-    showMapLoading('正在刷新地图...');
-    var sel=$('mapSourceSel').value;
-    var styleObj=sel==='osm'?OSM_STYLE:maplibreStyle;
-    loadMapLibre(styleObj);
-}
-
-function renderMarineTide(heights,times){
-    try{
-        var today=new Date();
-        var todayStr=today.toISOString().slice(0,10);
-        var todayData=[];
-        for(var i=0;i<times.length;i++){
-            if(times[i]&&times[i].slice(0,10)===todayStr){
-                todayData.push({time:times[i].slice(11,16),height:heights[i]});
-            }
-        }
-        if(todayData.length<4)return;
-        var extremes=[];
-        for(var j=1;j<todayData.length-1;j++){
-            var h=todayData[j].height;
-            var prev=todayData[j-1].height;
-            var next=todayData[j+1].height;
-            if(h>prev&&h>next){extremes.push({time:todayData[j].time,height:h,type:'满潮'});}
-            else if(h<prev&&h<next){extremes.push({time:todayData[j].time,height:h,type:'低潮'});}
-        }
-        if(extremes.length===0){
-            var maxH=-999,minH=999,maxT='',minT='';
-            todayData.forEach(function(d){
-                if(d.height>maxH){maxH=d.height;maxT=d.time;}
-                if(d.height<minH){minH=d.height;minT=d.time;}
-            });
-            extremes=[{time:maxT,height:maxH,type:'满潮'},{time:minT,height:minH,type:'低潮'}];
-        }
-        var html="<div style='font-weight:700;margin-bottom:6px'>今日潮汐（Open-Meteo Marine）：</div>";
-        html+="<div style='font-size:11px;color:#217ad9;margin-bottom:6px'>数据来源：MeteoFrance SMOC全球潮汐模型</div>";
-        extremes.slice(0,6).forEach(function(e){
-            html+="<div style='margin:2px 0'>  "+e.time+"  "+e.type+"  "+e.height.toFixed(2)+"m</div>";
-        });
-        var currentH=todayData.length>0?todayData[Math.min(todayData.length-1,Math.floor(todayData.length/2))].height:0;
-        html+="<div style='margin-top:6px;font-size:12px;color:#666'>当前潮位约："+currentH.toFixed(2)+"m</div>";
-        $('tideBox').innerHTML=html;
-    }catch(e){
-        console.warn("Marine潮汐渲染失败:",e);
-    }
-}
-
-function fetchTideMock(){
-    var tidePoints=[
-        {time:"05:20",type:"满潮"},
-        {time:"11:45",type:"低潮"},
-        {time:"17:30",type:"满潮"},
-        {time:"23:55",type:"低潮"}
-    ];
-    var html="<div style='font-weight:700;margin-bottom:6px'>今日潮汐（模拟）：</div>";
-    tidePoints.forEach(function(t){
-        html+="<div style='margin:2px 0'>  "+t.time+"  "+t.type+"</div>";
-    });
-    html+="<pre style='margin-top:8px;font-size:11px'>潮位\n  ^\n  ██        ██\n █  █      █  █\n█    ██████    █\n----------------> 时间</pre>";
-    return html;
-}
-
-var TIDE_STATIONS=[
-    {name:"Sydney / Fort Denison",lat:-33.85,lng:151.22,id:2280},
-    {name:"Manly / Little Manly",lat:-33.80,lng:151.28,id:2281},
-    {name:"Rose Bay",lat:-33.87,lng:151.26,id:2282},
-    {name:"Parramatta River",lat:-33.85,lng:151.10,id:2283},
-    {name:"Botany Bay",lat:-33.96,lng:151.18,id:2284},
-    {name:"Newcastle",lat:-32.92,lng:151.78,id:2285},
-    {name:"Wollongong",lat:-34.42,lng:150.89,id:2286},
-    {name:"Central Coast",lat:-33.40,lng:151.45,id:2287},
-    {name:"Port Stephens",lat:-32.70,lng:152.10,id:2288},
-    {name:"Jervis Bay",lat:-35.05,lng:150.70,id:2289}
-];
-
-function haversineDistance(lat1,lng1,lat2,lng2){
-    var R=6371;
-    var dLat=(lat2-lat1)*Math.PI/180;
-    var dLng=(lng2-lng1)*Math.PI/180;
-    var a=Math.sin(dLat/2)*Math.sin(dLat/2)+
-        Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*
-        Math.sin(dLng/2)*Math.sin(dLng/2);
-    var c=2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
-    return R*c;
-}
-
-function findNearestTideStation(lat,lng){
-    var minDist=Infinity;
-    var nearest=null;
-    TIDE_STATIONS.forEach(function(s){
-        var d=haversineDistance(lat,lng,s.lat,s.lng);
-        if(d<minDist){minDist=d;nearest=s;}
-    });
-    return {station:nearest,distance:minDist};
-}
-
-function fetchWillyWeatherTide(locationId,stationName,distance){
-    return new Promise(function(resolve,reject){
-        if(!state.wwKey){reject(new Error('no key'));return;}
-        var url='/wwapi/v2/locations/'+locationId+'/tides.json?key='+encodeURIComponent(state.wwKey);
-        fetch(url).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
-        .then(function(data){resolve({data:data,stationName:stationName,distance:distance});})
-        .catch(reject);
-    });
-}
-
-function renderWillyWeatherTide(result){
-    var d=result.data;
-    var html="<div style='font-weight:700;margin-bottom:6px'>今日潮汐（WillyWeather）：</div>";
-    html+="<div style='font-size:11px;color:#217ad9;margin-bottom:6px'>数据来源："+result.stationName;
-    if(result.distance!=null)html+=" 最近站点 距离约"+result.distance.toFixed(1)+"km";
-    html+="</div>";
-    try{
-        var values=d.values||[];
-        if(values.length>0){
-            var today=new Date();
-            var todayStr=today.toISOString().slice(0,10);
-            var todayTides=values.filter(function(v){return v.dateTime&&v.dateTime.slice(0,10)===todayStr;});
-            if(todayTides.length===0)todayTides=values.slice(0,8);
-            todayTides.slice(0,8).forEach(function(v){
-                var time=v.dateTime?v.dateTime.slice(11,16):'';
-                var height=v.height!=null?v.height.toFixed(2)+'m':'';
-                var type=v.height>1.0?'满潮':'低潮';
-                html+="<div style='margin:2px 0'>  "+time+"  "+type+"  "+height+"</div>";
-            });
-        }else{
-            html+="<div style='color:#888'>暂无潮汐数据</div>";
-        }
-    }catch(e){
-        html+="<div style='color:#888'>潮汐数据解析失败</div>";
-    }
-    html+="<pre style='margin-top:8px;font-size:11px'>潮位\n  ^\n  ██        ██\n █  █      █  █\n█    ██████    █\n----------------> 时间</pre>";
-    return html;
-}
-
-function fetchTidesAtlasTide(lat,lng){
-    return new Promise(function(resolve,reject){
-        if(!state.tidesKey){reject(new Error('no tidesatlas key'));return;}
-        var rem=Number(localStorage.getItem('tides_remaining')||50);
-        if(rem<=0){reject(new Error('rate limit exceeded'));return;}
-        var url='/tidesatlas/tides?lat='+lat+'&lon='+lng+'&days=3';
-        fetch(url,{
-            headers:{'X-API-Key':state.tidesKey}
-        }).then(function(r){
-            readRateLimitHeaders(r);
-            if(r.status===401)throw new Error('401 invalid key');
-            if(r.status===429)throw new Error('429 rate limit');
-            if(!r.ok)throw new Error('HTTP '+r.status);
-            return r.json();
-        }).then(function(data){resolve(data);}).catch(reject);
-    });
-}
-
-function renderTidesAtlasTide(data){
-    var svg=$('tide-svg');
-    var sourceInfoEl=$('tide-source-info');
-    var statusEl=$('tide-current-status');
-    var countdownEl=$('tide-next-countdown');
-    var listEl=$('tide-extremes-list');
-    var errEl=$('tide-error-tip');
-    if(errEl)errEl.style.display='none';
-    var extremes=data.extremes||data.tide_events||data.events||[];
-    if(!extremes||extremes.length===0){
-        if(errEl){errEl.textContent="该点位无潮汐数据，请更换坐标";errEl.style.display='block';}
-        if(svg)svg.innerHTML='';
-        return;
-    }
-    var stationName=(data.port&&data.port.name)?data.port.name:'自动匹配站点';
-    var distance=null;
-    if(data.port&&data.port.lat&&data.port.lon&&state.selectedLat&&state.selectedLng){
-        distance=haversineDistance(state.selectedLat,state.selectedLng,data.port.lat,data.port.lon);
-    }
-    if(sourceInfoEl)sourceInfoEl.textContent="数据来源："+stationName+(distance!=null?" 距离约"+distance.toFixed(1)+"km":"");
-    var items=extremes.map(function(it){
-        return {ts:new Date(it.datetime||it.time||it.dateTime).getTime(),h:Number(it.height_m!=null?it.height_m:it.height),type:it.type};
-    }).sort(function(a,b){return a.ts-b.ts;});
-    var nowTs=Date.now();
-    var nextEvent=null;
-    for(var i=0;i<items.length;i++){if(items[i].ts>=nowTs){nextEvent=items[i];break;}}
-    var hList=items.map(function(i){return i.h;});
-    var hMin=Math.min.apply(null,hList);
-    var hMax=Math.max.apply(null,hList);
-    var hRange=hMax-hMin||0.5;
-    var W=600,H=180,padT=8,padB=24,padL=28,padR=8;
-    var chartW=W-padL-padR,chartH=H-padT-padB;
-    var tStart=items[0].ts,tEnd=items[items.length-1].ts,tSpan=tEnd-tStart||1;
-    function t2x(ts){return padL+((ts-tStart)/tSpan)*chartW;}
-    function h2y(hv){return padT+chartH-((hv-hMin)/hRange)*chartH;}
-    var pathD="";
-    for(var s=0;s<=100;s++){
-        var ratio=s/100;
-        var tSample=tStart+ratio*tSpan;
-        var hSample;
-        if(items.length===1){hSample=items[0].h;}
-        else{
-            var left=items[0],right=items[items.length-1];
-            for(var j=0;j<items.length-1;j++){
-                if(tSample>=items[j].ts&&tSample<=items[j+1].ts){left=items[j];right=items[j+1];break;}
-            }
-            var segSpan=right.ts-left.ts;
-            var segRatio=segSpan===0?0:(tSample-left.ts)/segSpan;
-            hSample=left.h+(right.h-left.h)*segRatio;
-        }
-        var x=t2x(tSample),y=h2y(hSample);
-        pathD+=(s===0?"M":"L")+x.toFixed(2)+","+y.toFixed(2)+" ";
-    }
-    var lastX=t2x(tEnd),baseY=h2y(hMin);
-    var fillPath=pathD+" L"+lastX+","+baseY+" L"+padL+","+baseY+" Z";
-    var nowX=t2x(Math.max(tStart,Math.min(tEnd,nowTs)));
-    var listHtml="";
-    items.forEach(function(it){
-        var d=new Date(it.ts);
-        var timeStr=String(d.getHours()).padStart(2,'0')+":"+String(d.getMinutes()).padStart(2,'0');
-        var label=it.type==='high'?'满潮':'低潮';
-        listHtml+="  "+timeStr+"  "+label+"  "+it.h.toFixed(2)+"m<br/>";
-    });
-    if(listEl)listEl.innerHTML=listHtml;
-    if(statusEl){
-        if(nextEvent){
-            statusEl.textContent="当前潮汐状态："+(nextEvent.type==='high'?'落潮':'涨潮')+"中";
-            var diff=nextEvent.ts-nowTs;
-            var hh=Math.floor(diff/3600000),mm=Math.floor((diff%3600000)/60000);
-            if(countdownEl)countdownEl.textContent="距离下一"+(nextEvent.type==='high'?'满潮':'低潮')+"："+hh+"h"+mm+"min";
-        }else{
-            statusEl.textContent="当前：已超出今日潮汐窗口";
-            if(countdownEl)countdownEl.textContent="";
-        }
-    }
-    if(svg){
-        var dots="";
-        items.forEach(function(it){
-            var cx=t2x(it.ts),cy=h2y(it.h);
-            var fc=it.type==='high'?'#1565c0':'#f9a825';
-            dots+='<circle cx="'+cx.toFixed(2)+'" cy="'+cy.toFixed(2)+'" r="3.5" fill="'+fc+'"/>';
-        });
-        svg.innerHTML='<defs><linearGradient id="seaGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#4285f4" stop-opacity="0.35"/><stop offset="100%" stop-color="#4285f4" stop-opacity="0.06"/></linearGradient></defs>'
-            +'<path d="'+fillPath+'" fill="url(#seaGrad)"></path>'
-            +'<path d="'+pathD+'" fill="none" stroke="#1565c0" stroke-width="2"></path>'
-            +dots
-            +'<line x1="'+nowX.toFixed(2)+'" y1="'+padT+'" x2="'+nowX.toFixed(2)+'" y2="'+(padT+chartH)+'" stroke="#2e7d32" stroke-width="1.5" stroke-dasharray="4 4"/>';
-    }
-}
-
-function getCurrentTidePhase(data){
-    try{
-        var extremes=data.extremes||[];
-        if(extremes.length<2)return '';
-        var nowTs=Date.now();
-        var items=extremes.map(function(it){return {ts:new Date(it.datetime||it.time).getTime(),type:it.type};}).sort(function(a,b){return a.ts-b.ts;});
-        var prev=null,next=null;
-        for(var i=0;i<items.length;i++){
-            if(items[i].ts<=nowTs)prev=items[i];
-            if(items[i].ts>=nowTs&&!next){next=items[i];}
-        }
-        if(!prev||!next)return '';
-        // 前一个是低潮，后一个是满潮=涨潮；前一个是满潮，后一个是低潮=落潮
-        if(prev.type==='low'&&next.type==='high')return 'rising';
-        if(prev.type==='high'&&next.type==='low')return 'falling';
-        return '';
-    }catch(e){return '';}
-}
-
-function saveTidesRateLimit(remaining,limit,resetTs){
-    localStorage.setItem('tides_remaining',remaining);
-    localStorage.setItem('tides_limit',limit);
-    localStorage.setItem('tides_reset_ts',resetTs);
-    renderRateLimitUi();
-}
-function renderRateLimitUi(){
-    var rem=Number(localStorage.getItem('tides_remaining')||0);
-    var lim=Number(localStorage.getItem('tides_limit')||50);
-    var resetTs=Number(localStorage.getItem('tides_reset_ts')||0);
-    var rateTextEl=$('tide-rate-text');
-    var alertEl=$('tide-rate-alert');
-    if(!rateTextEl)return;
-    rateTextEl.textContent="TidesAtlas剩余请求："+rem+"/"+lim;
-    if(!alertEl)return;
-    alertEl.style.display='none';
-    if(rem<=0){
-        alertEl.style.display='block';alertEl.style.background='#ffebee';alertEl.style.color='#c62828';
-        alertEl.textContent="TidesAtlas今日额度已耗尽，重置："+new Date(resetTs*1000).toLocaleString();
-    }else if(rem<=3){
-        alertEl.style.display='block';alertEl.style.background='#ffebee';alertEl.style.color='#c62828';
-        alertEl.textContent="警告：剩余仅"+rem+"次请求，减少频繁点击地图";
-    }else if(rem<=10){
-        alertEl.style.display='block';alertEl.style.background='#fff8e1';alertEl.style.color='#f57f17';
-        alertEl.textContent="提醒：剩余"+rem+"次TidesAtlas请求";
-    }
-}
-function readRateLimitHeaders(resp){
-    try{
-        var rem=resp.headers.get('X-RateLimit-Remaining');
-        var lim=resp.headers.get('X-RateLimit-Limit');
-        var reset=resp.headers.get('X-RateLimit-Reset');
-        if(rem&&lim&&reset){saveTidesRateLimit(Number(rem),Number(lim),Number(reset));}
-    }catch(e){}
-}
-
-function getRegionName(lng,lat){
-    var suburb="";
-    var region="";
-    if(lng>151.20&&lng<151.32&&lat>-33.88&&lat<-33.76){
-        if(lng<151.25){region="悉尼大桥西侧 / Parramatta河";suburb="Balmain / Rozelle";}
-        else if(lng<151.275){region="悉尼CBD / Circular Quay码头";suburb="Sydney CBD / The Rocks";}
-        else{region="东悉尼 / Rushcutters Bay";suburb="Darlinghurst / Potts Point";}
-    }else if(lng>151.3&&lat<-33.8){
-        region="Manly / Little Manly 海岸";suburb="Manly / Fairlight";
-    }else if(lng<151.15){
-        region="内陆河域";suburb="Western Sydney";
-    }else if(lng>151.29&&lat>-33.83&&lat<-33.80){
-        region="Rose Bay / Watsons Bay";suburb="Rose Bay / Vaucluse";
-    }else if(lng>151.17&&lng<151.22&&lat<-33.82){
-        region="Cooks River河口";suburb="Marrickville / Tempe";
-    }else if(lng>151.24&&lng<151.27&&lat<-33.84){
-        region="Bradleys Head / Mosman";suburb="Mosman / Cremorne";
-    }else{
-        region="未知海岸点位";suburb="周边未知Suburb";
-    }
-    return {region:region,suburb:suburb,fullText:region+" | 附近Suburb："+suburb};
-}
-
-var state={
-    wwKey:(localStorage.getItem('ww-key')||'').replace(/[\s\u00A0\u2000-\u200A\u202F\u205F\u3000]/g,''),
-    tidesKey:(localStorage.getItem('tides-key')||'ta_7845f1e2bcd920ec9cffdf26ffa1045a6ce8eefd16db1987073699b9aae6').replace(/[\s\u00A0\u2000-\u200A\u202F\u205F\u3000]/g,''),
-    proxyUrl:localStorage.getItem('ww-proxy')||'',
-    tideStation:localStorage.getItem('tide-station')||'auto',
-    selectedLng:151.2847,
-    selectedLat:-33.8031,
-    spots:JSON.parse(localStorage.getItem('fishingSpots')||'[]')
-};
-
-function saveSpotsToStorage(){
-    localStorage.setItem('fishingSpots',JSON.stringify(state.spots));
-}
-
-function renderSpotTable(){
-    var wrap=$('spotsTableWrap');
-    if(!state.spots||state.spots.length===0){
-        wrap.innerHTML="<div style='padding:20px;text-align:center;color:#999'>暂无保存钓点，请先保存点位</div>";
-        return;
-    }
-    var html='<table class="spot-table"><thead><tr><th>区域</th><th>Suburb</th><th>经度</th><th>纬度</th><th>备注</th><th>操作</th></tr></thead><tbody>';
-    state.spots.forEach(function(spot,idx){
-        html+='<tr data-idx="'+idx+'">'
-            +'<td>'+(spot.region||"")+'</td>'
-            +'<td>'+(spot.suburb||"")+'</td>'
-            +'<td>'+spot.lng+'</td>'
-            +'<td>'+spot.lat+'</td>'
-            +'<td>'+(spot.note||"")+'</td>'
-            +'<td><button class="btn btn-danger" style="padding:4px 10px;font-size:11px" data-del="'+idx+'">删除</button></td>'
-            +'</tr>';
-    });
-    html+='</tbody></table>';
-    wrap.innerHTML=html;
-    wrap.querySelectorAll('tbody tr').forEach(function(tr){
-        tr.addEventListener('click',function(e){
-            if(e.target.tagName==='BUTTON')return;
-            var idx=Number(tr.dataset.idx);
-            var s=state.spots[idx];
-            $('inpLng').value=s.lng;
-            $('inpLat').value=s.lat;
-            state.selectedLng=Number(s.lng);
-            state.selectedLat=Number(s.lat);
-            $('locRegion').innerText="点位大致区域："+s.fullText;
-            $('locStatus').innerText='已调取钓点：'+(s.note||s.region);
-            if(map){
-                try{map.jumpTo({center:[state.selectedLng,state.selectedLat],zoom:13});setMapMarker(state.selectedLng,state.selectedLat);}catch(e){}
-            }
-            fetchWeather(state.selectedLng,state.selectedLat);
-            document.querySelectorAll('.tabbar button').forEach(function(b){b.classList.remove('active');});
-            document.querySelector('.tabbar button[data-page="live"]').classList.add('active');
-            ['live','spots','gear'].forEach(function(p){$('page-'+p).classList.add('hidden');});
-            $('page-live').classList.remove('hidden');
-        });
-    });
-    wrap.querySelectorAll('[data-del]').forEach(function(btn){
-        btn.addEventListener('click',function(e){
-            e.stopPropagation();
-            var idx=Number(this.dataset.del);
-            state.spots.splice(idx,1);
-            saveSpotsToStorage();
-            renderSpotTable();
-        });
-    });
-}
-
-function analyseScene(){
-    var env=$('scEnv').value;
-    var depth=$('scDepth').value;
-    var flow=$('scFlow').value;
-    var quality=$('scQuality').value;
-    var weather=$('scWeather').value;
-    var light=$('scLight').value;
-    var tide=$('scTide').value;
-    var fish=$('scFish').value;
-    var time=$('scTime').value;
-    var chase=$('scChase').value;
-    if(!env&&!depth&&!flow&&!tide&&!fish&&!time){
-        alert('请至少填写一项场景信息');
-        return;
-    }
-    var scores={lure:50,float:50,bottom:50};
-    if(env==='jetty'||env==='reef'){scores.bottom+=15;scores.float+=10;}
-    if(env==='beach'||env==='sand_flat'){scores.bottom+=20;scores.lure+=5;}
-    if(env==='estuary'){scores.float+=15;scores.bottom+=10;}
-    if(depth==='shallow'){scores.lure+=10;scores.float+=5;}
-    if(depth==='deep'){scores.bottom+=15;scores.float+=10;}
-    if(flow==='strong'){scores.bottom+=15;scores.lure-=5;}
-    if(flow==='still'){scores.float+=10;scores.lure+=5;}
-    if(tide==='rising'||tide==='high'){scores.float+=10;scores.bottom+=5;}
-    if(tide==='falling'){scores.bottom+=10;}
-    if(tide==='dead'){scores.lure-=10;scores.bottom-=5;}
-    if(fish==='flathead'||fish==='bream'){scores.bottom+=15;scores.float+=10;}
-    if(fish==='trevally'||fish==='kingfish'){scores.lure+=20;}
-    if(fish==='squid'){scores.lure+=15;}
-    if(fish==='mulloway'){scores.bottom+=15;}
-    if(time==='dawn'||time==='dusk'){scores.lure+=10;scores.float+=5;}
-    if(time==='night'){scores.bottom+=10;scores.float+=5;}
-    if(chase==='yes'){scores.lure+=20;scores.bottom-=10;scores.float-=10;}
-    if(light==='backlit'||light==='low'){scores.lure+=5;}
-    if(quality==='murky'){scores.lure+=5;scores.bottom+=5;}
-    var sorted=Object.keys(scores).sort(function(a,b){return scores[b]-scores[a];});
-    var names={lure:'路亚钓法',float:'通用浮漂钓法',bottom:'沉底钓法'};
-    var result='<h4>大师作钓建议</h4>';
-    result+='<div style="margin:8px 0"><b>推荐排名：</b></div>';
-    sorted.forEach(function(method,i){
-        var rank=i+1;
-        var color=rank===1?'#27ae60':(rank===2?'#f39c12':'#95a5a6');
-        result+='<div style="margin:6px 0;padding:8px 12px;background:#f7f9fc;border-radius:8px;border-left:4px solid '+color+'">'
-            +'<b style="color:'+color+'">第'+rank+'名：'+names[method]+'</b>（匹配度 '+scores[method]+'分）</div>';
-    });
-    var best=sorted[0];
-    result+='<div style="margin-top:12px;padding:10px;background:#e8f4fd;border-radius:8px"><b>首选方案详细配置：</b><br>';
-    if(best==='lure'){
-        result+='<b>装备</b>：路亚竿2.1-2.7m，轮3000，PE0.8，前导18lb<br>'
-            +'<b>饵</b>：勺子亮片7-12g（银/金）或铅头软饵7-14g<br>'
-            +'<b>手法</b>：慢卷+轻抽贴近结构搜索，快慢交替制造闪动<br>'
-            +'<b>优势</b>：高效率大范围搜索，不用活饵<br>'
-            +'<b>劣势</b>：底层底栖鱼难钓，对手法要求高';
-    }else if(best==='float'){
-        result+='<b>装备</b>：矶竿3.3m，轮2500，PE0.8，前导18lb，阿波B，咬铅2B<br>'
-            +'<b>饵料</b>：虾仁；窝料：碎沙丁鱼，每3-5分钟少量打窝<br>'
-            +'<b>手法</b>：调漂让饵贴底，顺流自然飘不绷线，看阿波下沉/走线刺鱼<br>'
-            +'<b>优势</b>：随流搜索大片水域，兼顾底中层，信号直观<br>'
-            +'<b>劣势</b>：强潮难控漂，学习门槛高';
-    }else{
-        result+='<b>装备</b>：竿2.4-2.7m，轮3000-4000，PE1.0，前导22lb，滑动铅14g，直柄圆钩1/0<br>'
-            +'<b>饵料</b>：新鲜虾仁/沙丁鱼块<br>'
-            +'<b>手法</b>：抛投至礁石-沙地交界，铅到底收紧虚线，看到持续出线等2-3秒刺鱼<br>'
-            +'<b>优势</b>：底层鱼命中率高，抗水流强，操作简单<br>'
-            +'<b>劣势</b>：只能钓底层，需频繁换饵，易挂礁石';
-    }
-    result+='</div>';
-    if(tide==='dead'){
-        result+='<div style="margin-top:10px;color:#e74c3c;font-weight:600">当前死潮/平潮，鱼口较差，建议休息或换标点</div>';
-    }
-    if(chase==='yes'){
-        result+='<div style="margin-top:10px;color:#217ad9;font-weight:600">检测到追炸水，优先路亚快速收线+短抽，模拟逃窜饵鱼</div>';
-    }
-    $('sceneResult').innerHTML=result;
-    $('sceneResult').classList.remove('hidden');
-}
-
-// 全局函数引用（在DOMContentLoaded初始化后赋值）
-var generateMockForecast, renderFishAdvice, renderTactics;
-
-function fetchWeather(lng,lat){
-        var box=$('weatherBox');
-        var windBox=$('windDirBox');
-        var moonBox=$('moonBox');
-        var tideBox=$('tideBox');
-        var forecastBox=$('forecastBox');
-        var refreshBtn=$('btnRefresh');
-        if(refreshBtn){refreshBtn.disabled=true;refreshBtn.style.opacity='0.6';refreshBtn.innerText='加载中...';}
-        box.innerHTML='<span style="color:#217ad9">正在获取天气潮汐数据，请稍候...</span>';
-        windBox.classList.add('hidden');
-        moonBox.classList.add('hidden');
-        tideBox.classList.remove('hidden');
-        tideBox.innerHTML=fetchTideMock();
-        forecastBox.innerHTML="加载7天预报...";
-
-                function tryFetchTide(){
-                    // 1. TidesAtlas（最高优先）
-                    if(state.tidesKey){
-                        fetchTidesAtlasTide(lat,lng)
-                        .then(function(data){
-                            tideBox.innerHTML=renderTidesAtlasTide(data);
-                            // 解析当前潮汐状态并更新鱼情分析
-                            var tidePhase=getCurrentTidePhase(data);
-                            if(tidePhase&&window._lastWeather){
-                                window._lastWeather.tidePhase=tidePhase;
-                                if(typeof renderFishAdvice==="function"){renderFishAdvice(window._lastWeather);}
-                            }
-                        })
-                        .catch(function(err){
-                            console.warn("TidesAtlas潮汐获取失败，尝试WillyWeather:",err);
-                            // 2. WillyWeather（备选）
-                            if(state.wwKey){
-                                tryFetchWW();
-                            }
-                        });
-                        return;
-                    }
-                    // 2. 无TidesAtlas Key，直接用WillyWeather
-                    if(state.wwKey){
-                        tryFetchWW();
-                    }
-                }
-                function tryFetchWW(){
-                    var tideStationId=state.tideStation;
-                    var tideStationName='';
-                    var tideDistance=null;
-                    if(tideStationId==='auto'){
-                        var nearest=findNearestTideStation(lat,lng);
-                        if(nearest.station&&nearest.distance<100){
-                            tideStationId=nearest.station.id;
-                            tideStationName=nearest.station.name;
-                            tideDistance=nearest.distance;
-                        }else{
-                            tideBox.innerHTML+="<div style='color:#f39c12;font-size:11px;margin-top:4px'>当前位置超出预设站点范围，使用模拟潮汐</div>";
-                            tideStationId=null;
-                        }
-                    }else{
-                        var manualStation=TIDE_STATIONS.find(function(s){return String(s.id)===tideStationId;});
-                        if(manualStation){tideStationName=manualStation.name+' (手动选择)';}
-                    }
-                    if(tideStationId){
-                        fetchWillyWeatherTide(tideStationId,tideStationName,tideDistance)
-                        .then(function(result){
-                            tideBox.innerHTML=renderWillyWeatherTide(result);
-                        })
-                        .catch(function(err){
-                            console.warn("WillyWeather潮汐获取失败，使用模拟:",err);
-                        });
-                    }
-                }
-
-        // 潮汐数据源优先级：TidesAtlas → WillyWeather → 模拟潮汐
-    
-
-        tryFetchTide();
-
-    var moon=getMoonPhase(new Date());
-    moonBox.classList.remove('hidden');
-    moonBox.innerHTML=moon.phaseEmoji+' 月相：<b>'+moon.phaseName+'</b>（'+moon.phasePct+'%亮度）| 月出：'+moon.moonrise+' 月落：'+moon.moonset
-        +'<br><span style="font-size:12px">钓鱼影响：'+moon.fishingImpact+'</span>';
-
-    if(typeof renderFishAdvice==='function'){renderFishAdvice({temp:18,press:1013,wind:12,wave:0.8,moonScore:moon.moonScore,tideNote:'模拟数据'});}
-
-    var timeoutId=setTimeout(function(){
-        box.innerHTML='<span class="warn">天气/潮汐获取超时，已使用模拟数据</span>';
-        forecastBox.innerHTML=generateMockForecast();
-        if(refreshBtn){refreshBtn.disabled=false;refreshBtn.style.opacity='1';refreshBtn.innerText='刷新钓点分析';}
-    },8000);
-
-    var url='https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lng
-        +'&current=temperature_2m,pressure_msl,wind_speed_10m,wind_direction_10m'
-        +'&daily=temperature_2m_max,temperature_2m_min,wind_speed_10m_max,weathercode&timezone=Australia/Sydney';
-    var marineUrl='https://marine-api.open-meteo.com/v1/marine?latitude='+lat+'&longitude='+lng
-        +'&hourly=wave_height,wave_direction,wave_period&timezone=Australia/Sydney&forecast_days=2';
-    Promise.allSettled([fetch(url).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}),
-                       fetch(marineUrl).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})])
-    .then(function(results){
-        clearTimeout(timeoutId);
-        var weatherResult=results[0];
-        var marineResult=results[1];
-        if(weatherResult.status!=='fulfilled')throw new Error('weather failed');
-        var d=weatherResult.value;
-        var c=d.current;
-        if(!c||typeof c.temperature_2m==='undefined')throw new Error('invalid data');
-        var waveHeight=0;
-        var waveDir=0;
-        var wavePeriod=0;
-        if(marineResult.status==='fulfilled'&&marineResult.value.hourly){
-            var mh=marineResult.value.hourly;
-            var nowIdx=0;
-            if(mh.time&&mh.time.length){
-                var nowH=new Date().getHours();
-                for(var i=0;i<mh.time.length;i++){
-                    if(new Date(mh.time[i]).getHours()===nowH){nowIdx=i;break;}
-                }
-            }
-            waveHeight=mh.wave_height&&mh.wave_height[nowIdx]?mh.wave_height[nowIdx]:0;
-            waveDir=mh.wave_direction&&mh.wave_direction[nowIdx]?mh.wave_direction[nowIdx]:0;
-            wavePeriod=mh.wave_period&&mh.wave_period[nowIdx]?mh.wave_period[nowIdx]:0;
-        }
-        box.innerHTML='<span class="source-tag">数据源：Open-Meteo（免费）</span><br>'
-            +'温度：'+c.temperature_2m+'℃ | 气压：'+c.pressure_msl+'hPa<br>'
-            +'风速：'+c.wind_speed_10m+'km/h | 浪高：'+waveHeight.toFixed(1)+'m';
-        if(wavePeriod>0)box.innerHTML+=' | 浪周期：'+wavePeriod.toFixed(0)+'s';
-        var windDeg=c.wind_direction_10m;
-        var windText=windAngleToText(windDeg);
-        var suggestDir=getSuggestFishDir(windDeg);
-        windBox.classList.remove('hidden');
-        windBox.innerHTML='风向：'+windText+'（'+windDeg+'°）| 推荐优先背风方向作钓：<b>'+suggestDir+'</b>';
-        var weatherObj={
-            temp:c.temperature_2m,
-            press:c.pressure_msl,
-            wind:c.wind_speed_10m,
-            wave:waveHeight,
-            windDeg:windDeg,
-            moonScore:moon.moonScore
-        };
-        window._lastWeather=weatherObj;
-        if(typeof renderFishAdvice==="function"){renderFishAdvice(weatherObj);}
-
-        var forecastHtml="";
-        var daily=d.daily;
-        if(daily&&daily.time&&daily.time.length){
-            for(var i=0;i<daily.time.length;i++){
-                var wc=daily.weathercode[i];
-                var weatherIcon="☀";
-                if(wc>0&&wc<3)weatherIcon="⛅";
-                else if(wc>=3&&wc<45)weatherIcon="☁";
-                else if(wc>=45&&wc<60)weatherIcon="🌫";
-                else if(wc>=60&&wc<70)weatherIcon="🌧";
-                else if(wc>=70&&wc<80)weatherIcon="❄";
-                else if(wc>=80)weatherIcon="⛈";
-                var dayMoon=getMoonPhase(new Date(daily.time[i]));
-                var dayFishScore=Math.round(60+(daily.temperature_2m_max[i]>20?5:-5)+(daily.wind_speed_10m_max[i]<20?5:-10));
-                dayFishScore=Math.max(0,Math.min(100,dayFishScore+dayMoon.moonScore));
-                forecastHtml+='<div class="day-item">'
-                    +'<div class="day-date">'+weatherIcon+' '+daily.time[i]+' '+dayMoon.phaseEmoji+' '+dayMoon.phaseName+'</div>'
-                    +'<div class="day-info">最高'+daily.temperature_2m_max[i]+'℃ / 最低'+daily.temperature_2m_min[i]+'℃ | 最大风速'+daily.wind_speed_10m_max[i]+'km/h | 鱼情'+dayFishScore+'分</div>'
-                    +'</div>';
-            }
-        }else{
-            forecastHtml=generateMockForecast();
-        }
-        forecastBox.innerHTML=forecastHtml;
-        if(refreshBtn){refreshBtn.disabled=false;refreshBtn.style.opacity='1';refreshBtn.innerText='刷新钓点分析';}
-    }).catch(function(err){
-        clearTimeout(timeoutId);
-        console.warn("天气获取失败：",err);
-        box.innerHTML='<span class="warn">天气/潮汐获取失败，已使用模拟数据，仍可查看鱼情分析</span>';
-        forecastBox.innerHTML=generateMockForecast();
-        if(typeof renderFishAdvice==='function'){renderFishAdvice({temp:18,press:1013,wind:12,wave:0.8,moonScore:moon.moonScore,tideNote:'模拟数据'});}
-        if(refreshBtn){refreshBtn.disabled=false;refreshBtn.style.opacity='1';refreshBtn.innerText='刷新钓点分析';}
-    });
-    }
-
-document.addEventListener('DOMContentLoaded',function(){
-    // 将内部函数暴露到全局，供fetchWeather调用
-    generateMockForecast = window.generateMockForecast = generateMockForecast;
-    renderFishAdvice = window.renderFishAdvice = renderFishAdvice;
-    renderTactics = window.renderTactics = renderTactics;
-
-    updateSydneyTime();
-    console.log('钓鱼大师助手初始化...');
-    var OSM_STYLE={
-        version:8,
-        sources:{
-            osm:{
-                type:'raster',
-                tiles:[
-                    'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
-                ],
-                tileSize:256,
-                attribution:'&copy; OpenStreetMap contributors'
-            }
-        },
-        layers:[{id:'osm',type:'raster',source:'osm'}]
-    };
-    var maplibreStyle='https://demotiles.maplibre.org/style.json';
-    loadMapLibre(OSM_STYLE);
-    renderSpotTable();
-    fetchWeather(151.2847,-33.8031);
-
-    document.querySelectorAll('.inner-tabs button').forEach(function(btn){
-        btn.addEventListener('click',function(){
-            document.querySelectorAll('.inner-tabs button').forEach(function(b){b.classList.remove('active');});
-            btn.classList.add('active');
-            var tab=btn.dataset.itab;
-            ['mapTab','comboTab','photoTab'].forEach(function(t){$('itab-'+t).classList.add('hidden');});
-            $('itab-'+tab).classList.remove('hidden');
-        });
-    });
-
-    bind('forecastToggle','click',function(){
-        var content=$('forecastContent');
-        var arrow=$('forecastArrow');
-        content.classList.toggle('open');
-        arrow.innerText=content.classList.contains('open')?'▲':'▼';
-    });
-
-    bind('btnSceneAnalyse','click',analyseScene);
-
-    var photoFile=null;
-    bind('photoInput','change',function(e){
-        var file=e.target.files[0];
-        if(!file)return;
-        photoFile=file;
-        var reader=new FileReader();
-        reader.onload=function(ev){
-            var previewImg=$('photoPreview');
-            previewImg.src=ev.target.result;
-            previewImg.classList.remove('hidden');
-        };
-        reader.readAsDataURL(file);
-    });
-
-    bind('btnAnalysePhoto','click',function(){
-        if(!photoFile){
-            $('photoAdvice').innerHTML='<span class="warn">请先拍照或者选择一张钓点照片</span>';
-            return;
-        }
-        $('photoAdvice').innerHTML=
-            '<div class="ok" style="font-weight:600">已读取钓点照片（本地模拟分析）</div>'
-            +'<div style="margin-top:8px">提示：本纯前端版本无法真正识别图片景物，请结合照片手动判断钓点类型：</div>'
-            +'<div style="margin-top:8px;padding:10px;background:#f7f9fc;border-radius:8px;line-height:1.8">'
-            +'<b>码头</b>：优先滑铅沉底钓，虾仁作饵，涨落潮转换窗口期作钓<br>'
-            +'<b>礁石海岸</b>：阿波矶钓，18-22lb氟碳前导，注意防挂底<br>'
-            +'<b>开阔沙滩</b>：远投沉底钓组，大克重铅，目标Flathead等底层鱼<br>'
-            +'<b>开阔水面</b>：可以尝试路亚亮片搜索掠食鱼'
-            +'</div>'
-            +'<div style="margin-top:8px;font-size:13px;color:#666">配合上方GPS经纬度+潮汐天气数据，综合判断最佳方案。也可以使用文字表单更精确地描述场景。</div>';
-    });
-
-    bind('mapSourceSel','change',async function(){
-        var sel=$('mapSourceSel').value;
-        var styleObj=sel==='osm'?OSM_STYLE:maplibreStyle;
-        showMapLoading('正在切换地图源...');
-        if(mapLibreLoaded&&map){
-            try{
-                map.setStyle(styleObj);
-                map.once('styledata',function(){hideMapLoading();});
-                setTimeout(function(){hideMapLoading();},8000);
-            }catch(err){
-                hideMapLoading();
-                $('map-container').innerHTML='切换地图源失败，网络问题，其余功能正常';
-            }
-        }else{
-            await loadMapLibre(styleObj);
-        }
-    });
-
-    document.querySelectorAll('.modal-tabs button').forEach(function(btn){
-        btn.addEventListener('click',function(){
-            var tabKey=btn.dataset.mtab;
-            document.querySelectorAll('.modal-tabs button').forEach(function(b){b.classList.remove('active');});
-            btn.classList.add('active');
-            document.querySelectorAll('.modal-tab-content').forEach(function(c){c.classList.add('hidden');});
-            $('mtab-'+tabKey).classList.remove('hidden');
-        });
-    });
-
-    bind('btnTeach','click',function(){$('modalTeach').style.display='block';});
-    bind('btnManual','click',function(){$('modalManual').style.display='block';});
-    bind('btnSetting','click',function(){$('wwKey').value=state.wwKey;$('tidesKey').value=state.tidesKey;$('proxyUrl').value=state.proxyUrl;$('tideStationSel').value=state.tideStation;$('modalSetting').style.display='block';});
-    bind('saveSetting','click',function(){
-        var cleanKey=$('wwKey').value.replace(/[\s\u00A0\u2000-\u200A\u202F\u205F\u3000]/g,'');
-        state.wwKey=cleanKey;
-        var cleanTides=$('tidesKey').value.replace(/[\s\u00A0\u2000-\u200A\u202F\u205F\u3000]/g,'');
-        state.tidesKey=cleanTides;
-        state.proxyUrl=$('proxyUrl').value.trim();
-        state.tideStation=$('tideStationSel').value;
-        localStorage.setItem('ww-key',state.wwKey);
-        localStorage.setItem('tides-key',state.tidesKey);
-        localStorage.setItem('ww-proxy',state.proxyUrl);
-        localStorage.setItem('tide-station',state.tideStation);
-        alert('设置已保存');
-        closeModal('modalSetting');
-    });
-
-    document.querySelectorAll('.modal').forEach(function(m){
-        m.addEventListener('click',function(e){if(e.target===m)m.style.display='none';});
-    });
-
-    bind('btnGps','click',function(){
-        if(!navigator.geolocation){alert('浏览器不支持GPS定位');return;}
-        if(!window.isSecureContext){alert('需要HTTPS环境才能GPS定位');return;}
-        $('locStatus').innerHTML='正在获取GPS位置...';
-        navigator.geolocation.getCurrentPosition(function(pos){
-            state.selectedLng=pos.coords.longitude;
-            state.selectedLat=pos.coords.latitude;
-            $('inpLng').value=pos.coords.longitude.toFixed(4);
-            $('inpLat').value=pos.coords.latitude.toFixed(4);
-            var geoInfo=getRegionName(state.selectedLng,state.selectedLat);
-            $('locRegion').innerText="点位大致区域："+geoInfo.fullText;
-            $('locStatus').innerHTML='<span class="ok">GPS定位成功，精度'+pos.coords.accuracy.toFixed(0)+'米</span>';
-            if(map){
-                try{map.jumpTo({center:[state.selectedLng,state.selectedLat],zoom:13});setMapMarker(state.selectedLng,state.selectedLat);}catch(e){}
-            }
-            fetchWeather(state.selectedLng,state.selectedLat);
-        },function(err){
-            $('locStatus').innerHTML='<span class="warn">GPS定位失败：'+err.message+'</span>';
-        },{enableHighAccuracy:true,timeout:10000});
-    });
-
-    bind('btnRefresh','click',function(){
-        var lng=Number($('inpLng').value);
-        var lat=Number($('inpLat').value);
-        if(!lng||!lat){alert('请输入经纬度');return;}
-        state.selectedLng=lng;
-        state.selectedLat=lat;
-        var geoInfo=getRegionName(lng,lat);
-        $('locRegion').innerText="点位大致区域："+geoInfo.fullText;
-        $('locStatus').innerText='选中坐标：'+lng.toFixed(4)+', '+lat.toFixed(4);
-        if(map){
-            try{map.jumpTo({center:[lng,lat],zoom:13});setMapMarker(lng,lat);}catch(e){}
-        }
-        fetchWeather(lng,lat);
-    });
-
-    bind('btnReloadMap','click',function(){
-        reloadMap();
-    });
-
-    bind('btnSaveSpot','click',function(){
-        var lng=Number($('inpLng').value);
-        var lat=Number($('inpLat').value);
-        if(!lng||!lat){alert('请先获取/输入经纬度');return;}
-        var geoInfo=getRegionName(lng,lat);
-        var note=$('spotNote').value.trim();
-        state.spots.push({
-            lng:lng.toFixed(4),
-            lat:lat.toFixed(4),
-            region:geoInfo.region,
-            suburb:geoInfo.suburb,
-            fullText:geoInfo.fullText,
-            note:note,
-            savedAt:new Date().toLocaleString()
-        });
-        saveSpotsToStorage();
-        renderSpotTable();
-        $('spotNote').value='';
-        alert('钓点已保存，切换到【钓点管理】标签查看表格');
-    });
-
-    bind('btnClearAllSpots','click',function(){
-        if(!confirm('确定清空全部已保存钓点？不可恢复！'))return;
-        state.spots=[];
-        saveSpotsToStorage();
-        renderSpotTable();
-    });
-
-    bind('btnApplyManual','click',function(){
-        var w={
-            temp:$('manTemp').value,
-            press:$('manPress').value,
-            wind:$('manWind').value,
-            wave:$('manWave').value,
-            tideNote:$('manTide').value
-        };
-        renderFishAdvice(w);
-    });
-
-    bind('btnResetManual','click',function(){
-        $('manTemp').value='';
-        $('manPress').value='';
-        $('manWind').value='';
-        $('manWave').value='';
-        $('manTide').value='';
-    });
-
-    try{
-    document.querySelectorAll('.tabbar button').forEach(function(btn){
-        btn.addEventListener('click',function(){
-            document.querySelectorAll('.tabbar button').forEach(function(b){b.classList.remove('active');});
-            btn.classList.add('active');
-            var page=btn.dataset.page;
-            ['live','spots','gear'].forEach(function(p){$('page-'+p).classList.add('hidden');});
-            $('page-'+page).classList.remove('hidden');
-        });
-    });
-    }catch(e){console.warn('tabbar bind error:',e);}
-
-    bind('btnExportSpots','click',function(){
-        var data=JSON.stringify(state.spots,null,2);
-        var blob=new Blob([data],{type:'application/json'});
-        var url=URL.createObjectURL(blob);
-        var a=document.createElement('a');
-        a.href=url;a.download='fishing_spots.json';a.click();
-    });
-
-    function generateMockForecast(){
-        var html="";
-        var today=new Date();
-        for(var i=0;i<7;i++){
-            var d=new Date(today);
-            d.setDate(today.getDate()+i);
-            var dateStr=d.toISOString().slice(0,10);
-            var moon=getMoonPhase(d);
-            var tempMax=18+Math.round(Math.random()*6);
-            var tempMin=12+Math.round(Math.random()*4);
-            var wind=8+Math.round(Math.random()*15);
-            var score=Math.round(55+Math.random()*30+moon.moonScore);
-            score=Math.max(0,Math.min(100,score));
-            var icon=i%3===0?"⛅":(i%3===1?"☀":"☁");
-            html+='<div class="day-item">'
-                +'<div class="day-date">'+icon+' '+dateStr+' '+moon.phaseEmoji+' '+moon.phaseName+'</div>'
-                +'<div class="day-info">最高'+tempMax+'℃ / 最低'+tempMin+'℃ | 最大风速'+wind+'km/h | 鱼情'+score+'分 <span style="color:#f39c12;font-size:11px">(模拟)</span></div>'
-                +'</div>';
-        }
-        return html;
-    }
-
-    function renderFishAdvice(w){
-        var temp=Number(w.temp)||18;
-        var press=Number(w.press)||1013;
-        var wind=Number(w.wind)||10;
-        var wave=Number(w.wave)||0.5;
-        var moonScore=Number(w.moonScore)||0;
-        var tidePhase=w.tidePhase||'';
-        var userEnv=w.userEnv||'';
-        var userTide=w.userTide||'';
-
-        var locScore=60;
-        var timeScore=60;
-        var weatherScore=60;
-        var tideScore=60;
-
-        if(press>1013)weatherScore+=15;else if(press<1005)weatherScore-=15;
-        if(wind<15)weatherScore+=10;else if(wind>25)weatherScore-=20;
-        if(wave<1.0)weatherScore+=10;else if(wave>1.5)weatherScore-=15;
-        if(temp>=15&&temp<=24)weatherScore+=10;else if(temp<12||temp>28)weatherScore-=10;
-
-        var hour=new Date().getHours();
-        if((hour>=5&&hour<=7)||(hour>=17&&hour<=19))timeScore+=20;
-        else if(hour>=11&&hour<=14)timeScore-=10;
-        timeScore+=moonScore;
-
-        // 潮汐评分：根据实时潮汐状态
-        var effectiveTide = userTide||tidePhase;
-        if(effectiveTide==='rising'||effectiveTide==='涨潮'){tideScore=80;}
-        else if(effectiveTide==='falling'||effectiveTide==='退潮'){tideScore=75;}
-        else if(effectiveTide==='high'||effectiveTide==='满潮'){tideScore=55;}
-        else if(effectiveTide==='dead'||effectiveTide==='死潮'||effectiveTide==='平潮'){tideScore=35;}
-        else{tideScore=60;}
-
-        // 用户场景输入修正
-        if(userEnv==='jetty'||userEnv==='reef'){locScore+=10;}
-        if(userEnv==='estuary'){locScore+=5;}
-
-        var score=Math.round(locScore*0.2+timeScore*0.25+weatherScore*0.3+tideScore*0.25);
-        score=Math.max(0,Math.min(100,score));
-
-        var scoreColor=score>=70?'#27ae60':(score>=50?'#f39c12':'#e74c3c');
-        $('fishScore').innerHTML='<span class="fish-score-big" style="color:'+scoreColor+'">'+score+'</span><span style="font-size:16px;color:#666">/100 鱼情综合评分</span>';
-        $('fishScoreBar').classList.remove('hidden');
-        $('fishScoreFill').style.width=score+'%';
-
-        var factorsHtml='<div style="font-size:13px;font-weight:600;color:#0f4c81;margin-bottom:6px">分项得分：</div>';
-        var factors=[
-            {name:'位置因素',score:locScore,color:'#217ad9',desc:'经纬度、Suburb、钓点类型'},
-            {name:'时间因素',score:timeScore,color:'#8e44ad',desc:'时刻、昼夜、月相'},
-            {name:'天气因素',score:weatherScore,color:'#f39c12',desc:'气压、风速、气温、浪高'},
-            {name:'潮汐因素',score:tideScore,color:'#16a085',desc:'潮位、涨落潮阶段'}
-        ];
-        factors.forEach(function(f){
-            factorsHtml+='<div class="factor-score"><span style="min-width:70px">'+f.name+'</span>'
-                +'<div class="factor-bar"><div class="factor-fill" style="width:'+f.score+'%;background:'+f.color+'"></div></div>'
-                +'<span style="min-width:35px;text-align:right;font-weight:700;color:'+f.color+'">'+f.score+'</span></div>';
-        });
-        $('fishFactors').innerHTML=factorsHtml;
-
-        var advice='';
-        // 潮汐详细影响
-        if(effectiveTide==='rising'||effectiveTide==='涨潮'){
-            advice+='<div class="advice-block"><b>潮汐影响：</b>当前涨潮阶段，鱼群随潮水向近岸移动，是最佳作钓窗口之一。建议钓近岸结构边缘，饵随潮水自然带入。</div>';
-        }else if(effectiveTide==='falling'||effectiveTide==='退潮'){
-            advice+='<div class="advice-block"><b>潮汐影响：</b>当前退潮阶段，鱼群随水流向外海移动，退潮中后期鱼口活跃。建议钓深水区或潮流通道。</div>';
-        }else if(effectiveTide==='high'||effectiveTide==='满潮'){
-            advice+='<div class="advice-block"><b>潮汐影响：</b>当前满潮/平潮期，水流缓慢，鱼活性下降。满潮转流前后1小时为黄金咬口期，建议耐心等待转流。</div>';
-        }else if(effectiveTide==='dead'||effectiveTide==='死潮'||effectiveTide==='平潮'){
-            advice+='<div class="advice-block" style="border-left-color:#e74c3c"><b>潮汐影响：</b>当前死潮/平潮，水流停滞，鱼口极差。建议休息或换标点，等待涨落潮转换。</div>';
-        }else{
-            advice+='<div class="advice-block"><b>潮汐影响：</b>涨潮初~中期、落潮中期鱼口最佳；平潮鱼口差。满潮转流前后1小时为黄金咬口期。</div>';
-        }
-        advice+='<div class="advice-block"><b>月相影响：</b>满月/新月大潮水流强鱼活性高；弦月中潮适中；小潮水流弱需精细钓法。当前月相已纳入评分（'+(moonScore>=0?'+':'')+moonScore+'分）。</div>';
-        advice+='<div class="advice-block"><b>天气影响：</b>';
-        if(press>1013)advice+='气压偏高，鱼索饵积极；';
-        else if(press<1005)advice+='气压偏低，鱼活性下降；';
-        else advice+='气压适中，鱼情稳定；';
-        if(wind>25)advice+='大风影响抛投，建议避风湾；';
-        else if(wind<10)advice+='微风，水面平静，适合精细作钓；';
-        else advice+='风力适中，溶氧充足；';
-        if(wave>1.2)advice+='浪高'+wave.toFixed(1)+'m偏大，建议增加铅坠克重；';
-        advice+='</div>';
-
-        var good=[];
-        var bad=[];
-        if(press>1013)good.push('气压偏高，鱼索饵积极');
-        if(wind<15)good.push('风力适中，溶氧充足');
-        if(wave<1.0)good.push('浪小，适合精细作钓');
-        if(moonScore>0)good.push('月相有利（'+moonScore+'分）');
-        if((hour>=5&&hour<=7)||(hour>=17&&hour<=19))good.push('晨昏黄金窗口期');
-        if(effectiveTide==='rising'||effectiveTide==='涨潮')good.push('涨潮阶段，鱼群靠边');
-        if(effectiveTide==='falling'||effectiveTide==='退潮')good.push('退潮阶段，鱼口活跃');
-        if(press<1005)bad.push('气压偏低，鱼活性下降');
-        if(wind>25)bad.push('大风影响抛投');
-        if(wave>1.5)bad.push('浪大，操作困难');
-        if(hour>=11&&hour<=14)bad.push('正午时段，鱼口较差');
-        if(effectiveTide==='dead'||effectiveTide==='死潮'||effectiveTide==='平潮')bad.push('死潮/平潮，鱼口极差');
-
-        if(good.length>0){
-            advice+='<div class="advice-block" style="border-left-color:#27ae60"><b>有利条件：</b>'+good.join('；')+'</div>';
-        }
-        if(bad.length>0){
-            advice+='<div class="advice-block" style="border-left-color:#e74c3c"><b>风险提示：</b>'+bad.join('；')+'</div>';
-        }
-        if(w.tideNote)advice+='<div class="advice-block"><b>手动潮汐：</b>'+w.tideNote+'</div>';
-        $('fishAdvice').innerHTML=advice;
-        if(typeof renderTactics==="function"){renderTactics(wind,wave,effectiveTide);}
-    }
-
-    function renderTactics(wind,wave,tidePhase){
-        var tacticList=[];
-        var s1=70;
-        if(wind>18)s1+=12;
-        if(wave>1.2)s1+=8;
-        tacticList.push({
-            title:"方案1 码头滑铅沉底钓",
-            score:s1,
-            equip:"装备：竿2.4-2.7m，轮3000-4000，PE1.0，前导22lb，滑动铅"+(wind>20?'20':'14')+"g，直柄圆钩1/0",
-            bait:"饵料：新鲜虾仁/沙丁鱼块",
-            skill:"手法：抛投至礁石-沙地交界 -> 铅到底收紧虚线 -> 看到持续出线等2-3秒刺鱼",
-            pros:"优势：底层鱼命中率高；抗水流强；操作简单；适合Bream/Flathead",
-            cons:"劣势：只能钓底层；需频繁换饵；易挂礁石"
-        });
-        var s2=65;
-        if(wind<18&&wave<1.2)s2+=10;
-        tacticList.push({
-            title:"方案2 通用浮漂矶钓（阿波）",
-            score:s2,
-            equip:"装备：矶竿3.3m，轮2500，PE0.8，前导18lb，阿波B，咬铅2B",
-            bait:"饵料：虾仁；窝料：碎沙丁鱼，每3-5分钟少量打窝",
-            skill:"手法：调漂让饵贴礁石底 -> 顺流自然飘不绷线 -> 看阿波下沉/走线刺鱼",
-            pros:"优势：随流搜索大片水域；兼顾底中层；信号直观；适合黑鲷/Bream",
-            cons:"劣势：强潮难控漂；学习门槛高；浪干扰信号"
-        });
-        var s3=55;
-        if(wind<22&&wave<1.4)s3+=18;
-        tacticList.push({
-            title:"方案3 路亚（勺子亮片）",
-            score:s3,
-            equip:"装备：路亚竿2.1-2.7m，轮3000，PE0.8，前导18lb，7-12g银/金勺子亮片",
-            bait:"无活饵，金属亮片",
-            skill:"手法：慢卷+轻抽贴近结构搜索；快慢交替制造闪动",
-            pros:"优势：高效率大范围搜索；不用活饵；可钓中上层掠食鱼",
-            cons:"劣势：底层底栖鱼难钓；鱼口差效率低；对手法要求高"
-        });
-        tacticList.sort(function(a,b){return b.score-a.score;});
-        var html="";
-        tacticList.forEach(function(item){
-            html+='<div class="tactic">'
-                +'<h4>'+item.title+' <span class="tactic-rank">评分：'+item.score+'</span></h4>'
-                +'<div style="font-weight:600;color:#333;margin:4px 0">'+item.equip+'</div>'
-                +'<div style="margin:3px 0;font-size:13px;color:#555">'+item.bait+'</div>'
-                +'<div style="margin:3px 0;font-size:13px;color:#555">'+item.skill+'</div>'
-                +'<div class="pros">'+item.pros+'</div>'
-                +'<div class="cons">'+item.cons+'</div>'
-                +'</div>';
-        });
-        $('tacticsBox').innerHTML=html;
-    }
-    renderRateLimitUi();
-
-    console.log('钓鱼大师助手初始化完成');
-});
-</script>
-</body>
-</html>
+<table class="manual‑table"><thead><tr><th>鱼种</th><th>最佳潮汐</th><th>水层</th><th>备注</th></tr></thead><tbody>
+<tr><td>Bream黑鲷</td><td>涨潮‑&gt;满潮</td><td>中下层</td><td>潮水越大越活跃</td></tr>
+<tr><td>Flathead牛
