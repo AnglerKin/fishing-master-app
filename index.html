@@ -1043,6 +1043,27 @@ ${dots}
     }
 }
 
+  /**
+ * 鱼种活跃度卡片按钮点击：跳转并渲染目标鱼种建议
+ */
+function bindFishCardClick(){
+    document.querySelector('#fishAdvice').addEventListener('click',function(e){
+        const btn=e.target.closest('.fish‑select‑btn');
+        if(!btn) return;
+        const fishKey=btn.dataset.fishkey;
+        const sel=$('targetFishSelect');
+        if(sel){
+            sel.value=fishKey;
+        }
+        renderTargetFishAdvice(fishKey);
+        // 平滑滚动到下方目标鱼种建议卡片
+        const targetCard=document.querySelector('#targetFishAdviceBox').closest('.card');
+        if(targetCard){
+            targetCard.scrollIntoView({behavior:"smooth",block:"start"});
+        }
+    });
+}
+
 function closeModal(id){var m=document.getElementById(id);if(m)m.style.display='none';}
 function $(id){return document.getElementById(id);}
 function bind(id,event,fn){var el=$(id);if(el)el.addEventListener(event,fn);}
@@ -2382,6 +2403,11 @@ SPECIES_CONFIG.forEach(sp=>{
     if(res.warnList.length>0){
         speciesHtml+='<div style="font-size:12px;color:#e74c3c">⚠️限制：'+res.warnList.join("；")+'</div>';
     }
+  // ----------------【新增：鱼种卡片右下角按钮】----------------
+    speciesHtml+=`<div style="margin-top:8px;text-align:right;">
+        <button class="fish-select-btn" data-fishkey="${sp.key}" style="padding:4px 10px;font-size:11px;">🔍查看该鱼种作钓方案</button>
+    </div>`;
+    // -----------------------------------------------------------
     speciesHtml+='</div>';
 });
 speciesHtml+='<div style="font-size:11px;color:#888;margin-top:6px">提示：本活跃度为环境条件评估，不代表100%中鱼，还受钓点结构、饵、手法影响</div>';
