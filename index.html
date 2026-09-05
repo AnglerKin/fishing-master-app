@@ -697,19 +697,22 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 <div id="page-gear" class="hidden">
 <div class="card">
 <h3><span class="icon">🎒</span>我的装备库</h3>
-<div class="gear-list">
-<div class="gear-item"><b>路亚竿</b>Shimano Maikuro II 2.1m</div>
-<div class="gear-item"><b>纺车轮</b>Savage SG 3000H</div>
-<div class="gear-item"><b>主线</b>PE 0.8-1.0</div>
-<div class="gear-item"><b>前导</b>氟碳 18-22lb / 1米</div>
-<div class="gear-item"><b>亮片</b>勺子亮片 7-12g（银/金）</div>
-<div class="gear-item"><b>沉底装备</b>通心橄榄铅 10-20g，直柄圆钩 1/0-2/0</div>
-<div class="gear-item"><b>浮漂装备</b>阿波 B-2B，咬铅 G8-3B</div>
-<div class="gear-item"><b>矶钓竿</b>3.3m 矶竿，轮2500</div>
-<div class="gear-item"><b>远投装备</b>水滴铅 80-120g，沙滩远投竿</div>
-<div class="gear-item"><b>饵料</b>新鲜虾仁、沙丁鱼块、碎鱼窝料</div>
+<div id="activeGearInfo" style="margin-top:0;padding:10px;border:1px solid #b8c8e0;border-radius:8px;background:#f4f7fc;">
+    <h5>✅当前启用作钓套装 - 装备分析</h5>
+    <div id="activeGearText">
+        <div style="color:#666">未选择启用套装，使用系统默认参数</div>
+    </div>
+    <div id="activeGearAdvice" style="margin-top:8px;"></div>
 </div>
+  <!-- 下拉选择框 -->
+<div style="margin-top:12px;">
+    <label>✅当前启用作钓套装：</label>
+    <select id="currentGearSelect" style="min-width:360px;padding:6px;border-radius:8px;border:1px solid #d0d7e2;background:#fafbfc;"></select>
+</div>
+
+<div id="customGearList" style="margin-top:12px;"></div>
  <hr>
+  
 <h4>📦分类独立装备仓库（可单独新增、删除）</h4>
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
     <!--鱼竿-->
@@ -809,19 +812,6 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
     <button class="btn" id="saveCustomGearBtn">保存套装</button>
     <button class="btn btn-sec" id="clearGearFormBtn">清空套装表单</button>
 </div>
-<div>
-    <label>✅当前启用作钓套装：</label>
-    <select id="currentGearSelect" style="min-width:360px;padding:6px;border-radius:8px;border:1px solid #d0d7e2;background:#fafbfc;"></select>
-</div>
-  <div id="activeGearInfo" style="margin-top:14px;padding:10px;border:1px solid #b8c8e0;border-radius:8px;background:#f4f7fc;">
-    <h5>✅当前启用作钓套装 - 装备分析</h5>
-    <div id="activeGearText">
-        <div style="color:#666">未选择启用套装，使用系统默认参数</div>
-    </div>
-    <div id="activeGearAdvice" style="margin-top:8px;"></div>
-</div>
-
-<div id="customGearList" style="margin-top:12px;"></div>
 
 
 </div><!-- card闭合 -->
