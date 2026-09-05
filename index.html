@@ -1862,7 +1862,7 @@ document.addEventListener('DOMContentLoaded',function(){
         return html;
     }
 
-    function renderFishAdvice(w){
+    function renderFishAdvice(w, hour){
         var temp=Number(w.temp)||18;
         var press=Number(w.press)||1013;
         var wind=Number(w.wind)||10;
@@ -1968,59 +1968,144 @@ document.addEventListener('DOMContentLoaded',function(){
         }
         if(w.tideNote)advice+='<div class="advice-block"><b>手动潮汐：</b>'+w.tideNote+'</div>';
         $('fishAdvice').innerHTML=advice;
-        if(typeof renderTactics==="function"){renderTactics(wind,wave,effectiveTide);}
+        if(typeof renderTactics==="function"){renderTactics(wind,wave,effectiveTide,hour,moonScore,press);}
     }
 
-    function renderTactics(wind,wave,tidePhase){
-        var tacticList=[];
-        var s1=70;
-        if(wind>18)s1+=12;
-        if(wave>1.2)s1+=8;
-        tacticList.push({
-            title:"方案1 码头滑铅沉底钓",
-            score:s1,
-            equip:"装备：竿2.4-2.7m，轮3000-4000，PE1.0，前导22lb，滑动铅"+(wind>20?'20':'14')+"g，直柄圆钩1/0",
-            bait:"饵料：新鲜虾仁/沙丁鱼块",
-            skill:"手法：抛投至礁石-沙地交界 -> 铅到底收紧虚线 -> 看到持续出线等2-3秒刺鱼",
-            pros:"优势：底层鱼命中率高；抗水流强；操作简单；适合Bream/Flathead",
-            cons:"劣势：只能钓底层；需频繁换饵；易挂礁石"
-        });
-        var s2=65;
-        if(wind<18&&wave<1.2)s2+=10;
-        tacticList.push({
-            title:"方案2 通用浮漂矶钓（阿波）",
-            score:s2,
-            equip:"装备：矶竿3.3m，轮2500，PE0.8，前导18lb，阿波B，咬铅2B",
-            bait:"饵料：虾仁；窝料：碎沙丁鱼，每3-5分钟少量打窝",
-            skill:"手法：调漂让饵贴礁石底 -> 顺流自然飘不绷线 -> 看阿波下沉/走线刺鱼",
-            pros:"优势：随流搜索大片水域；兼顾底中层；信号直观；适合黑鲷/Bream",
-            cons:"劣势：强潮难控漂；学习门槛高；浪干扰信号"
-        });
-        var s3=55;
-        if(wind<22&&wave<1.4)s3+=18;
-        tacticList.push({
-            title:"方案3 路亚（勺子亮片）",
-            score:s3,
-            equip:"装备：路亚竿2.1-2.7m，轮3000，PE0.8，前导18lb，7-12g银/金勺子亮片",
-            bait:"无活饵，金属亮片",
-            skill:"手法：慢卷+轻抽贴近结构搜索；快慢交替制造闪动",
-            pros:"优势：高效率大范围搜索；不用活饵；可钓中上层掠食鱼",
-            cons:"劣势：底层底栖鱼难钓；鱼口差效率低；对手法要求高"
-        });
-        tacticList.sort(function(a,b){return b.score-a.score;});
-        var html="";
-        tacticList.forEach(function(item){
-            html+='<div class="tactic">'
-                +'<h4>'+item.title+' <span class="tactic-rank">评分：'+item.score+'</span></h4>'
-                +'<div style="font-weight:600;color:#333;margin:4px 0">'+item.equip+'</div>'
-                +'<div style="margin:3px 0;font-size:13px;color:#555">'+item.bait+'</div>'
-                +'<div style="margin:3px 0;font-size:13px;color:#555">'+item.skill+'</div>'
-                +'<div class="pros">'+item.pros+'</div>'
-                +'<div class="cons">'+item.cons+'</div>'
-                +'</div>';
-        });
-        $('tacticsBox').innerHTML=html;
+   function renderTactics(wind,wave,tidePhase,hour,moonScore,press){
+    let tacticList=[];
+    let baseSink=12;
+    let baseAbo="B";
+    let baseSpoonMin=7;
+    let baseSpoonMax=12;
+
+    if(wind>18 || wave>1.2){
+        baseSink=20;
+        baseAbo="2B";
+        baseSpoonMin=12;
+        baseSpoonMax=16;
+    }else if(wind<12 && wave<0.8){
+        baseSink=10;
+        baseAbo="0";
+        baseSpoonMin=5;
+        baseSpoonMax=8;
     }
+
+    //方案1 滑铅沉底钓
+    let s1=70;
+    if(wind>18) s1+=12;
+    if(wave>1.2) s1+=8;
+    if(tidePhase==='rising'||tidePhase==='falling') s1+=8;
+    if(tidePhase==='dead'||tidePhase==='high') s1-=12;
+    if((hour>=5&&hour<=7)||(hour>=17&&hour<=21)) s1+=8;
+    if(hour>=11&&hour<=14) s1-=8;
+    if(moonScore>0)s1+=moonScore>8?6:3;
+    if(press<1006)s1-=6;
+
+    let bait1="新鲜虾仁/沙丁鱼块";
+    let skillS1 = "抛投至礁石‑沙地交界 → 铅到底收紧虚线 → 看到持续出线等2‑3秒刺鱼";
+    if(tidePhase==='rising'){
+        skillS1 += "；涨潮重点钓近岸桩边，饵随潮水带入结构。";
+    }else if(tidePhase==='falling'){
+        skillS1 += "；退潮钓深沟沙礁交界，跟随鱼向外移动。";
+    }else if(tidePhase==='dead'||tidePhase==='high'){
+        skillS1 += "；平潮水流弱，适当减小铅坠，降低期待，耐心等待转流。";
+        bait1="小块活饵/虾仁（死潮用小饵提升诱鱼）";
+    }
+    if(hour>=20||hour<=4){
+        bait1="大块沙丁鱼/鱿鱼条（夜钓大物优先大饵）";
+        skillS1+="；夜间降低抛投噪音，优先码头灯光周边。";
+    }
+
+    tacticList.push({
+        title:"方案1 码头滑铅沉底钓",
+        score:s1,
+        equip:"装备：竿2.4‑2.7m，轮3000‑4000，PE1.0，前导22lb，滑动铅"+baseSink+"g，直柄圆钩1/0",
+        bait:"饵料："+bait1,
+        skill:skillS1,
+        pros:"优势：底层鱼命中率高；抗水流强；操作简单；适合Bream/Flathead",
+        cons:"劣势：只能钓底层；需频繁换饵；易挂礁石"
+    });
+
+    //方案2 阿波浮漂矶钓
+    let s2=65;
+    if(wind<18&&wave<1.2) s2+=10;
+    if(tidePhase==='rising') s2+=10;
+    if(tidePhase==='falling') s2+=5;
+    if(wind>22||wave>1.4) s2-=15;
+    if(tidePhase==='dead') s2-=10;
+    if((hour>=5&&hour<=7)||(hour>=17&&hour<=21)) s2+=6;
+    if(moonScore>0)s2+=moonScore>8?5:2;
+    if(press<1006)s2-=5;
+
+    let bait2="虾仁；窝料：碎沙丁鱼，每3‑5分钟少量打窝";
+    let skillS2 = "调漂让饵贴礁石底 → 顺流自然飘不绷线 → 看阿波下沉/走线刺鱼";
+    if(tidePhase==='rising') skillS2 += "；涨潮顺着潮水放流，不要绷住线阻碍饵自然漂移。";
+    else if(tidePhase==='falling') skillS2 += "；退潮适当加大咬铅，对抗往外拉的水流。";
+    else if(tidePhase==='dead'||tidePhase==='high'){
+        skillS2 += "；平潮减少咬铅，追求极灵敏信号，减少打窝频率。";
+        bait2="小块虾仁；减少打窝，避免窝料快速散掉";
+    }
+    if(hour>=20||hour<=4){
+        skillS2+="；夜钓阿波建议加夜光棒；钓棚略加深。";
+    }
+
+    tacticList.push({
+        title:"方案2 通用浮漂矶钓（阿波）",
+        score:s2,
+        equip:"装备：矶竿3.3m，轮2500，PE0.8，前导18lb，阿波"+baseAbo+"，咬铅2B",
+        bait:"饵料："+bait2,
+        skill:skillS2,
+        pros:"优势：随流搜索大片水域；兼顾底中层；信号直观；适合黑鲷/Bream",
+        cons:"劣势：强潮难控漂；学习门槛高；浪干扰信号"
+    });
+
+    //方案3 路亚（勺子亮片）
+    let s3=55;
+    if(wind<22&&wave<1.4) s3+=18;
+    if(tidePhase==='rising'||tidePhase==='falling') s3+=12;
+    if(tidePhase==='dead') s3-=18;
+    if((hour>=5&&hour<=7)||(hour>=17&&hour<=20)) s3+=12;
+    if(hour>=11&&hour<=14)s3-=10;
+    if(moonScore>0)s3+=moonScore>8?4:2;
+    if(press<1006)s3-=7;
+
+    let baitLure=baseSpoonMin+"‑"+baseSpoonMax+"g银/金勺子亮片";
+    let skillS3 = "慢卷+轻抽贴近结构搜索；快慢交替制造闪动";
+    if(tidePhase==='rising') skillS3 += "；涨潮重点搜索岸边结构掠食鱼会跟随潮水进来。";
+    else if(tidePhase==='falling') skillS3 += "；退潮往深水区搜索，追捕食饵鱼向外撤离。";
+    else if(tidePhase==='dead'||tidePhase==='high'){
+        skillS3 += "；平潮掠食鱼活性差，降低期待，多换点位，减少停留。";
+    }
+    if(hour>=20||hour<=4){
+        baitLure=baseSpoonMin+"‑"+baseSpoonMax+"g夜光勺子亮片；慢收为主，少大幅度抽动";
+        skillS3+="；夜间以慢卷飘落为主，减少剧烈抽动。";
+    }
+
+    tacticList.push({
+        title:"方案3 路亚（勺子亮片）",
+        score:s3,
+        equip:"装备：路亚竿2.1‑2.7m，轮3000，PE0.8，前导18lb，"+baitLure,
+        bait:"无活饵，金属拟饵",
+        skill:skillS3,
+        pros:"优势：高效率大范围搜索；不用活饵；可钓中上层掠食鱼",
+        cons:"劣势：底层底栖鱼难钓；鱼口差效率低；对手法要求高"
+    });
+
+    tacticList.sort(function(a,b){return b.score‑a.score;});
+    let html="";
+    tacticList.forEach(function(item){
+        html+='<div class="tactic">'
+            +'<h4>'+item.title+' <span class="tactic‑rank">评分：'+item.score+'</span></h4>'
+            +'<div style="font‑weight:600;color:#333;margin:4px 0">'+item.equip+'</div>'
+            +'<div style="margin:3px 0;font‑size:13px;color:#555">'+item.bait+'</div>'
+            +'<div style="margin:3px 0;font‑size:13px;color:#555">'+item.skill+'</div>'
+            +'<div class="pros">'+item.pros+'</div>'
+            +'<div class="cons">'+item.cons+'</div>'
+            +'</div>';
+    });
+    $('tacticsBox').innerHTML=html;
+}
+
     renderRateLimitUi();
 
     console.log('钓鱼大师助手初始化完成');
