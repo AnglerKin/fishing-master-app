@@ -709,46 +709,115 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 <div class="gear-item"><b>远投装备</b>水滴铅 80-120g，沙滩远投竿</div>
 <div class="gear-item"><b>饵料</b>新鲜虾仁、沙丁鱼块、碎鱼窝料</div>
 </div>
-  <hr>
-<h4>➕新增自定义装备套装</h4>
+ <hr>
+<h4>📦分类独立装备仓库（可单独新增、删除）</h4>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+    <!--鱼竿-->
+    <div class="card" style="padding:8px;">
+        <h5>🎣鱼竿</h5>
+        <input id="newRodName" placeholder="名称：2-4kg路亚竿" style="width:100%;margin-bottom:4px;">
+        <input id="newRodLureRange" placeholder="饵重范围 7-21g" style="width:100%;margin-bottom:4px;">
+        <button class="btn" id="addRodBtn">新增鱼竿入库</button>
+        <div id="rodStorageList" style="margin-top:6px;max-height:140px;overflow:auto;"></div>
+    </div>
+    <!--渔轮-->
+    <div class="card" style="padding:8px;">
+        <h5>⚙️渔轮</h5>
+        <input id="newReelName" placeholder="3000型纺车轮" style="width:100%;margin-bottom:4px;">
+        <input id="newReelType" placeholder="类型：纺车/水滴" style="width:100%;margin-bottom:4px;">
+        <button class="btn" id="addReelBtn">新增渔轮入库</button>
+        <div id="reelStorageList" style="margin-top:6px;max-height:140px;overflow:auto;"></div>
+    </div>
+    <!--主线-->
+    <div class="card" style="padding:8px;">
+        <h5>🧵主线</h5>
+        <input id="newMainlineName" placeholder="PE 4kg" style="width:100%;margin-bottom:4px;">
+        <button class="btn" id="addMainlineBtn">新增主线入库</button>
+        <div id="mainlineStorageList" style="margin-top:6px;max-height:140px;overflow:auto;"></div>
+    </div>
+    <!--前导-->
+    <div class="card" style="padding:8px;">
+        <h5>🔗前导碳线</h5>
+        <input id="newLeaderName" placeholder="碳8kg 1m" style="width:100%;margin-bottom:4px;">
+        <button class="btn" id="addLeaderBtn">新增前导入库</button>
+        <div id="leaderStorageList" style="margin-top:6px;max-height:140px;overflow:auto;"></div>
+    </div>
+    <!--铅坠-->
+    <div class="card" style="padding:8px;">
+        <h5>⚓铅坠</h5>
+        <input id="newSinkerName" placeholder="橄榄铅15g" style="width:100%;margin-bottom:4px;">
+        <button class="btn" id="addSinkerBtn">新增铅坠入库</button>
+        <div id="sinkerStorageList" style="margin-top:6px;max-height:140px;overflow:auto;"></div>
+    </div>
+    <!--浮漂-->
+    <div class="card" style="padding:8px;">
+        <h5>🏮浮漂</h5>
+        <input id="newFloatName" placeholder="阿波B-2B" style="width:100%;margin-bottom:4px;">
+        <button class="btn" id="addFloatBtn">新增浮漂入库</button>
+        <div id="floatStorageList" style="margin-top:6px;max-height:140px;overflow:auto;"></div>
+    </div>
+    <!--饵料-->
+    <div class="card" style="padding:8px;">
+        <h5>🦐饵料</h5>
+        <input id="newBaitName" placeholder="新鲜虾仁" style="width:100%;margin-bottom:4px;">
+        <button class="btn" id="addBaitBtn">新增饵料入库</button>
+        <div id="baitStorageList" style="margin-top:6px;max-height:140px;overflow:auto;"></div>
+    </div>
+</div>
+
+<hr>
+<h4>🧩组装自定义作钓套装（从上面库挑选装备组合）</h4>
 <div style="display:grid;gap:8px;grid-template-columns:1fr 1fr;">
     <div>
         <label>套装名称</label>
-        <input id="gearSetName" placeholder="例如：悉尼码头岸投套装">
+        <input id="gearSetName" placeholder="悉尼码头岸投套装" style="width:100%;">
     </div>
     <div>
-        <label>鱼竿参数(kg范围)</label>
-        <input id="gearRod" placeholder="2-4kg">
+        <label>作钓类型</label>
+        <input id="gearFishType" placeholder="路亚 /沉底 /矶钓" style="width:100%;">
     </div>
     <div>
-        <label>渔轮</label>
-        <input id="gearReel" placeholder="3000型纺车轮">
+        <label>选择鱼竿</label>
+        <select id="selRod" style="width:100%;"></select>
     </div>
     <div>
-        <label>主线</label>
-        <input id="gearMainline" placeholder="PE 4kg">
+        <label>选择渔轮</label>
+        <select id="selReel" style="width:100%;"></select>
     </div>
     <div>
-        <label>前导碳线</label>
-        <input id="gearLeader" placeholder="碳8kg">
+        <label>选择主线</label>
+        <select id="selMainline" style="width:100%;"></select>
     </div>
     <div>
-        <label>饵重范围(g)</label>
-        <input id="gearLureRange" placeholder="7-21g">
+        <label>选择前导</label>
+        <select id="selLeader" style="width:100%;"></select>
+    </div>
+    <div>
+        <label>选择铅坠</label>
+        <select id="selSinker" style="width:100%;"></select>
+    </div>
+    <div>
+        <label>选择浮漂</label>
+        <select id="selFloat" style="width:100%;"></select>
+    </div>
+    <div>
+        <label>选择饵料</label>
+        <select id="selBait" style="width:100%;"></select>
     </div>
 </div>
 <div style="margin:10px 0;display:flex;gap:8px;flex-wrap:wrap;">
     <button class="btn" id="saveCustomGearBtn">保存套装</button>
-    <button class="btn btn-sec" id="clearGearFormBtn">清空表单</button>
+    <button class="btn btn-sec" id="clearGearFormBtn">清空套装表单</button>
 </div>
-<div style="margin-top:10px;">
-    <label>选择当前使用装备：</label>
-    <select id="currentGearSelect" style="min-width:320px;padding:6px;border-radius:8px;border:1px solid #d0d7e2;background:#fafbfc;"></select>
+<div>
+    <label>✅当前启用作钓套装：</label>
+    <select id="currentGearSelect" style="min-width:360px;padding:6px;border-radius:8px;border:1px solid #d0d7e2;background:#fafbfc;"></select>
 </div>
 <div id="customGearList" style="margin-top:12px;"></div>
 
-</div>
-</div>
+
+</div><!-- card闭合 -->
+</div><!-- page-gear闭合 -->
 
 <div class="tabbar">
 <button class="active" data-page="live"><span class="tab-icon">🎯</span>实时鱼情</button>
@@ -828,70 +897,152 @@ function setPointLoading(isLoading){
     }
 }
   
-  // ========== 自定义装备本地存储工具 ==========
-const STORAGE_GEAR_KEY = "fishing_custom_gear_sets";
+// ========== 装备库存储（分类独立装备 + 组装套装） ==========
+const STORAGE_GEAR_STORE = "fishing_gear_store";
+const STORAGE_GEAR_SETS = "fishing_gear_sets";
 
-//读取全部自定义装备
+function getDefaultGearStore(){
+    return {
+        rods:[], reels:[], mainlines:[], leaders:[],
+        sinkers:[], floats:[], baits:[]
+    };
+}
+
+function loadGearStore(){
+    const raw = localStorage.getItem(STORAGE_GEAR_STORE);
+    if(!raw) return getDefaultGearStore();
+    try{ return Object.assign(getDefaultGearStore(), JSON.parse(raw)); }
+    catch(e){ return getDefaultGearStore(); }
+}
+
+function saveGearStore(storeObj){
+    localStorage.setItem(STORAGE_GEAR_STORE, JSON.stringify(storeObj));
+}
+
 function loadCustomGearSets(){
-    const raw = localStorage.getItem(STORAGE_GEAR_KEY);
+    const raw = localStorage.getItem(STORAGE_GEAR_SETS);
     if(!raw) return [];
     try{ return JSON.parse(raw); }catch(e){return [];}
 }
-//保存整套数组到本地存储
+
 function saveCustomGearSets(arr){
-    localStorage.setItem(STORAGE_GEAR_KEY, JSON.stringify(arr));
+    localStorage.setItem(STORAGE_GEAR_SETS, JSON.stringify(arr));
 }
-//保存单套装备
+
 function addOneGearSet(item){
     const list = loadCustomGearSets();
     list.push(item);
     saveCustomGearSets(list);
 }
-//删除指定索引套装
-function deleteGearByIndex(idx){
+
+function deleteGearSetByIndex(idx){
     const list = loadCustomGearSets();
     list.splice(idx,1);
     saveCustomGearSets(list);
 }
 
-//渲染装备下拉选择器 + 自定义装备列表UI
-function renderGearUi(){
-    const gearList = loadCustomGearSets();
+function fillSelectOpt(selId, arr){
+    const sel = $(selId);
+    if(!sel) return;
+    sel.innerHTML = '<option value="">--不选择--</option>';
+    arr.forEach(function(txt,i){
+        sel.innerHTML += '<option value="'+i+'">'+txt+'</option>';
+    });
+}
+
+function renderSimpleList(boxId, arr, type, delCb){
+    const box = $(boxId);
+    if(!box) return;
+    if(arr.length===0){
+        box.innerHTML = '<div style="color:#888;font-size:12px">暂无装备</div>';
+        return;
+    }
+    let html = "";
+    arr.forEach(function(item,i){
+        html += '<div style="font-size:12px;padding:2px;border-bottom:1px solid #eee;">'
+            + item
+            + ' <button data-type="'+type+'" data-idx="'+i+'" style="color:red;border:0;background:transparent;cursor:pointer;">x</button>'
+            + '</div>';
+    });
+    box.innerHTML = html;
+}
+
+function renderAllGearStorage(){
+    const store = loadGearStore();
+
+    renderSimpleList("rodStorageList", store.rods, "rod", function(i){
+        store.rods.splice(i,1); saveGearStore(store); renderAllGearStorage();
+    });
+    fillSelectOpt("selRod", store.rods);
+
+    renderSimpleList("reelStorageList", store.reels, "reel", function(i){
+        store.reels.splice(i,1); saveGearStore(store); renderAllGearStorage();
+    });
+    fillSelectOpt("selReel", store.reels);
+
+    renderSimpleList("mainlineStorageList", store.mainlines, "mainline", function(i){
+        store.mainlines.splice(i,1); saveGearStore(store); renderAllGearStorage();
+    });
+    fillSelectOpt("selMainline", store.mainlines);
+
+    renderSimpleList("leaderStorageList", store.leaders, "leader", function(i){
+        store.leaders.splice(i,1); saveGearStore(store); renderAllGearStorage();
+    });
+    fillSelectOpt("selLeader", store.leaders);
+
+    renderSimpleList("sinkerStorageList", store.sinkers, "sinker", function(i){
+        store.sinkers.splice(i,1); saveGearStore(store); renderAllGearStorage();
+    });
+    fillSelectOpt("selSinker", store.sinkers);
+
+    renderSimpleList("floatStorageList", store.floats, "float", function(i){
+        store.floats.splice(i,1); saveGearStore(store); renderAllGearStorage();
+    });
+    fillSelectOpt("selFloat", store.floats);
+
+    renderSimpleList("baitStorageList", store.baits, "bait", function(i){
+        store.baits.splice(i,1); saveGearStore(store); renderAllGearStorage();
+    });
+    fillSelectOpt("selBait", store.baits);
+
+    renderGearSetsUi();
+}
+
+function renderGearSetsUi(){
+    const sets = loadCustomGearSets();
     const sel = $('currentGearSelect');
     const listBox = $('customGearList');
     if(!sel || !listBox) return;
 
-    sel.innerHTML = `<option value="">--未选择自定义装备（使用系统默认）--</option>`;
-    gearList.forEach((g,i)=>{
-        sel.innerHTML += `<option value="${i}">${g.name}</option>`;
+    sel.innerHTML = '<option value="">--未启用自定义套装（系统默认）--</option>';
+    sets.forEach(function(s,i){
+        sel.innerHTML += '<option value="'+i+'">'+s.name+'</option>';
     });
-    //渲染列表+删除按钮
-    let html = "<h5>已保存自定义套装</h5>";
-    if(gearList.length===0){
-        html += "<div style='color:#777'>暂无自定义装备</div>";
+
+    let html = '<h5>已保存套装</h5>';
+    if(sets.length===0){
+        html += '<div style="color:#777">暂无保存套装</div>';
     }else{
-        gearList.forEach((g,i)=>{
-            html += `<div style="border:1px solid #ddd;padding:6px;margin:4px 0;border-radius:4px;">
-<b>${g.name}</b><br/>
-竿:${g.rod}｜轮:${g.reel}<br/>
-主线:${g.mainline}｜前导:${g.leader}｜饵重:${g.lureRange}
-<button data-delidx="${i}" class="gear-del-btn" style="margin-left:8px;color:red;border:none;background:transparent;cursor:pointer;">删除</button>
-</div>`;
-        })
+        sets.forEach(function(s,i){
+            html += '<div style="border:1px solid #ddd;padding:6px;margin:4px 0;border-radius:4px;">'
+                + '<b>'+s.name+'</b> | 作钓类型：'+(s.fishType||'未填写')+'<br/>'
+                + '竿:'+(s.rod||'-')+' | 轮:'+(s.reel||'-')+' | 主线:'+(s.mainline||'-')+'<br/>'
+                + '前导:'+(s.leader||'-')+' | 铅坠:'+(s.sinker||'-')+' | 浮漂:'+(s.float||'-')+' | 饵料:'+(s.bait||'-')
+                + ' <button data-setidx="'+i+'" class="set-del-btn" style="margin-left:8px;color:red;border:0;background:transparent;cursor:pointer;">删除套装</button>'
+                + '</div>';
+        });
     }
     listBox.innerHTML = html;
 }
 
-//获取当前选中装备对象，没有选择返回null
-function getSelectedGear(){
+function getSelectedGearSet(){
     const sel = $('currentGearSelect');
-    if(!sel) return null;
-    const idx = sel.value;
-    if(idx==="") return null;
+    if(!sel || sel.value === "") return null;
     const arr = loadCustomGearSets();
-    return arr[Number(idx)]??null;
+    return arr[Number(sel.value)] || null;
 }
-// ========== 装备工具函数结束 ==========
+// ========== 装备库存储结束 ==========
+
 
 const SPECIES_CONFIG = [
     {
@@ -2181,7 +2332,7 @@ async function doOpenMeteoMarineFallback(){
     },8000);
 
     var url='https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lng
-        +'&current=temperature_2m,pressure_msl,wind_speed_10m,wind_direction_10m'
+        +'&current=temperature_2m,pressure_msl,wind_speed_10m,wind_direction_10m,weathercode'
         +'&daily=temperature_2m_max,temperature_2m_min,wind_speed_10m_max,weathercode&timezone=Australia/Sydney';
     var marineUrl='https://marine-api.open-meteo.com/v1/marine?latitude='+lat+'&longitude='+lng
         +'&hourly=wave_height,wave_direction,wave_period&timezone=Australia/Sydney&forecast_days=2';
@@ -2211,10 +2362,15 @@ async function doOpenMeteoMarineFallback(){
             waveDir=mh.wave_direction&&mh.wave_direction[nowIdx]?mh.wave_direction[nowIdx]:0;
             wavePeriod=mh.wave_period&&mh.wave_period[nowIdx]?mh.wave_period[nowIdx]:0;
         }
+        // 获取天气编码，解析天气文字+图标
+        const wObj = getWeatherDesc(c.weathercode);
+
         box.innerHTML='<span class="source-tag">数据源：Open-Meteo（免费）</span><br>'
-            +'温度：'+c.temperature_2m+'℃ | 气压：'+c.pressure_msl+'hPa<br>'
-            +'风速：'+c.wind_speed_10m+'km/h | 浪高：'+waveHeight.toFixed(1)+'m';
+          + wObj.icon + ' 天气状况：' + wObj.text + '<br>'
+          +'温度：'+c.temperature_2m+'℃ | 气压：'+c.pressure_msl+'hPa<br>'
+          +'风速：'+c.wind_speed_10m+'km/h | 浪高：'+waveHeight.toFixed(1)+'m';
         if(wavePeriod>0)box.innerHTML+=' | 浪周期：'+wavePeriod.toFixed(0)+'s';
+
         var windDeg=c.wind_direction_10m;
         var windText=windAngleToText(windDeg);
         var suggestDir=getSuggestFishDir(windDeg);
@@ -2857,50 +3013,172 @@ advice+=speciesHtml;
         const selVal = this.value;
         renderTargetFishAdvice(selVal);
 });
-    // ---------------- 自定义装备库事件绑定 ----------------
-//保存装备套装按钮
-bind('saveCustomGearBtn','click',()=>{
+  // ---------------- 自定义装备库事件绑定 ----------------
+// 鱼竿入库
+bind('addRodBtn','click',function(){
+    const name = $('newRodName').value.trim();
+    const lure = $('newRodLureRange').value.trim();
+    if(!name){ alert('请填写鱼竿名称'); return; }
+    const store = loadGearStore();
+    store.rods.push(name + (lure ? ' ('+lure+')' : ''));
+    saveGearStore(store);
+    $('newRodName').value='';
+    $('newRodLureRange').value='';
+    renderAllGearStorage();
+});
+
+// 渔轮入库
+bind('addReelBtn','click',function(){
+    const name = $('newReelName').value.trim();
+    const type = $('newReelType').value.trim();
+    if(!name){ alert('请填写渔轮名称'); return; }
+    const store = loadGearStore();
+    store.reels.push(name + (type ? ' ('+type+')' : ''));
+    saveGearStore(store);
+    $('newReelName').value='';
+    $('newReelType').value='';
+    renderAllGearStorage();
+});
+
+// 主线入库
+bind('addMainlineBtn','click',function(){
+    const name = $('newMainlineName').value.trim();
+    if(!name){ alert('请填写主线名称'); return; }
+    const store = loadGearStore();
+    store.mainlines.push(name);
+    saveGearStore(store);
+    $('newMainlineName').value='';
+    renderAllGearStorage();
+});
+
+// 前导入库
+bind('addLeaderBtn','click',function(){
+    const name = $('newLeaderName').value.trim();
+    if(!name){ alert('请填写前导名称'); return; }
+    const store = loadGearStore();
+    store.leaders.push(name);
+    saveGearStore(store);
+    $('newLeaderName').value='';
+    renderAllGearStorage();
+});
+
+// 铅坠入库
+bind('addSinkerBtn','click',function(){
+    const name = $('newSinkerName').value.trim();
+    if(!name){ alert('请填写铅坠名称'); return; }
+    const store = loadGearStore();
+    store.sinkers.push(name);
+    saveGearStore(store);
+    $('newSinkerName').value='';
+    renderAllGearStorage();
+});
+
+// 浮漂入库
+bind('addFloatBtn','click',function(){
+    const name = $('newFloatName').value.trim();
+    if(!name){ alert('请填写浮漂名称'); return; }
+    const store = loadGearStore();
+    store.floats.push(name);
+    saveGearStore(store);
+    $('newFloatName').value='';
+    renderAllGearStorage();
+});
+
+// 饵料入库
+bind('addBaitBtn','click',function(){
+    const name = $('newBaitName').value.trim();
+    if(!name){ alert('请填写饵料名称'); return; }
+    const store = loadGearStore();
+    store.baits.push(name);
+    saveGearStore(store);
+    $('newBaitName').value='';
+    renderAllGearStorage();
+});
+
+// 分类装备删除（事件委托）
+document.querySelectorAll('#rodStorageList,#reelStorageList,#mainlineStorageList,#leaderStorageList,#sinkerStorageList,#floatStorageList,#baitStorageList').forEach(function(box){
+    if(!box) return;
+    box.addEventListener('click',function(e){
+        const btn = e.target.closest('button[data-type]');
+        if(!btn) return;
+        const type = btn.dataset.type;
+        const idx = Number(btn.dataset.idx);
+        const store = loadGearStore();
+        const keyMap = {rod:'rods',reel:'reels',mainline:'mainlines',leader:'leaders',sinker:'sinkers',float:'floats',bait:'baits'};
+        const key = keyMap[type];
+        if(key && store[key]){
+            store[key].splice(idx,1);
+            saveGearStore(store);
+            renderAllGearStorage();
+        }
+    });
+});
+
+// 保存套装
+bind('saveCustomGearBtn','click',function(){
+    const store = loadGearStore();
+    const rodIdx = $('selRod').value;
+    const reelIdx = $('selReel').value;
+    const mainlineIdx = $('selMainline').value;
+    const leaderIdx = $('selLeader').value;
+    const sinkerIdx = $('selSinker').value;
+    const floatIdx = $('selFloat').value;
+    const baitIdx = $('selBait').value;
+
     const item = {
-        name:$('gearSetName').value.trim(),
-        rod:$('gearRod').value.trim(),
-        reel:$('gearReel').value.trim(),
-        mainline:$('gearMainline').value.trim(),
-        leader:$('gearLeader').value.trim(),
-        lureRange:$('gearLureRange').value.trim()
+        name: $('gearSetName').value.trim(),
+        fishType: $('gearFishType').value.trim(),
+        rod: rodIdx !== '' ? store.rods[Number(rodIdx)] : '',
+        reel: reelIdx !== '' ? store.reels[Number(reelIdx)] : '',
+        mainline: mainlineIdx !== '' ? store.mainlines[Number(mainlineIdx)] : '',
+        leader: leaderIdx !== '' ? store.leaders[Number(leaderIdx)] : '',
+        sinker: sinkerIdx !== '' ? store.sinkers[Number(sinkerIdx)] : '',
+        float: floatIdx !== '' ? store.floats[Number(floatIdx)] : '',
+        bait: baitIdx !== '' ? store.baits[Number(baitIdx)] : ''
     };
-    if(!item.name){ alert("请填写套装名称");return; }
+    if(!item.name){ alert('请填写套装名称'); return; }
     addOneGearSet(item);
-    //清空表单输入框
     $('gearSetName').value='';
-    $('gearRod').value='';
-    $('gearReel').value='';
-    $('gearMainline').value='';
-    $('gearLeader').value='';
-    $('gearLureRange').value='';
-    renderGearUi();
+    $('gearFishType').value='';
+    $('selRod').value='';
+    $('selReel').value='';
+    $('selMainline').value='';
+    $('selLeader').value='';
+    $('selSinker').value='';
+    $('selFloat').value='';
+    $('selBait').value='';
+    renderAllGearStorage();
 });
-//清空表单按钮
-bind('clearGearFormBtn','click',()=>{
+
+// 清空套装表单
+bind('clearGearFormBtn','click',function(){
     $('gearSetName').value='';
-    $('gearRod').value='';
-    $('gearReel').value='';
-    $('gearMainline').value='';
-    $('gearLeader').value='';
-    $('gearLureRange').value='';
+    $('gearFishType').value='';
+    $('selRod').value='';
+    $('selReel').value='';
+    $('selMainline').value='';
+    $('selLeader').value='';
+    $('selSinker').value='';
+    $('selFloat').value='';
+    $('selBait').value='';
 });
-//装备列表删除按钮事件委托
+
+// 套装删除（事件委托）
 const gearListWrap = $('customGearList');
 if(gearListWrap){
-    gearListWrap.addEventListener('click',e=>{
-        const btn = e.target.closest('.gear-del-btn');
+    gearListWrap.addEventListener('click',function(e){
+        const btn = e.target.closest('.set-del-btn');
         if(!btn) return;
-        const delIdx = Number(btn.dataset.delidx);
-        deleteGearByIndex(delIdx);
-        renderGearUi();
+        const delIdx = Number(btn.dataset.setidx);
+        deleteGearSetByIndex(delIdx);
+        renderAllGearStorage();
     });
 }
-//页面初始化渲染装备UI
-renderGearUi();
+
+// 页面初始化渲染装备库
+renderAllGearStorage();
+// ========== 装备库绑定结束 ==========
+
 // ----------------装备绑定结束----------------
 
 });
