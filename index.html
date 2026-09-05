@@ -965,18 +965,28 @@ function renderOpenMeteoMarineTide(ret) {
 
     // --------当前状态 + 倒计时 --------
     if(statusEl){
-        if(nextEvent){
-            const txt = nextEvent.type==='high'?'落潮':'涨潮';
-            statusEl.textContent="当前潮汐状态："+txt+"中";
-            const diff = nextEvent.ts - nowTs;
-            const hh = Math.floor(diff / 3600000);
-            const mm = Math.floor((diff%3600000)/60000);
-            if(countdownEl) countdownEl.textContent="距离下一"+(nextEvent.type==='high'?'满潮':'低潮')+"："+hh+"h"+mm+"min";
-        }else{
-            statusEl.textContent="当前：超出预报时间窗口";
-            if(countdownEl) countdownEl.textContent="";
-        }
+    const phaseTextMap = {
+        rising:"涨潮",
+        falling:"落潮",
+        high:"满潮",
+        low:"低潮",
+        dead:"死潮/平潮"
+    };
+    // 直接使用接口返回已经算好的tidePhase，和鱼情计算同源
+    let phaseText = phaseTextMap[ret.tidePhase] || "未知潮汐状态";
+    statusEl.textContent="当前潮汐状态："+phaseText;
+
+    if(nextEvent){
+        const diff = nextEvent.ts - nowTs;
+        const hh = Math.floor(diff / 3600000);
+        const mm = Math.floor((diff%3600000)/60000);
+        if(countdownEl) countdownEl.textContent="距离下一"+(nextEvent.type==='high'?'满潮':'低潮')+"："+hh+"h"+mm+"min";
+    }else{
+        statusEl.textContent="当前：超出预报时间窗口";
+        if(countdownEl) countdownEl.textContent="";
     }
+}
+
 
     // --------绘制潮汐SVG曲线图（复用原有svg容器，样式和TidesAtlas保持一致）--------
     if(svg && hourly && hourly.time.length>0){
@@ -1811,7 +1821,7 @@ async function doOpenMeteoMarineFallback(){
         const ret = await fetchOpenMeteoMarineTide(lat, lng);
         renderOpenMeteoMarineTide(ret);
         // 【关键】把计算出来的tidePhase赋值，鱼情/鱼种活跃度/作钓方案自动复用
-        if(ret.tidePhase && window._lastWeather){
+        if(window._lastWeather){
             window._lastWeather.tidePhase = ret.tidePhase;
             if(typeof renderFishAdvice === "function"){
                 renderFishAdvice(window._lastWeather);
@@ -2268,7 +2278,7 @@ document.addEventListener('DOMContentLoaded',function(){
         timeScore+=moonScore;
 
         // 潮汐评分：根据实时潮汐状态
-        var effectiveTide = userTide||tidePhase;
+        var effectiveTide = w.tidePhase ?? 'dead';
         if(effectiveTide==='rising'||effectiveTide==='涨潮'){tideScore=80;}
         else if(effectiveTide==='falling'||effectiveTide==='退潮'){tideScore=75;}
         else if(effectiveTide==='high'||effectiveTide==='满潮'){tideScore=55;}
