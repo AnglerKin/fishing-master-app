@@ -699,6 +699,18 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 </div>
 
 <script>
+  var _fetchWeatherAbortController = null;
+
+function setPointLoading(isLoading){
+    const statusEl = document.getElementById('locStatus');
+    if(!statusEl) return;
+    if(isLoading){
+        statusEl.style.color="#4285F4";
+    }else{
+        statusEl.style.color="#222";
+    }
+}
+
 function closeModal(id){var m=document.getElementById(id);if(m)m.style.display='none';}
 function $(id){return document.getElementById(id);}
 function bind(id,event,fn){var el=$(id);if(el)el.addEventListener(event,fn);}
@@ -877,49 +889,44 @@ async function loadMapLibre(mapStyle){
             center:[151.2847,-33.8031],
             zoom:10
         });
-        map.addControl(new maplibregl.NavigationControl({showCompass:true}));
-        map.on('click', async function(e){
+   map.addControl(new maplibregl.NavigationControl({showCompass:true}));
+   map.on('click', async function(e){
     const lngLat = e.lngLat;
     const lng = lngLat.lng;
     const lat = lngLat.lat;
-
     $('inpLng').value = lng.toFixed(4);
     $('inpLat').value = lat.toFixed(4);
     state.selectedLng=lng;
     state.selectedLat=lat;
     setMapMarker(lng,lat);
-
     var geoInfo=getRegionName(lng,lat);
     $('locRegion').innerText="点位大致区域："+geoInfo.fullText;
     $('locStatus').innerText=`已选坐标：${lng.toFixed(4)}, ${lat.toFixed(4)} → 正在更新天气…`;
 
-    // 只终止旧请求，此处禁止 new AbortController
     if(window._fetchWeatherAbortController){
         window._fetchWeatherAbortController.abort();
     }
 
     setPointLoading(true);
     try{
-    console.log("[地图点击]开始请求天气", lng, lat);
-    //接收fetchWeather返回的数据对象
-    const weatherData = await fetchWeather(lng,lat);
-    console.log("[地图点击]获取完成", weatherData);
-
-    // 这两行就是你缺失的，按钮点击会执行，地图点击之前漏掉
-    renderRealTimePanel(weatherData);
-    renderFishAdvice(weatherData);
-
-}catch(err){
-    if(err.name!=='AbortError'){
-        console.warn("地图点击获取天气异常",err);
-    }else{
-        console.log("[地图点击]请求被abort取消");
-    }
+        console.log("[地图点击]开始请求天气", lng, lat);
+        await fetchWeather(lng,lat);
+        console.log("[地图点击]fetchWeather执行完成", window._lastWeather);
+        if(window._lastWeather && typeof renderFishAdvice === "function"){
+            renderFishAdvice(window._lastWeather);
+        }
+    }catch(err){
+        if(err.name!=='AbortError'){
+            console.warn("地图点击获取天气异常",err);
+        }else{
+            console.log("[地图点击]请求被abort取消");
+        }
     }finally{
         setPointLoading(false);
         $('locStatus').innerText='已选坐标：'+lng.toFixed(4)+', '+lat.toFixed(4);
     }
 });
+
 
         
         map.on('error',function(e){
