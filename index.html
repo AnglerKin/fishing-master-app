@@ -661,6 +661,26 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 <h3><span class="icon">🎣</span>推荐作钓方案（按评分排名）</h3>
 <div id="tacticsBox">选择钓点后显示多套方案</div>
 </div>
+  <!-- 新增：按目标鱼种查询作钓建议 -->
+<div class="card">
+    <h3><span class="icon">🎯</span>按目标鱼种查询作钓建议</h3>
+    <div style="margin-bottom:12px;">
+        <label style="margin-right:8px;">选择目标鱼种：</label>
+        <select id="targetFishSelect" style="padding:6px 8px;min-width:260px;border-radius:6px;border:1px solid #ccc;">
+            <option value="">---请选择目标鱼种---</option>
+            <option value="bream">Bream 黑鲷</option>
+            <option value="flathead">Flathead 牛尾鱼</option>
+            <option value="trevally">Trevally 鲹鱼</option>
+            <option value="mulloway">Mulloway 银身中棘鱼( Jewfish)</option>
+            <option value="kingfish">Kingfish 王鱼</option>
+            <option value="squid">Squid 鱿鱼</option>
+        </select>
+    </div>
+    <div id="targetFishAdviceBox" style="line-height:1.7;">
+        <div style="color:#666;">选择上方鱼种，查看推荐钓位、最佳时间、海况条件与全套作钓配置。</div>
+    </div>
+</div>
+
 </div>
 
 <div id="page-spots" class="hidden">
@@ -1046,6 +1066,101 @@ ${dots}
   /**
  * 鱼种活跃度卡片按钮点击：跳转并渲染目标鱼种建议
  */
+const FISH_TARGET_ADVICE = {
+    bream:{
+        name:"Bream 黑鲷",
+        spot:"码头桥墩、礁石边缘、河口、海草床附近；防波堤、港湾浅礁",
+        bestTime:"黄昏、黎明；涨潮时段；满月新月大潮窗口期",
+        weather:"气压偏高，微风，20-24℃水温；大风暴雨后避开",
+        tide:"rising涨潮优先；其次falling落潮；避开dead死潮平潮",
+        wave:"浪高0.2-1.4m；浪过大鱼退回深水",
+        tackle:"竿：2-4kg轻型路亚竿；渔轮3000；主线PE2-4kg；前导碳线5-8kg；滑铅底钓组；钩#2-1/0",
+        bait:"活虾、贝肉、海虫；软塑料3-5cm；可以打窝诱鱼",
+        skill:"贴结构作钓；慢拖、等待咬口；涨潮鱼靠近岸边礁石。礁石作钓务必注意海浪安全。"
+    },
+    flathead:{
+        name:"Flathead 牛尾鱼",
+        spot:"沙泥底浅滩、海湾沙底、河口沙床；沙与礁石交界带",
+        bestTime:"白天黎明到午后；落潮falling窗口期；春夏秋活跃",
+        weather:"水温18-24℃；气压稳定；轻-微风",
+        tide:"falling落潮最佳；rising涨潮次之；避开dead平潮",
+        wave:"浪高0.3-1.3m；大浪搅动泥沙降低咬口",
+        tackle:"竿3-5kg；3000-4000纺车轮；PE4-6kg；碳前导8-12kg；滑铅底钓；Jig head 7-14g",
+        bait:"活小鱼、虾；5-7cm软鱼形软饵",
+        skill:"沙底缓慢收线、小跳底；牛尾埋伏沙里，重点搜索沙-礁石交界。"
+    },
+    trevally:{
+        name:"Trevally 鲹鱼",
+        spot:"岬角、防波堤端头、水流通道；鱼群追逐饵鱼，强水流区域",
+        bestTime:"白天上午、下午；涨落潮流动水流；春夏",
+        weather:"水温20-27℃；有风有涌，海水有扰动；晴朗多云均可",
+        tide:"rising / falling流动潮水；严禁dead死潮",
+        wave:"浪高0.4-1.1m；需要一定涌浪，完全静水不佳",
+        tackle:"4-7kg路亚竿；4000纺车轮；PE8-12kg；碳前导10-15kg；金属铁板、硬饵",
+        bait:"铁板、米诺；活饵小鱼",
+        skill:"快速抽收；找饵鱼群；鲹鱼群游，没有咬口快速换点位。礁石作钓注意安全。"
+    },
+    mulloway:{
+        name:"Mulloway 银身中棘鱼(Jewfish)",
+        spot:"桥墩、深Drop-off、河口通道；防波堤深水区；夜间洄游通道",
+        bestTime:"夜间；黄昏入夜；新月/满月大潮；涨潮初期run-in",
+        weather:"水温16-21℃；暖湿夜晚；气压不要过低；大风风暴之后谨慎礁石作钓",
+        tide:"rising涨潮优先；falling次之；避开dead死潮",
+        wave:"浪高0.5-1.6m；中等涌浪，过大浪不适合岸投",
+        tackle:"5-10kg中重型竿；4000-5000轮；PE10-15kg；前导15-25kg；大滑铅钓组",
+        bait:"活鱿鱼、活小鱼；大尺寸软饵；夜间优先活饵",
+        skill:"夜间作钓，优先潮水刚开始上涨；躲结构伏击；礁石夜钓风险极高，务必结伴。"
+    },
+    kingfish:{
+        name:"Kingfish 王鱼",
+        spot:"海岬、防波堤端头；礁石外沿；洋流交汇；水下暗礁",
+        bestTime:"黎明、黄昏；涨落潮强水流；水温高于18℃春-夏-早秋",
+        weather:"水温≥18℃；有海涌；多云晴天均可；风暴过后避开",
+        tide:"rising / falling流动潮水；拒绝dead死潮平潮",
+        wave:"浪高0.6-1.2m；适度涌浪；平静静水几乎无口",
+        tackle:"6-10kg路亚竿；5000纺车轮；PE12-20kg；前导20-30kg；铁板、大硬饵",
+        bait:"金属铁板、大型米诺；活饵小鱼",
+        skill:"快速抽铁板；搜索洋流交界；中鱼后鱼冲击力极强，注意结构磨线；礁石区高度注意人身安全。"
+    },
+    squid:{
+        name:"Squid 鱿鱼",
+        spot:"码头灯光下；防波堤；海草床附近；浅礁石；夜间光源周边",
+        bestTime:"夜间；黄昏入夜；涨潮rising；春秋天",
+        weather:"水温17-22℃；微风；浪不能太大",
+        tide:"rising涨潮优先；falling次之；避开dead死潮",
+        wave:"浪高0.1-1.0m；浪大鱿鱼退回深水，岸钓很难",
+        tackle:"2-4kg轻型竿；2500-3000轮；PE3-6kg；碳前导4-7kg；木虾Egi鱿鱼饵",
+        bait:"木虾Egi（鱿鱼假饵），不需要活饵",
+        skill:"木虾下落停顿，抬竿抽动；夜间光源下找鱿鱼；浪大停止岸钓。礁石夜钓注意防滑。"
+    }
+};
+
+function renderTargetFishAdvice(fishKey){
+    const box = $('targetFishAdviceBox');
+    if(!fishKey){
+        box.innerHTML = '<div style="color:#666;">选择上方鱼种，查看推荐钓位、最佳时间、海况条件与全套作钓配置。</div>';
+        return;
+    }
+    const d = FISH_TARGET_ADVICE[fishKey];
+    if(!d){
+        box.innerHTML = '<div style="color:red;">暂无该鱼种数据</div>';
+        return;
+    }
+    const html = '<div style="border:1px solid #dde3ec;border-radius:10px;padding:12px;background:#f7faff;">'
+        + '<h4 style="margin:0 0 10px 0;color:#0f4c81;">🎯 ' + d.name + ' 作钓参考</h4>'
+        + '<div><b>📍推荐作钓位置：</b>' + d.spot + '</div>'
+        + '<div><b>⏰最佳时间窗口：</b>' + d.bestTime + '</div>'
+        + '<div><b>🌤适宜天气条件：</b>' + d.weather + '</div>'
+        + '<div><b>🌊理想潮汐相位：</b>' + d.tide + '</div>'
+        + '<div><b>🌫适宜浪高：</b>' + d.wave + '</div>'
+        + '<div><b>🎣装备与线组配置：</b>' + d.tackle + '</div>'
+        + '<div><b>🦐饵料/假饵：</b>' + d.bait + '</div>'
+        + '<div><b>📝作钓手法提示：</b>' + d.skill + '</div>'
+        + '<div style="margin-top:8px;color:#888;font-size:11px;">⚠提示：本为理论参考，实际还受实时天气潮汐、季节、钓点结构影响；礁石海钓务必重视海浪人身安全。</div>'
+        + '</div>';
+    box.innerHTML = html;
+}
+
 function bindFishCardClick(){
     document.querySelector('#fishAdvice').addEventListener('click',function(e){
         const btn=e.target.closest('.fish-select-btn');
@@ -1056,13 +1171,13 @@ function bindFishCardClick(){
             sel.value=fishKey;
         }
         renderTargetFishAdvice(fishKey);
-        // 平滑滚动到下方目标鱼种建议卡片
         const targetCard=document.querySelector('#targetFishAdviceBox').closest('.card');
         if(targetCard){
             targetCard.scrollIntoView({behavior:"smooth",block:"start"});
         }
     });
 }
+
 
 function closeModal(id){var m=document.getElementById(id);if(m)m.style.display='none';}
 function $(id){return document.getElementById(id);}
