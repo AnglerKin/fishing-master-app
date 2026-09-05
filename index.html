@@ -2002,7 +2002,7 @@ document.addEventListener('DOMContentLoaded',function(){
     if(press<1006)s1-=6;
 
     let bait1="新鲜虾仁/沙丁鱼块";
-    let skillS1 = "抛投至礁石‑沙地交界 → 铅到底收紧虚线 → 看到持续出线等2‑3秒刺鱼";
+    let skillS1 = "抛投至礁石-沙地交界 → 铅到底收紧虚线 → 看到持续出线等2-3秒刺鱼";
     if(tidePhase==='rising'){
         skillS1 += "；涨潮重点钓近岸桩边，饵随潮水带入结构。";
     }else if(tidePhase==='falling'){
@@ -2019,7 +2019,7 @@ document.addEventListener('DOMContentLoaded',function(){
     tacticList.push({
         title:"方案1 码头滑铅沉底钓",
         score:s1,
-        equip:"装备：竿2.4‑2.7m，轮3000‑4000，PE1.0，前导22lb，滑动铅"+baseSink+"g，直柄圆钩1/0",
+        equip:"装备：竿2.4-2.7m，轮3000-4000，PE1.0，前导22lb，滑动铅"+baseSink+"g，直柄圆钩1/0",
         bait:"饵料："+bait1,
         skill:skillS1,
         pros:"优势：底层鱼命中率高；抗水流强；操作简单；适合Bream/Flathead",
@@ -2037,7 +2037,7 @@ document.addEventListener('DOMContentLoaded',function(){
     if(moonScore>0)s2+=moonScore>8?5:2;
     if(press<1006)s2-=5;
 
-    let bait2="虾仁；窝料：碎沙丁鱼，每3‑5分钟少量打窝";
+    let bait2="虾仁；窝料：碎沙丁鱼，每3-5分钟少量打窝";
     let skillS2 = "调漂让饵贴礁石底 → 顺流自然飘不绷线 → 看阿波下沉/走线刺鱼";
     if(tidePhase==='rising') skillS2 += "；涨潮顺着潮水放流，不要绷住线阻碍饵自然漂移。";
     else if(tidePhase==='falling') skillS2 += "；退潮适当加大咬铅，对抗往外拉的水流。";
@@ -2069,7 +2069,7 @@ document.addEventListener('DOMContentLoaded',function(){
     if(moonScore>0)s3+=moonScore>8?4:2;
     if(press<1006)s3-=7;
 
-    let baitLure=baseSpoonMin+"‑"+baseSpoonMax+"g银/金勺子亮片";
+    let baitLure=baseSpoonMin+"-"+baseSpoonMax+"g银/金勺子亮片";
     let skillS3 = "慢卷+轻抽贴近结构搜索；快慢交替制造闪动";
     if(tidePhase==='rising') skillS3 += "；涨潮重点搜索岸边结构掠食鱼会跟随潮水进来。";
     else if(tidePhase==='falling') skillS3 += "；退潮往深水区搜索，追捕食饵鱼向外撤离。";
@@ -2077,28 +2077,28 @@ document.addEventListener('DOMContentLoaded',function(){
         skillS3 += "；平潮掠食鱼活性差，降低期待，多换点位，减少停留。";
     }
     if(hour>=20||hour<=4){
-        baitLure=baseSpoonMin+"‑"+baseSpoonMax+"g夜光勺子亮片；慢收为主，少大幅度抽动";
+        baitLure=baseSpoonMin+"-"+baseSpoonMax+"g夜光勺子亮片；慢收为主，少大幅度抽动";
         skillS3+="；夜间以慢卷飘落为主，减少剧烈抽动。";
     }
 
     tacticList.push({
         title:"方案3 路亚（勺子亮片）",
         score:s3,
-        equip:"装备：路亚竿2.1‑2.7m，轮3000，PE0.8，前导18lb，"+baitLure,
+        equip:"装备：路亚竿2.1-2.7m，轮3000，PE0.8，前导18lb，"+baitLure,
         bait:"无活饵，金属拟饵",
         skill:skillS3,
         pros:"优势：高效率大范围搜索；不用活饵；可钓中上层掠食鱼",
         cons:"劣势：底层底栖鱼难钓；鱼口差效率低；对手法要求高"
     });
 
-    tacticList.sort(function(a,b){return b.score‑a.score;});
+    tacticList.sort(function(a,b){return b.score-a.score;});
     let html="";
     tacticList.forEach(function(item){
         html+='<div class="tactic">'
-            +'<h4>'+item.title+' <span class="tactic‑rank">评分：'+item.score+'</span></h4>'
-            +'<div style="font‑weight:600;color:#333;margin:4px 0">'+item.equip+'</div>'
-            +'<div style="margin:3px 0;font‑size:13px;color:#555">'+item.bait+'</div>'
-            +'<div style="margin:3px 0;font‑size:13px;color:#555">'+item.skill+'</div>'
+            +'<h4>'+item.title+' <span class="tactic-rank">评分：'+item.score+'</span></h4>'
+            +'<div style="font-weight:600;color:#333;margin:4px 0">'+item.equip+'</div>'
+            +'<div style="margin:3px 0;font-size:13px;color:#555">'+item.bait+'</div>'
+            +'<div style="margin:3px 0;font-size:13px;color:#555">'+item.skill+'</div>'
             +'<div class="pros">'+item.pros+'</div>'
             +'<div class="cons">'+item.cons+'</div>'
             +'</div>';
