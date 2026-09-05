@@ -2107,12 +2107,47 @@ document.addEventListener('DOMContentLoaded',function(){
             advice+='<div class="advice-block" style="border-left-color:#e74c3c"><b>风险提示：</b>'+bad.join('；')+'</div>';
         }
         if(w.tideNote)advice+='<div class="advice-block"><b>手动潮汐：</b>'+w.tideNote+'</div>';
-        $('fishAdvice').innerHTML=advice;
+      
+      // =========新增：各鱼种活跃度计算输出 =========
+let speciesHtml='<div style="margin-top:14px;border-top:1px solid #dde3ec;padding-top:12px;">';
+speciesHtml+='<h4 style="color:#0f4c81;margin-bottom:10px">🎯 各鱼种当前活跃度（基于实时天气潮汐）</h4>';
+
+const nowHour=new Date().getHours();
+SPECIES_CONFIG.forEach(sp=>{
+    const res=calcSpeciesSingle(sp,temp,press,wind,wave,effectiveTide,nowHour,moonScore);
+    let color='#999';
+    if(res.score>=70)color='#27ae60';
+    else if(res.score>=50)color='#f39c12';
+    else color='#e74c3c';
+
+    speciesHtml+='<div style="border:1px solid #e2e8f0;border-radius:10px;padding:10px;margin:8px 0;">';
+    speciesHtml+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">';
+    speciesHtml+='<b style="font-size:14px;color:#0f4c81">'+sp.name+'</b>';
+    speciesHtml+='<span style="font-weight:700;color:'+color+'">'+res.score+'/100分</span>';
+    speciesHtml+='</div>';
+    speciesHtml+='<div style="font-size:12px;color:#444;margin:4px 0">📌习性：'+sp.note+'</div>';
+    if(res.reasonList.length>0){
+        speciesHtml+='<div style="font-size:12px;color:#27ae60">✅有利：'+res.reasonList.join("；")+'</div>';
+    }
+    if(res.warnList.length>0){
+        speciesHtml+='<div style="font-size:12px;color:#e74c3c">⚠️限制：'+res.warnList.join("；")+'</div>';
+    }
+    speciesHtml+='</div>';
+});
+speciesHtml+='<div style="font-size:11px;color:#888;margin-top:6px">提示：本活跃度为环境条件评估，不代表100%中鱼，还受钓点结构、饵、手法影响</div>';
+speciesHtml+='</div>';
+
+advice+=speciesHtml;
+// =========新增结束 =========
+  
+      $('fishAdvice').innerHTML=advice;
         if(typeof renderTactics==="function"){renderTactics(wind,wave,effectiveTide,hour,moonScore,press);}
     }
 
    function renderTactics(wind,wave,tidePhase,hour,moonScore,press){
     let tacticList=[];
+
+    // 【动态计算装备参数，完全由实时wind/wave驱动】
     let baseSink=12;
     let baseAbo="B";
     let baseSpoonMin=7;
@@ -2130,19 +2165,24 @@ document.addEventListener('DOMContentLoaded',function(){
         baseSpoonMax=8;
     }
 
-    //方案1 滑铅沉底钓
-    let s1=70;
-    if(wind>18) s1+=12;
-    if(wave>1.2) s1+=8;
-    if(tidePhase==='rising'||tidePhase==='falling') s1+=8;
-    if(tidePhase==='dead'||tidePhase==='high') s1-=12;
-    if((hour>=5&&hour<=7)||(hour>=17&&hour<=21)) s1+=8;
+    // -------- 1.滑铅沉底钓 动态评分 --------
+    let s1=60;
+    //风浪
+    if(wind>18)s1+=14;
+    if(wave>1.2)s1+=12;
+    if(wind<12&&wave<0.9)s1+=6;
+    //潮汐
+    if(tidePhase==='rising'||tidePhase==='falling') s1+=12;
+    if(tidePhase==='dead'||tidePhase==='high') s1-=14;
+    //时段
+    if((hour>=5&&hour<=7)||(hour>=17&&hour<=21)) s1+=10;
     if(hour>=11&&hour<=14) s1-=8;
-    if(moonScore>0)s1+=moonScore>8?6:3;
-    if(press<1006)s1-=6;
+    //月相、气压
+    if(moonScore>0)s1+=moonScore>8?7:3;
+    if(press<1006)s1-=7;
 
     let bait1="新鲜虾仁/沙丁鱼块";
-    let skillS1 = "抛投至礁石-沙地交界 → 铅到底收紧虚线 → 看到持续出线等2-3秒刺鱼";
+    let skillS1 = "抛投至礁石‑沙地交界 → 铅到底收紧虚线 → 看到持续出线等2‑3秒刺鱼";
     if(tidePhase==='rising'){
         skillS1 += "；涨潮重点钓近岸桩边，饵随潮水带入结构。";
     }else if(tidePhase==='falling'){
@@ -2155,29 +2195,31 @@ document.addEventListener('DOMContentLoaded',function(){
         bait1="大块沙丁鱼/鱿鱼条（夜钓大物优先大饵）";
         skillS1+="；夜间降低抛投噪音，优先码头灯光周边。";
     }
-
     tacticList.push({
         title:"方案1 码头滑铅沉底钓",
         score:s1,
-        equip:"装备：竿2.4-2.7m，轮3000-4000，PE1.0，前导22lb，滑动铅"+baseSink+"g，直柄圆钩1/0",
+        equip:"装备：竿2.4‑2.7m，轮3000‑4000，PE1.0，前导22lb，滑动铅"+baseSink+"g，直柄圆钩1/0",
         bait:"饵料："+bait1,
         skill:skillS1,
-        pros:"优势：底层鱼命中率高；抗水流强；操作简单；适合Bream/Flathead",
+        pros:"优势：底层鱼命中率高；抗水流强；操作简单；适合Bream/Flathead/Mulloway",
         cons:"劣势：只能钓底层；需频繁换饵；易挂礁石"
     });
 
-    //方案2 阿波浮漂矶钓
-    let s2=65;
-    if(wind<18&&wave<1.2) s2+=10;
-    if(tidePhase==='rising') s2+=10;
-    if(tidePhase==='falling') s2+=5;
-    if(wind>22||wave>1.4) s2-=15;
-    if(tidePhase==='dead') s2-=10;
-    if((hour>=5&&hour<=7)||(hour>=17&&hour<=21)) s2+=6;
-    if(moonScore>0)s2+=moonScore>8?5:2;
+    // --------2.阿波浮漂矶钓 --------
+    let s2=55;
+    //风浪：大风大浪对浮漂负面影响很大
+    if(wind<18&&wave<1.2) s2+=14;
+    if(wind>22||wave>1.4) s2-=18;
+    //潮汐
+    if(tidePhase==='rising') s2+=14;
+    if(tidePhase==='falling') s2+=7;
+    if(tidePhase==='dead') s2-=12;
+    //时段
+    if((hour>=5&&hour<=7)||(hour>=17&&hour<=21)) s2+=8;
+    if(moonScore>0)s2+=moonScore>8?6:2;
     if(press<1006)s2-=5;
 
-    let bait2="虾仁；窝料：碎沙丁鱼，每3-5分钟少量打窝";
+    let bait2="虾仁；窝料：碎沙丁鱼，每3‑5分钟少量打窝";
     let skillS2 = "调漂让饵贴礁石底 → 顺流自然飘不绷线 → 看阿波下沉/走线刺鱼";
     if(tidePhase==='rising') skillS2 += "；涨潮顺着潮水放流，不要绷住线阻碍饵自然漂移。";
     else if(tidePhase==='falling') skillS2 += "；退潮适当加大咬铅，对抗往外拉的水流。";
@@ -2188,7 +2230,6 @@ document.addEventListener('DOMContentLoaded',function(){
     if(hour>=20||hour<=4){
         skillS2+="；夜钓阿波建议加夜光棒；钓棚略加深。";
     }
-
     tacticList.push({
         title:"方案2 通用浮漂矶钓（阿波）",
         score:s2,
@@ -2199,17 +2240,21 @@ document.addEventListener('DOMContentLoaded',function(){
         cons:"劣势：强潮难控漂；学习门槛高；浪干扰信号"
     });
 
-    //方案3 路亚（勺子亮片）
-    let s3=55;
+    // --------3.路亚（勺子亮片） --------
+    let s3=50;
+    //风浪：中小浪路亚最佳，大浪抑制掠食鱼
     if(wind<22&&wave<1.4) s3+=18;
-    if(tidePhase==='rising'||tidePhase==='falling') s3+=12;
-    if(tidePhase==='dead') s3-=18;
+    if(wave>1.5)s3-=16;
+    //潮汐：涨落潮水流强，掠食鱼活跃
+    if(tidePhase==='rising'||tidePhase==='falling') s3+=14;
+    if(tidePhase==='dead') s3-=20;
+    //时段：晨昏窗口期路亚加分
     if((hour>=5&&hour<=7)||(hour>=17&&hour<=20)) s3+=12;
     if(hour>=11&&hour<=14)s3-=10;
     if(moonScore>0)s3+=moonScore>8?4:2;
     if(press<1006)s3-=7;
 
-    let baitLure=baseSpoonMin+"-"+baseSpoonMax+"g银/金勺子亮片";
+    let baitLure=baseSpoonMin+"‑"+baseSpoonMax+"g银/金勺子亮片";
     let skillS3 = "慢卷+轻抽贴近结构搜索；快慢交替制造闪动";
     if(tidePhase==='rising') skillS3 += "；涨潮重点搜索岸边结构掠食鱼会跟随潮水进来。";
     else if(tidePhase==='falling') skillS3 += "；退潮往深水区搜索，追捕食饵鱼向外撤离。";
@@ -2217,34 +2262,37 @@ document.addEventListener('DOMContentLoaded',function(){
         skillS3 += "；平潮掠食鱼活性差，降低期待，多换点位，减少停留。";
     }
     if(hour>=20||hour<=4){
-        baitLure=baseSpoonMin+"-"+baseSpoonMax+"g夜光勺子亮片；慢收为主，少大幅度抽动";
+        baitLure=baseSpoonMin+"‑"+baseSpoonMax+"g夜光勺子亮片；慢收为主，少大幅度抽动";
         skillS3+="；夜间以慢卷飘落为主，减少剧烈抽动。";
     }
-
     tacticList.push({
         title:"方案3 路亚（勺子亮片）",
         score:s3,
-        equip:"装备：路亚竿2.1-2.7m，轮3000，PE0.8，前导18lb，"+baitLure,
+        equip:"装备：路亚竿2.1‑2.7m，轮3000，PE0.8，前导18lb，"+baitLure,
         bait:"无活饵，金属拟饵",
         skill:skillS3,
-        pros:"优势：高效率大范围搜索；不用活饵；可钓中上层掠食鱼",
+        pros:"优势：高效率大范围搜索；不用活饵；可钓中上层掠食鱼(Trevally/Kingfish)",
         cons:"劣势：底层底栖鱼难钓；鱼口差效率低；对手法要求高"
     });
 
-    tacticList.sort(function(a,b){return b.score-a.score;});
+    // 分数限制0‑100，排序
+    tacticList.forEach(t=>t.score=Math.max(0,Math.min(100,t.score)));
+    tacticList.sort(function(a,b){return b.score‑a.score;});
+
     let html="";
     tacticList.forEach(function(item){
         html+='<div class="tactic">'
-            +'<h4>'+item.title+' <span class="tactic-rank">评分：'+item.score+'</span></h4>'
-            +'<div style="font-weight:600;color:#333;margin:4px 0">'+item.equip+'</div>'
-            +'<div style="margin:3px 0;font-size:13px;color:#555">'+item.bait+'</div>'
-            +'<div style="margin:3px 0;font-size:13px;color:#555">'+item.skill+'</div>'
+            +'<h4>'+item.title+' <span class="tactic‑rank">评分：'+item.score+'</span></h4>'
+            +'<div style="font‑weight:600;color:#333;margin:4px 0">'+item.equip+'</div>'
+            +'<div style="margin:3px 0;font‑size:13px;color:#555">'+item.bait+'</div>'
+            +'<div style="margin:3px 0;font‑size:13px;color:#555">'+item.skill+'</div>'
             +'<div class="pros">'+item.pros+'</div>'
             +'<div class="cons">'+item.cons+'</div>'
             +'</div>';
     });
     $('tacticsBox').innerHTML=html;
 }
+
 
     renderRateLimitUi();
 
