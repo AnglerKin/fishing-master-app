@@ -822,7 +822,217 @@ function calcSpeciesSingle(sp,temp,press,wind,wave,tidePhase,hour,moonScore){
     score=Math.max(0,Math.min(100,score));
     return {score,reasonList:reasons,warnList:warns};
 }
-  
+ /**
+ * 从小时潮位数组提取高低潮（波峰波谷）
+ * @param {string[]} timeArr ISO时间字符串数组
+ * @param {number[]} heightArr 海平面高度msl数组
+ * @returns {Array<{ts:number, h:number, type:'high'|'low'}>}
+ */
+function extractTideExtremes(timeArr, heightArr) {
+    const out = [];
+    const len = heightArr.length;
+    for (let i = 1; i < len - 1; i++) {
+        const prev = heightArr[i - 1];
+        const curr = heightArr[i];
+        const next = heightArr[i + 1];
+        // 波峰 = 满潮 high
+        if (curr > prev && curr > next) {
+            out.push({
+                ts: new Date(timeArr[i]).getTime(),
+                h: curr,
+                type: "high"
+            });
+        }
+        // 波谷 = 低潮 low
+        else if (curr < prev && curr < next) {
+            out.push({
+                ts: new Date(timeArr[i]).getTime(),
+                h: curr,
+                type: "low"
+            });
+        }
+    }
+    return out;
+}
+
+/**
+ * 根据当前时间 + 高低潮数组，计算潮汐阶段 rising / falling / high / dead
+ * @param {number} nowTs Date.now()
+ * @param {Array} extremes extractTideExtremes输出
+ * @param {number} deadThresholdMs 死潮判定：高低潮前后90分钟内视为dead，90*60*1000
+ * @returns {''|'rising'|'falling'|'high'|'dead'}
+ */
+function computeTidePhaseFromExtremes(nowTs, extremes, deadThresholdMs = 5400000) {
+    if (!extremes || extremes.length < 2) return '';
+    // 按时间排序
+    const items = [...extremes].sort((a, b) => a.ts - b.ts);
+
+    let prevEvt = null;
+    let nextEvt = null;
+    for (const ev of items) {
+        if (ev.ts <= nowTs) prevEvt = ev;
+        else {
+            nextEvt = ev;
+            break;
+        }
+    }
+    if (!prevEvt || !nextEvt) return '';
+
+    const diffToPrev = nowTs - prevEvt.ts;
+    const diffToNext = nextEvt.ts - nowTs;
+
+    // 高低潮前后一段时间判定死潮平潮
+    if ((prevEvt.type === 'high' || prevEvt.type === 'low') && diffToPrev < deadThresholdMs) {
+        return 'dead';
+    }
+    if ((nextEvt.type === 'high' || nextEvt.type === 'low') && diffToNext < deadThresholdMs) {
+        return 'dead';
+    }
+
+    // 前一个low低潮 → 后一个high满潮 = 涨潮 rising
+    if (prevEvt.type === 'low' && nextEvt.type === 'high') {
+        return 'rising';
+    }
+    // 前一个high满潮 → 后一个low低潮 = 退潮 falling
+    if (prevEvt.type === 'high' && nextEvt.type === 'low') {
+        return 'falling';
+    }
+    return '';
+}
+ /**
+ * 调用Open-Meteo Marine免费潮汐（降级备用源，无需API key）
+ * @param {number} lat
+ * @param {number} lng
+ * @returns {Promise<{extremes:Array,tidePhase:string,raw:any}>}
+ */
+async function fetchOpenMeteoMarineTide(lat, lng) {
+    const url = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lng}&hourly=sea_level_height_msl&forecast_days=3&timezone=Australia/Sydney`;
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error("Open-Meteo Marine http:" + resp.status);
+    const json = await resp.json();
+    const hourly = json.hourly;
+    if (!hourly || !hourly.time || !hourly.sea_level_height_msl) throw new Error("marine数据为空");
+
+    const extremes = extractTideExtremes(hourly.time, hourly.sea_level_height_msl);
+    const tidePhase = computeTidePhaseFromExtremes(Date.now(), extremes);
+
+    return {
+        extremes,
+        tidePhase,
+        raw: json
+    };
+}
+
+/**
+ * 渲染Open-Meteo Marine潮汐到页面tideBox、svg，复用现有DOM结构
+ * @param {Object} ret fetchOpenMeteoMarineTide返回对象
+ */
+function renderOpenMeteoMarineTide(ret) {
+    const { extremes, raw } = ret;
+    const hourly = raw.hourly;
+    const svg = $('tide-svg');
+    const sourceInfoEl = $('tide-source-info');
+    const statusEl = $('tide-current-status');
+    const countdownEl = $('tide-next-countdown');
+    const listEl = $('tide-extremes-list');
+    const errEl = $('tide-error-tip');
+    if(errEl) errEl.style.display='none';
+
+    // 数据源提示，重要：标注仅供钓鱼参考
+    if(sourceInfoEl){
+        sourceInfoEl.textContent = "数据源：Open-Meteo Marine【全球潮汐模型，小时粒度，仅供钓鱼参考，不用于航海导航】";
+    }
+
+    const items = [...extremes].sort((a,b)=>a.ts-b.ts);
+    const nowTs = Date.now();
+    let nextEvent = null;
+    for(const it of items){
+        if(it.ts >= nowTs){
+            nextEvent = it;
+            break;
+        }
+    }
+
+    // --------渲染高低潮文本列表 --------
+    let listHtml = "";
+    items.forEach(it=>{
+        const d=new Date(it.ts);
+        const timeStr = String(d.getHours()).padStart(2,'0')+":"+String(d.getMinutes()).padStart(2,'0');
+        const label = it.type==='high'?'满潮':'低潮';
+        listHtml += "  "+timeStr+"  "+label+"  "+it.h.toFixed(2)+"m<br/>";
+    });
+    if(listEl) listEl.innerHTML = listHtml;
+
+    // --------当前状态 + 倒计时 --------
+    if(statusEl){
+        if(nextEvent){
+            const txt = nextEvent.type==='high'?'落潮':'涨潮';
+            statusEl.textContent="当前潮汐状态："+txt+"中";
+            const diff = nextEvent.ts - nowTs;
+            const hh = Math.floor(diff / 3600000);
+            const mm = Math.floor((diff%3600000)/60000);
+            if(countdownEl) countdownEl.textContent="距离下一"+(nextEvent.type==='high'?'满潮':'低潮')+"："+hh+"h"+mm+"min";
+        }else{
+            statusEl.textContent="当前：超出预报时间窗口";
+            if(countdownEl) countdownEl.textContent="";
+        }
+    }
+
+    // --------绘制潮汐SVG曲线图（复用原有svg容器，样式和TidesAtlas保持一致）--------
+    if(svg && hourly && hourly.time.length>0){
+        const W=600,H=180,padT=8,padB=24,padL=28,padR=8;
+        const chartW=W-padL-padR;
+        const chartH=H-padT-padB;
+
+        // 转换全部时间、高度
+        const tArr = hourly.time.map(s=>new Date(s).getTime());
+        const hArr = hourly.sea_level_height_msl;
+
+        const tStart = tArr[0];
+        const tEnd = tArr[tArr.length-1];
+        const tSpan = tEnd - tStart || 1;
+
+        const hMin = Math.min(...hArr);
+        const hMax = Math.max(...hArr);
+        const hRange = hMax - hMin || 0.1;
+
+        function t2x(ts){ return padL + ((ts - tStart)/tSpan)*chartW; }
+        function h2y(hv){ return padT + chartH - ((hv - hMin)/hRange)*chartH; }
+
+        let pathD="";
+        for(let i=0;i<tArr.length;i++){
+            const x = t2x(tArr[i]);
+            const y = h2y(hArr[i]);
+            pathD += (i===0?"M":"L") + x.toFixed(2)+","+y.toFixed(2)+" ";
+        }
+        const lastX = t2x(tEnd);
+        const baseY = h2y(hMin);
+        const fillPath = pathD + " L"+lastX+","+baseY+" L"+padL+","+baseY+" Z";
+        const nowX = t2x(Math.max(tStart, Math.min(tEnd, nowTs)));
+
+        let dots = "";
+        items.forEach(it=>{
+            const cx = t2x(it.ts);
+            const cy = h2y(it.h);
+            const fc = it.type==='high'?'#1565c0':'#f9a825';
+            dots += `<circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="3.5" fill="${fc}" />`;
+        });
+
+        svg.innerHTML=`
+<defs>
+<linearGradient id="seaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+<stop offset="0%" stop-color="#4285f4" stop-opacity="0.35" />
+<stop offset="100%" stop-color="#4285f4" stop-opacity="0.06" />
+</linearGradient>
+</defs>
+<path d="${fillPath}" fill="url(#seaGrad)"></path>
+<path d="${pathD}" fill="none" stroke="#1565c0" stroke-width="2"></path>
+${dots}
+<line x1="${nowX.toFixed(2)}" y1="${padT}" x2="${nowX.toFixed(2)}" y2="${padT+chartH}" stroke="#2e7d32" stroke-width="1.5" stroke-dasharray="4 4"/>
+`;
+    }
+}
+
 function closeModal(id){var m=document.getElementById(id);if(m)m.style.display='none';}
 function $(id){return document.getElementById(id);}
 function bind(id,event,fn){var el=$(id);if(el)el.addEventListener(event,fn);}
@@ -1559,32 +1769,60 @@ function fetchWeather(lng,lat){
         forecastBox.innerHTML="加载7天预报...";
 
                 function tryFetchTide(){
-                    // 1. TidesAtlas（最高优先）
-                    if(state.tidesKey){
-                        fetchTidesAtlasTide(lat,lng)
-                        .then(function(data){
-                            renderTidesAtlasTide(data);
-                            // 解析当前潮汐状态并更新鱼情分析
-                            var tidePhase=getCurrentTidePhase(data);
-                            if(tidePhase&&window._lastWeather){
-                                window._lastWeather.tidePhase=tidePhase;
-                                if(typeof renderFishAdvice==="function"){renderFishAdvice(window._lastWeather);}
-                            }
-                        })
-                        .catch(function(err){
-                            console.warn("TidesAtlas潮汐获取失败，尝试WillyWeather:",err);
-                            // 2. WillyWeather（备选）
-                            if(state.wwKey){
-                                tryFetchWW();
-                            }
-                        });
-                        return;
-                    }
-                    // 2. 无TidesAtlas Key，直接用WillyWeather
-                    if(state.wwKey){
-                        tryFetchWW();
-                    }
-                }
+    // 1.优先TidesAtlas
+    if(state.tidesKey){
+        fetchTidesAtlasTide(lat,lng)
+        .then(function(data){
+            renderTidesAtlasTide(data);
+            var tidePhase=getCurrentTidePhase(data);
+            if(tidePhase&&window._lastWeather){
+                window._lastWeather.tidePhase=tidePhase;
+                if(typeof renderFishAdvice==="function"){renderFishAdvice(window._lastWeather);}
+            }
+        })
+        .catch(function(err){
+            console.warn("TidesAtlas失败，尝试WillyWeather：",err);
+            // 2.备选WillyWeather
+            if(state.wwKey){
+                tryFetchWW();
+            }else{
+                // ✅WillyWeather也无密钥 → 降级 Open-Meteo Marine
+                doOpenMeteoMarineFallback();
+            }
+        });
+        return;
+    }
+    // 无TidesAtlas key，尝试WillyWeather
+    if(state.wwKey){
+        tryFetchWW();
+        return;
+    }
+    // ✅两个密钥全部不可用，直接走Open-Meteo Marine降级
+    doOpenMeteoMarineFallback();
+}
+
+/** 降级：Open-Meteo Marine潮汐处理 */
+async function doOpenMeteoMarineFallback(){
+    const tideBox=$('tideBox');
+    tideBox.classList.remove('hidden');
+    $('tide-extremes-list').innerHTML='<div style="color:#888">正在加载Open-Meteo模型潮汐...</div>';
+    $('tide-svg').innerHTML='';
+    try{
+        const ret = await fetchOpenMeteoMarineTide(lat, lng);
+        renderOpenMeteoMarineTide(ret);
+        // 【关键】把计算出来的tidePhase赋值，鱼情/鱼种活跃度/作钓方案自动复用
+        if(ret.tidePhase && window._lastWeather){
+            window._lastWeather.tidePhase = ret.tidePhase;
+            if(typeof renderFishAdvice === "function"){
+                renderFishAdvice(window._lastWeather);
+            }
+        }
+    }catch(err){
+        console.warn("Open-Meteo Marine也失败，启用纯文本模拟潮汐",err);
+        tideBox.innerHTML = fetchTideMock();
+    }
+}
+
                 function tryFetchWW(){
                     var tideStationId=state.tideStation;
                     var tideStationName='';
