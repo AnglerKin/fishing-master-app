@@ -1847,12 +1847,14 @@ async function doOpenMeteoMarineFallback(){
                             tideBox.innerHTML=renderWillyWeatherTide(result);
                         })
                         .catch(function(err){
-                            console.warn("WillyWeather潮汐获取失败，使用模拟:",err);
+                            console.warn("WillyWeather潮汐获取失败，降级Open‑Meteo Marine：",err);
+                            doOpenMeteoMarineFallback();
                         });
+
                     }
                 }
 
-        // 潮汐数据源优先级：TidesAtlas → WillyWeather → 模拟潮汐
+        // 潮汐数据源优先级：TidesAtlas → WillyWeather → Open‑Meteo Marine
     
 
         tryFetchTide();
