@@ -709,6 +709,44 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 <div class="gear-item"><b>远投装备</b>水滴铅 80-120g，沙滩远投竿</div>
 <div class="gear-item"><b>饵料</b>新鲜虾仁、沙丁鱼块、碎鱼窝料</div>
 </div>
+  <hr>
+<h4>➕新增自定义装备套装</h4>
+<div style="display:grid;gap:8px;grid-template-columns:1fr 1fr;">
+    <div>
+        <label>套装名称</label>
+        <input id="gearSetName" placeholder="例如：悉尼码头岸投套装">
+    </div>
+    <div>
+        <label>鱼竿参数(kg范围)</label>
+        <input id="gearRod" placeholder="2-4kg">
+    </div>
+    <div>
+        <label>渔轮</label>
+        <input id="gearReel" placeholder="3000型纺车轮">
+    </div>
+    <div>
+        <label>主线</label>
+        <input id="gearMainline" placeholder="PE 4kg">
+    </div>
+    <div>
+        <label>前导碳线</label>
+        <input id="gearLeader" placeholder="碳8kg">
+    </div>
+    <div>
+        <label>饵重范围(g)</label>
+        <input id="gearLureRange" placeholder="7-21g">
+    </div>
+</div>
+<div style="margin:10px 0;display:flex;gap:8px;flex-wrap:wrap;">
+    <button class="btn" id="saveCustomGearBtn">保存套装</button>
+    <button class="btn btn-sec" id="clearGearFormBtn">清空表单</button>
+</div>
+<div style="margin-top:10px;">
+    <label>选择当前使用装备：</label>
+    <select id="currentGearSelect" style="min-width:320px;padding:6px;border-radius:8px;border:1px solid #d0d7e2;background:#fafbfc;"></select>
+</div>
+<div id="customGearList" style="margin-top:12px;"></div>
+
 </div>
 </div>
 
@@ -719,6 +757,65 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
 </div>
 
 <script>
+/**
+ * @param targetFishRecommend 鱼种推荐配置（FISH_TARGET_ADVICE单条）
+ * @param userGear 用户选中的自定义装备对象 null=无自定义装备
+ * @returns {score:number,matchTips:[],warnTips:[],suggestTips:[]}
+ */
+function calcGearMatch(targetFishRecommend, userGear){
+    const res = {score:100,matchTips:[],warnTips:[],suggestTips:[]};
+    if(!userGear) {
+        res.matchTips.push("未选择自定义装备，跳过装备适配评估");
+        res.score = 100;
+        return res;
+    }
+    //简单字符串规则比对（可后续扩充解析数字区间）
+    const recTackle = targetFishRecommend.tackle;
+    res.matchTips.push(`当前使用套装：${userGear.name}`);
+    //饵重简单比对
+    if(recTackle.includes(userGear.lureRange)){
+        res.matchTips.push(`✅饵重范围${userGear.lureRange}与鱼种推荐匹配`);
+    }else{
+        res.warnTips.push(`⚠️饵重${userGear.lureRange}不在该鱼种推荐区间内，可能影响抛投与咬口感知`);
+        res.score -=20;
+        res.suggestTips.push("💡建议更换竿子，适配鱼种推荐饵重");
+    }
+    //竿参数
+    if(recTackle.includes(userGear.rod)){
+        res.matchTips.push(`✅竿规格${userGear.rod}匹配鱼种需求`);
+    }else{
+        res.warnTips.push(`⚠️鱼竿${userGear.rod}与鱼种推荐规格存在差异`);
+        res.score -=15;
+        res.suggestTips.push("💡核对目标鱼种推荐竿重负荷");
+    }
+    //简单边界保护分数
+    res.score = Math.max(0, Math.min(res.score,100));
+    return res;
+}
+
+  
+/**
+ * 将open-meteo天气编码转为文字+emoji
+ */
+function getWeatherDesc(wCode) {
+    const map = {
+        0: {icon:"☀️",text:"晴朗"},
+        1: {icon:"⛅",text:"大部多云"},2:{icon:"⛅",text:"局部多云"},3:{icon:"☁️",text:"阴天"},
+        45:{icon:"🌫️",text:"雾"},48:{icon:"🌫️",text:"雾凇"},
+        51:{icon:"🌦️",text:"小雨"},53:{icon:"🌧️",text:"中雨"},55:{icon:"🌧️",text:"大雨"},
+        56:{icon:"🌨️",text:"冻小雨"},57:{icon:"🌨️",text:"冻大雨"},
+        61:{icon:"🌦️",text:"阵雨小雨"},63:{icon:"🌧️",text:"阵雨中雨"},65:{icon:"🌧️",text:"阵雨大雨"},
+        66:{icon:"🌨️",text:"冻阵雨小"},67:{icon:"🌨️",text:"冻阵雨大"},
+        71:{icon:"❄️",text:"小雪"},73:{icon:"❄️",text:"中雪"},75:{icon:"❄️",text:"大雪"},
+        77:{icon:"🌨️",text:"雪粒"},
+        80:{icon:"🌦️",text:"短时小雨"},81:{icon:"🌧️",text:"短时中雨"},82:{icon:"⛈️",text:"短时暴雨"},
+        85:{icon:"❄️",text:"阵小雪"},86:{icon:"❄️",text:"阵大雪"},
+        95:{icon:"⛈️",text:"雷暴"},96:{icon:"⛈️",text:"雷暴伴冰雹"},99:{icon:"⛈️",text:"强雷暴冰雹"}
+    };
+    return map[wCode]??{icon:"❓",text:"未知天气"};
+}
+
+  
   var _fetchWeatherAbortController = null;
 
 function setPointLoading(isLoading){
@@ -731,6 +828,71 @@ function setPointLoading(isLoading){
     }
 }
   
+  // ========== 自定义装备本地存储工具 ==========
+const STORAGE_GEAR_KEY = "fishing_custom_gear_sets";
+
+//读取全部自定义装备
+function loadCustomGearSets(){
+    const raw = localStorage.getItem(STORAGE_GEAR_KEY);
+    if(!raw) return [];
+    try{ return JSON.parse(raw); }catch(e){return [];}
+}
+//保存整套数组到本地存储
+function saveCustomGearSets(arr){
+    localStorage.setItem(STORAGE_GEAR_KEY, JSON.stringify(arr));
+}
+//保存单套装备
+function addOneGearSet(item){
+    const list = loadCustomGearSets();
+    list.push(item);
+    saveCustomGearSets(list);
+}
+//删除指定索引套装
+function deleteGearByIndex(idx){
+    const list = loadCustomGearSets();
+    list.splice(idx,1);
+    saveCustomGearSets(list);
+}
+
+//渲染装备下拉选择器 + 自定义装备列表UI
+function renderGearUi(){
+    const gearList = loadCustomGearSets();
+    const sel = $('currentGearSelect');
+    const listBox = $('customGearList');
+    if(!sel || !listBox) return;
+
+    sel.innerHTML = `<option value="">--未选择自定义装备（使用系统默认）--</option>`;
+    gearList.forEach((g,i)=>{
+        sel.innerHTML += `<option value="${i}">${g.name}</option>`;
+    });
+    //渲染列表+删除按钮
+    let html = "<h5>已保存自定义套装</h5>";
+    if(gearList.length===0){
+        html += "<div style='color:#777'>暂无自定义装备</div>";
+    }else{
+        gearList.forEach((g,i)=>{
+            html += `<div style="border:1px solid #ddd;padding:6px;margin:4px 0;border-radius:4px;">
+<b>${g.name}</b><br/>
+竿:${g.rod}｜轮:${g.reel}<br/>
+主线:${g.mainline}｜前导:${g.leader}｜饵重:${g.lureRange}
+<button data-delidx="${i}" class="gear-del-btn" style="margin-left:8px;color:red;border:none;background:transparent;cursor:pointer;">删除</button>
+</div>`;
+        })
+    }
+    listBox.innerHTML = html;
+}
+
+//获取当前选中装备对象，没有选择返回null
+function getSelectedGear(){
+    const sel = $('currentGearSelect');
+    if(!sel) return null;
+    const idx = sel.value;
+    if(idx==="") return null;
+    const arr = loadCustomGearSets();
+    return arr[Number(idx)]??null;
+}
+// ========== 装备工具函数结束 ==========
+
 const SPECIES_CONFIG = [
     {
         key:"bream",
@@ -2695,7 +2857,52 @@ advice+=speciesHtml;
         const selVal = this.value;
         renderTargetFishAdvice(selVal);
 });
-  
+    // ---------------- 自定义装备库事件绑定 ----------------
+//保存装备套装按钮
+bind('saveCustomGearBtn','click',()=>{
+    const item = {
+        name:$('gearSetName').value.trim(),
+        rod:$('gearRod').value.trim(),
+        reel:$('gearReel').value.trim(),
+        mainline:$('gearMainline').value.trim(),
+        leader:$('gearLeader').value.trim(),
+        lureRange:$('gearLureRange').value.trim()
+    };
+    if(!item.name){ alert("请填写套装名称");return; }
+    addOneGearSet(item);
+    //清空表单输入框
+    $('gearSetName').value='';
+    $('gearRod').value='';
+    $('gearReel').value='';
+    $('gearMainline').value='';
+    $('gearLeader').value='';
+    $('gearLureRange').value='';
+    renderGearUi();
+});
+//清空表单按钮
+bind('clearGearFormBtn','click',()=>{
+    $('gearSetName').value='';
+    $('gearRod').value='';
+    $('gearReel').value='';
+    $('gearMainline').value='';
+    $('gearLeader').value='';
+    $('gearLureRange').value='';
+});
+//装备列表删除按钮事件委托
+const gearListWrap = $('customGearList');
+if(gearListWrap){
+    gearListWrap.addEventListener('click',e=>{
+        const btn = e.target.closest('.gear-del-btn');
+        if(!btn) return;
+        const delIdx = Number(btn.dataset.delidx);
+        deleteGearByIndex(delIdx);
+        renderGearUi();
+    });
+}
+//页面初始化渲染装备UI
+renderGearUi();
+// ----------------装备绑定结束----------------
+
 });
 </script>
 </body>
