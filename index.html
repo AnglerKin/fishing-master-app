@@ -2573,6 +2573,14 @@ advice+=speciesHtml;
     renderRateLimitUi();
 
     console.log('钓鱼大师助手初始化完成');
+  
+    bindFishCardClick();
+
+    bind('targetFishSelect','change',function(){
+        const selVal = this.value;
+        renderTargetFishAdvice(selVal);
+});
+  
 });
 </script>
 </body>
