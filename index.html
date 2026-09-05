@@ -710,7 +710,119 @@ function setPointLoading(isLoading){
         statusEl.style.color="#222";
     }
 }
+  
+const SPECIES_CONFIG = [
+    {
+        key:"bream",
+        name:"Bream 黑鲷",
+        optTemp:[18,24],minTemp:15,maxTemp:26,
+        bestTide:["rising","high"],okTide:["falling"],badTide:["dead"],
+        maxWave:1.4,minWave:0.2,
+        bestHour:[5,6,7,17,18,19],
+        moonBonus:true,
+        note:"礁石、码头、河口；涨潮进岸边觅食；适合浮漂/沉底钓",
+        badNote:"死潮/平潮活跃度大幅下降；浪太大不敢靠近岸边"
+    },
+    {
+        key:"flathead",
+        name:"Flathead 牛尾鱼",
+        optTemp:[18,24],minTemp:16,maxTemp:26,
+        bestTide:["falling"],okTide:["rising"],badTide:["dead","high"],
+        maxWave:1.3,minWave:0.3,
+        bestHour:[6,7,8,16,17,18],
+        moonBonus:false,
+        note:"沙泥底，退潮初期在浅滩伏击；沉底/软饵路亚效果佳",
+        badNote:"满潮、死潮咬口差；大浪搅动泥沙降低伏击成功率"
+    },
+    {
+        key:"trevally",
+        name:"Trevally 鲹鱼",
+        optTemp:[20,25],minTemp:17,maxTemp:27,
+        bestTide:["rising","falling"],okTide:[],badTide:["dead","high"],
+        maxWave:1.1,minWave:0.4,
+        bestHour:[7,8,9,16,17,18],
+        moonBonus:true,
+        note:"洄游掠食鱼，追炸水；优先路亚；强水流更活跃",
+        badNote:"平潮死潮几乎不觅食；过大浪停止追饵"
+    },
+    {
+        key:"mulloway",
+        name:"Mulloway 银身中棘鱼",
+        optTemp:[16,21],minTemp:13,maxTemp:23,
+        bestTide:["rising","falling"],okTide:["high"],badTide:["dead"],
+        maxWave:1.6,minWave:0.5,
+        bestHour:[20,21,22,23,0,1,2,3,4,5],
+        moonBonus:true,
+        note:"夜间为主；大潮汐流；码头深沟、礁石缝隙；沉底大饵",
+        badNote:"白天活跃度低；小潮死潮很难开口"
+    },
+    {
+        key:"kingfish",
+        name:"Kingfish 王鱼",
+        optTemp:[20,25],minTemp:18,maxTemp:28,
+        bestTide:["rising","falling"],okTide:[],badTide:["dead","high"],
+        maxWave:1.2,minWave:0.6,
+        bestHour:[5,6,7,17,18,19],
+        moonBonus:true,
+        note:"中上层掠食；礁石岬角、防波堤；路亚铁板/大亮片",
+        badNote:"水温低于18活跃度暴跌；平潮无流不追饵"
+    },
+    {
+        key:"squid",
+        name:"Squid 鱿鱼/墨鱼",
+        optTemp:[17,22],minTemp:14,maxTemp:24,
+        bestTide:["rising","high"],okTide:[],badTide:["dead","falling"],
+        maxWave:1.0,minWave:0.1,
+        bestHour:[19,20,21,22,23,0,1,2,3,4,5],
+        moonBonus:true,
+        note:"夜间灯光区；木虾Egi；涨潮、满潮最佳；浪大消失",
+        badNote:"退潮、死潮、浪高>1米基本无口"
+    }
+];
 
+function calcSpeciesSingle(sp,temp,press,wind,wave,tidePhase,hour,moonScore){
+    let score=50;
+    const reasons=[];
+    const warns=[];
+
+    const [optLo,optHi]=sp.optTemp;
+    if(temp>=optLo&&temp<=optHi){
+        score+=18;reasons.push("水温处于该鱼最佳区间");
+    }else if(temp>=sp.minTemp&&temp<=sp.maxTemp){
+        score+=8;reasons.push("水温尚可，非最佳");
+    }else{
+        score-=22;warns.push("水温偏离适宜范围，活跃度下降");
+    }
+
+    if(sp.bestTide.includes(tidePhase)){
+        score+=16;reasons.push("潮汐阶段对该鱼非常有利");
+    }else if(sp.okTide.includes(tidePhase)){
+        score+=7;reasons.push("潮汐条件尚可");
+    }else if(sp.badTide.includes(tidePhase)){
+        score-=20;warns.push("当前潮汐不利于该鱼种");
+    }
+
+    if(wave>sp.maxWave){
+        score-=15;warns.push("浪偏高，抑制觅食");
+    }else if(wave>=sp.minWave&&wave<=sp.maxWave){
+        score+=10;reasons.push("浪高合适");
+    }
+
+    if(sp.bestHour.includes(hour)){
+        score+=14;reasons.push("处于该鱼黄金觅食时段");
+    }
+
+    if(sp.moonBonus&&moonScore>0){
+        score+=Math.min(moonScore,10);
+        reasons.push("月相带来小幅加成");
+    }
+
+    if(press<1005) score-=8,warns.push("气压偏低，整体鱼活性下降");
+
+    score=Math.max(0,Math.min(100,score));
+    return {score,reasonList:reasons,warnList:warns};
+}
+  
 function closeModal(id){var m=document.getElementById(id);if(m)m.style.display='none';}
 function $(id){return document.getElementById(id);}
 function bind(id,event,fn){var el=$(id);if(el)el.addEventListener(event,fn);}
