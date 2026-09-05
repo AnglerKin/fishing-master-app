@@ -1048,7 +1048,7 @@ ${dots}
  */
 function bindFishCardClick(){
     document.querySelector('#fishAdvice').addEventListener('click',function(e){
-        const btn=e.target.closest('.fish‑select‑btn');
+        const btn=e.target.closest('.fish-select-btn');
         if(!btn) return;
         const fishKey=btn.dataset.fishkey;
         const sel=$('targetFishSelect');
@@ -1878,14 +1878,14 @@ async function doOpenMeteoMarineFallback(){
                             tideBox.innerHTML=renderWillyWeatherTide(result);
                         })
                         .catch(function(err){
-                            console.warn("WillyWeather潮汐获取失败，降级Open‑Meteo Marine：",err);
+                            console.warn("WillyWeather潮汐获取失败，降级Open-Meteo Marine：",err);
                             doOpenMeteoMarineFallback();
                         });
 
                     }
                 }
 
-        // 潮汐数据源优先级：TidesAtlas → WillyWeather → Open‑Meteo Marine
+        // 潮汐数据源优先级：TidesAtlas → WillyWeather → Open-Meteo Marine
     
 
         tryFetchTide();
