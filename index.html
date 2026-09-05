@@ -987,6 +987,7 @@ function renderSimpleList(boxId, arr, type, delCb){
     }
     let html = "";
     arr.forEach(function(item,i){
+        if(!item) return;// 新增：过滤undefined、null脏数组元素，消除notkey报错
         html += '<div style="font-size:12px;padding:2px;border-bottom:1px solid #eee;">'
             + item
             + ' <button data-type="'+type+'" data-idx="'+i+'" style="color:red;border:0;background:transparent;cursor:pointer;">x</button>'
@@ -1070,28 +1071,80 @@ function getSelectedGearSet(){
     const arr = loadCustomGearSets();
     return arr[Number(sel.value)] || null;
 }
-  /**
- * calcGearMatch：装备适配分析
+  
+ /**
+ * calcGearSetSelfCheck：套装自身完整性分析（装备库面板使用，仅传入套装对象）
  * @param {Object|null} gearSet 选中套装对象
- * @returns {Object} {score:数字,tips:[],advices:[]}
+ * @returns {Object} {score:number,tips:[],advices:[],plusItems:[],minusItems:[]}
  */
-function calcGearMatch(gearSet){
+function calcGearSetSelfCheck(gearSet){
     const result = {
         score:50,
         tips:[],
-        advices:[]
+        advices:[],
+        plusItems:[],
+        minusItems:[]
     };
     if(!gearSet){
         result.tips.push("无自定义套装，使用系统默认配置");
         return result;
     }
-    // 基础完整性打分
-    if(gearSet.rod) result.score +=8; else result.advices.push("⚠️未配置鱼竿");
-    if(gearSet.reel) result.score +=8; else result.advices.push("⚠️未配置渔轮");
-    if(gearSet.mainline) result.score +=8; else result.advices.push("⚠️未配置主线");
-    if(gearSet.leader) result.score +=8; else result.advices.push("⚠️未配置前导线");
 
-    // 根据作钓类型给出提示
+    //基础完整性打分
+    if(gearSet.rod) {
+        result.score +=8;
+        result.plusItems.push("配置鱼竿(+8)");
+    }else {
+        result.advices.push("⚠️未配置鱼竿");
+        result.minusItems.push("未配置鱼竿");
+    }
+
+    if(gearSet.reel) {
+        result.score +=8;
+        result.plusItems.push("配置渔轮(+8)");
+    }else {
+        result.advices.push("⚠️未配置渔轮");
+        result.minusItems.push("未配置渔轮");
+    }
+
+    if(gearSet.mainline) {
+        result.score +=8;
+        result.plusItems.push("配置主线(+8)");
+    }else {
+        result.advices.push("⚠️未配置主线");
+        result.minusItems.push("未配置主线");
+    }
+
+    if(gearSet.leader) {
+        result.score +=8;
+        result.plusItems.push("配置前导线(+8)");
+    }else {
+        result.advices.push("⚠️未配置前导线");
+        result.minusItems.push("未配置前导线");
+    }
+
+    if(gearSet.sinker) {
+        result.score +=6;
+        result.plusItems.push("配置铅坠(+6)");
+    }else {
+        result.minusItems.push("未配置铅坠");
+    }
+
+    if(gearSet.float) {
+        result.score +=6;
+        result.plusItems.push("配置浮漂(+6)");
+    }else {
+        result.minusItems.push("未配置浮漂");
+    }
+
+    if(gearSet.bait) {
+        result.score +=6;
+        result.plusItems.push("配置饵料(+6)");
+    }else {
+        result.minusItems.push("未配置饵料");
+    }
+
+    //作钓类型业务提示
     const type = (gearSet.fishType||"").toLowerCase();
     if(type.includes("路亚")){
         result.tips.push("🎣模式：路亚作钓");
@@ -1116,6 +1169,7 @@ function calcGearMatch(gearSet){
     return result;
 }
 
+
 /** 渲染当前启用套装信息面板 */
 function renderActiveGearPanel(){
     const gear = getSelectedGearSet();
@@ -1137,17 +1191,28 @@ function renderActiveGearPanel(){
 <div>主线：${gear.mainline||"-"}｜前导：${gear.leader||"-"}</div>
 <div>铅坠：${gear.sinker||"-"}｜浮漂：${gear.float||"-"}｜饵料：${gear.bait||"-"}</div>
 `;
-    //调用分析函数
-    const analyse = calcGearMatch(gear);
+       //调用分析函数
+    const analyse = calcGearSetSelfCheck(gear);
     let adviceHtml = `<div><b>适配评分：${analyse.score} / 100</b></div>`;
+
+    //✅加分明细
+    if(analyse.plusItems.length>0){
+        adviceHtml += `<div style="margin-top:4px;color:#27ae60">✅加分项：${analyse.plusItems.join("｜")}</div>`;
+    }
+    //⚠缺失扣分明细
+    if(analyse.minusItems.length>0){
+        adviceHtml += `<div style="margin-top:4px;color:#e74c3c">⚠️缺失项：${analyse.minusItems.join("｜")}</div>`;
+    }
+
     if(analyse.tips.length>0){
-        adviceHtml += `<div style="color:#2060b0">${analyse.tips.join("｜")}</div>`;
+        adviceHtml += `<div style="margin-top:4px;color:#2060b0">${analyse.tips.join("｜")}</div>`;
     }
     if(analyse.advices.length>0){
-        adviceHtml += `<div style="margin-top:4px;color:#c04000;">${analyse.advices.join("<br/>")}</div>`;
+        adviceHtml += `<div style="margin‑top:4px;color:#c04000;">${analyse.advices.join("<br />")}</div>`;
     }else{
-        adviceHtml += `<div style="color:#208020;">✅装备配置完整</div>`;
+        adviceHtml += `<div style="margin‑top:4px;color:#208020;">✅装备配置完整</div>`;
     }
+
     adviceBox.innerHTML = adviceHtml;
 }
 
