@@ -813,6 +813,14 @@ table.spot-table tr:hover{background:#e8f4fd;cursor:pointer}
     <label>✅当前启用作钓套装：</label>
     <select id="currentGearSelect" style="min-width:360px;padding:6px;border-radius:8px;border:1px solid #d0d7e2;background:#fafbfc;"></select>
 </div>
+  <div id="activeGearInfo" style="margin-top:14px;padding:10px;border:1px solid #b8c8e0;border-radius:8px;background:#f4f7fc;">
+    <h5>✅当前启用作钓套装 - 装备分析</h5>
+    <div id="activeGearText">
+        <div style="color:#666">未选择启用套装，使用系统默认参数</div>
+    </div>
+    <div id="activeGearAdvice" style="margin-top:8px;"></div>
+</div>
+
 <div id="customGearList" style="margin-top:12px;"></div>
 
 
@@ -1006,6 +1014,7 @@ function renderAllGearStorage(){
     fillSelectOpt("selBait", store.baits);
 
     renderGearSetsUi();
+    renderActiveGearPanel();
 }
 
 function renderGearSetsUi(){
@@ -1041,6 +1050,87 @@ function getSelectedGearSet(){
     const arr = loadCustomGearSets();
     return arr[Number(sel.value)] || null;
 }
+  /**
+ * calcGearMatch：装备适配分析
+ * @param {Object|null} gearSet 选中套装对象
+ * @returns {Object} {score:数字,tips:[],advices:[]}
+ */
+function calcGearMatch(gearSet){
+    const result = {
+        score:50,
+        tips:[],
+        advices:[]
+    };
+    if(!gearSet){
+        result.tips.push("无自定义套装，使用系统默认配置");
+        return result;
+    }
+    // 基础完整性打分
+    if(gearSet.rod) result.score +=8; else result.advices.push("⚠️未配置鱼竿");
+    if(gearSet.reel) result.score +=8; else result.advices.push("⚠️未配置渔轮");
+    if(gearSet.mainline) result.score +=8; else result.advices.push("⚠️未配置主线");
+    if(gearSet.leader) result.score +=8; else result.advices.push("⚠️未配置前导线");
+
+    // 根据作钓类型给出提示
+    const type = (gearSet.fishType||"").toLowerCase();
+    if(type.includes("路亚")){
+        result.tips.push("🎣模式：路亚作钓");
+        if(!gearSet.rod?.match(/l|ml|m/gi)){
+            result.advices.push("💡路亚建议选用L‑ML‑M调路亚竿");
+        }
+    }else if(type.includes("沉底")){
+        result.tips.push("⚓模式：沉底岸投");
+        if(!gearSet.sinker){
+            result.advices.push("💡沉底钓需要配置铅坠");
+        }
+    }else if(type.includes("矶钓")){
+        result.tips.push("🏮模式：矶钓浮漂");
+        if(!gearSet.float){
+            result.advices.push("💡矶钓建议配置浮漂");
+        }
+    }else{
+        result.tips.push("ℹ️未指定作钓类型");
+    }
+
+    result.score = Math.min(100, Math.max(0, result.score));
+    return result;
+}
+
+/** 渲染当前启用套装信息面板 */
+function renderActiveGearPanel(){
+    const gear = getSelectedGearSet();
+    const infoText = $('activeGearText');
+    const adviceBox = $('activeGearAdvice');
+    if(!infoText || !adviceBox) return;
+
+    if(!gear){
+        infoText.innerHTML = `<div style="color:#666">未选择启用套装，使用系统默认参数</div>`;
+        adviceBox.innerHTML = "";
+        return;
+    }
+    //输出装备清单
+    infoText.innerHTML = `
+<div><b>套装名称：</b>${gear.name}</div>
+<div><b>作钓类型：</b>${gear.fishType||"未填写"}</div>
+<div>竿：${gear.rod||"-"}</div>
+<div>轮：${gear.reel||"-"}</div>
+<div>主线：${gear.mainline||"-"}｜前导：${gear.leader||"-"}</div>
+<div>铅坠：${gear.sinker||"-"}｜浮漂：${gear.float||"-"}｜饵料：${gear.bait||"-"}</div>
+`;
+    //调用分析函数
+    const analyse = calcGearMatch(gear);
+    let adviceHtml = `<div><b>适配评分：${analyse.score} / 100</b></div>`;
+    if(analyse.tips.length>0){
+        adviceHtml += `<div style="color:#2060b0">${analyse.tips.join("｜")}</div>`;
+    }
+    if(analyse.advices.length>0){
+        adviceHtml += `<div style="margin-top:4px;color:#c04000;">${analyse.advices.join("<br/>")}</div>`;
+    }else{
+        adviceHtml += `<div style="color:#208020;">✅装备配置完整</div>`;
+    }
+    adviceBox.innerHTML = adviceHtml;
+}
+
 // ========== 装备库存储结束 ==========
 
 
@@ -3174,7 +3264,10 @@ if(gearListWrap){
         renderAllGearStorage();
     });
 }
-
+// ✅【新增：套装下拉切换，刷新装备分析面板】
+bind('currentGearSelect','change',function(){
+    renderActiveGearPanel();
+});
 // 页面初始化渲染装备库
 renderAllGearStorage();
 // ========== 装备库绑定结束 ==========
